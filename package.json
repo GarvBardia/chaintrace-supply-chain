@@ -1,0 +1,27 @@
+{
+  "name": "chaintrace-supply-chain-tracker",
+  "version": "1.0.0",
+  "description": "Ethereum supply chain tracker (Solidity + Remix + ethers.js frontend)",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "abi": "hardhat compile && node scripts/write-abi.js",
+    "node": "hardhat node",
+    "deploy": "hardhat run scripts/deploy.js --network localhost",
+    "frontend": "python3 -m http.server 8080 --directory frontend",
+    "build:standalone": "npm run abi && node scripts/build-standalone.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "ganache": "^7.9.2",
+    "hardhat": "^2.29.1",
+    "jsdom": "^30.1.3",
+    "solc": "^0.8.24"
+  }
+}

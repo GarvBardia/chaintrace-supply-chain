@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ChainTrace - Supply Chain Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <div class="logo">CT</div>
+      <div>
+        <h1>ChainTrace</h1>
+        <p>On-chain supply chain tracker</p>
+      </div>
+    </div>
+    <div class="wallet">
+      <span id="netBadge" class="pill hidden"></span>
+      <span id="roleBadge" class="pill hidden"></span>
+      <span id="acct" class="mono muted"></span>
+      <button id="demoBtn" class="btn primary">Try demo (no wallet)</button>
+      <button id="connectBtn" class="btn">Connect MetaMask</button>
+    </div>
+  </header>
+
+  <div id="demoBar" class="demobar hidden">
+    <span><b>Demo mode</b> - a private test blockchain running inside this page (resets when you refresh).</span>
+    <label>Acting as <select id="demoSel"></select></label>
+  </div>
+
+  <main>
+    <!-- Contract address -->
+    <section class="card" id="setup">
+      <h2>Contract</h2>
+      <p class="muted small">Deploy <span class="mono">SupplyChainTracker.sol</span> in Remix, then paste the deployed address here.</p>
+      <div class="row">
+        <input id="addrInput" class="mono" placeholder="0x... deployed contract address" />
+        <button id="loadBtn" class="btn">Load contract</button>
+      </div>
+      <p id="setupMsg" class="small"></p>
+    </section>
+
+    <div id="app" class="hidden">
+      <nav class="tabs">
+        <button class="tab active" data-tab="products">Products</button>
+        <button class="tab" data-tab="register">Register</button>
+        <button class="tab" data-tab="track">Track</button>
+        <button class="tab" data-tab="admin">Admin</button>
+      </nav>
+
+      <!-- PRODUCTS -->
+      <section id="tab-products" class="panel">
+        <div class="statrow">
+          <div class="stat"><span id="statTotal">0</span><label>Products</label></div>
+          <div class="stat"><span id="statTransit">0</span><label>In transit</label></div>
+          <div class="stat"><span id="statSold">0</span><label>Sold</label></div>
+          <div class="stat"><span id="statRecalled">0</span><label>Recalled</label></div>
+        </div>
+        <div class="row between">
+          <h2>All products</h2>
+          <div class="row">
+            <label class="check"><input type="checkbox" id="mineOnly" /> Only mine / needing my action</label>
+            <button id="refreshBtn" class="btn small">Refresh</button>
+          </div>
+        </div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>ID</th><th>Product</th><th>Batch</th><th>Stage</th><th>Holder</th><th>Actions</th></tr></thead>
+            <tbody id="productRows"><tr><td colspan="6" class="muted">Load a contract to see products.</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- REGISTER -->
+      <section id="tab-register" class="panel hidden">
+        <h2>Register a new product</h2>
+        <p class="muted small">Only accounts with the <b>Manufacturer</b> role can do this.</p>
+        <div class="form">
+          <label>Product name<input id="regName" placeholder="Organic Coffee 250g" /></label>
+          <label>Batch number<input id="regBatch" placeholder="BATCH-2026-001" /></label>
+          <label>IPFS CID (optional)<input id="regCid" class="mono" placeholder="Qm... (certificate / image)" /></label>
+          <label>Location<input id="regLoc" placeholder="Coorg Estate, Karnataka" /></label>
+          <button id="regBtn" class="btn primary">Register product</button>
+        </div>
+      </section>
+
+      <!-- TRACK -->
+      <section id="tab-track" class="panel hidden">
+        <h2>Track a product</h2>
+        <p class="muted small">Anyone can verify a product's full journey. No role needed.</p>
+        <div class="row">
+          <input id="trackId" type="number" min="1" placeholder="Product ID" />
+          <button id="trackBtn" class="btn primary">Track</button>
+        </div>
+        <div id="trackResult"></div>
+      </section>
+
+      <!-- ADMIN -->
+      <section id="tab-admin" class="panel hidden">
+        <h2>Admin</h2>
+        <p id="adminNote" class="muted small"></p>
+        <div class="grid2">
+          <div class="card inner">
+            <h3>Assign role</h3>
+            <div class="form">
+              <label>Wallet address<input id="roleAddr" class="mono" placeholder="0x..." /></label>
+              <label>Role
+                <select id="roleSel">
+                  <option value="1">Manufacturer</option>
+                  <option value="2">Distributor</option>
+                  <option value="3">Retailer</option>
+                  <option value="0">None (revoke)</option>
+                </select>
+              </label>
+              <button id="roleBtn" class="btn primary">Set role</button>
+            </div>
+            <div class="row" style="margin-top:14px">
+              <input id="lookupAddr" class="mono" placeholder="Check an address's role 0x..." />
+              <button id="lookupBtn" class="btn small">Check</button>
+            </div>
+            <p id="lookupOut" class="small"></p>
+          </div>
+          <div class="card inner">
+            <h3>Emergency controls</h3>
+            <p class="small muted">Contract status: <b id="pauseState">-</b></p>
+            <div class="row">
+              <button id="pauseBtn" class="btn danger">Pause</button>
+              <button id="unpauseBtn" class="btn">Unpause</button>
+            </div>
+            <h3 style="margin-top:22px">Transfer admin</h3>
+            <div class="row">
+              <input id="newAdmin" class="mono" placeholder="New admin 0x..." />
+              <button id="adminBtn" class="btn small danger">Transfer</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- generic input dialog -->
+  <dialog id="dlg">
+    <form method="dialog" id="dlgForm">
+      <h3 id="dlgTitle"></h3>
+      <div id="dlgFields" class="form"></div>
+      <div class="row end">
+        <button value="cancel" class="btn" id="dlgCancel">Cancel</button>
+        <button value="ok" class="btn primary" id="dlgOk">Confirm</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="ethers.umd.min.js"></script>
+  <script src="abi.js"></script>
+  <script src="errors.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
