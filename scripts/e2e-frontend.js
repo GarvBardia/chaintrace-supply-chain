@@ -36,6 +36,9 @@ async function openPage(accountIndex) {
   window.HTMLDialogElement.prototype.close = function () { this.removeAttribute("open"); };
   window.fetch = fetch; window.TextEncoder = TextEncoder; window.TextDecoder = TextDecoder;
   window.confirm = () => true;
+  // the app starts in wallet mode when this session flag is set, and loads the saved contract address
+  window.sessionStorage.setItem("chaintrace.net", "wallet");
+  window.localStorage.setItem("chaintrace.address", ADDR);
   const errors = [];
   window.addEventListener("error", (e) => errors.push(e.message));
   window.ethereum = {
@@ -60,22 +63,19 @@ const ok = (c, m) => { if (!c) throw new Error("FAILED: " + m); console.log("  o
 async function main() {
   console.log("Persona 1: Admin");
   let { doc, errors } = await openPage(0);
-  doc.getElementById("addrInput").value = ADDR;
-  doc.getElementById("connectBtn").click();
   await waitFor(() => !doc.getElementById("app").classList.contains("hidden") && doc.querySelectorAll("#productRows .pcard").length >= 2, "products loaded");
   ok(doc.getElementById("roleBadge").textContent.includes("Admin"), "admin badge shown");
   ok(doc.getElementById("statTotal").textContent === "2", "2 products listed");
   ok(doc.getElementById("statSold").textContent === "1", "1 sold product counted");
 
-  doc.getElementById("trackId").value = "1";
-  doc.getElementById("trackBtn").click();
+  const sel = doc.getElementById("trackSel");
+  sel.value = "1";
+  sel.dispatchEvent(new doc.defaultView.Event("change"));
   await waitFor(() => doc.querySelectorAll(".timeline li").length === 6, "timeline of 6 records");
   ok(true, "tracking shows full 6-step journey for product #1");
 
   console.log("Persona 2: Manufacturer registers a product through the form");
   ({ doc, errors } = await openPage(1));
-  doc.getElementById("addrInput").value = ADDR;
-  doc.getElementById("connectBtn").click();
   await waitFor(() => doc.getElementById("roleBadge").textContent.includes("Manufacturer") && doc.getElementById("statTotal").textContent !== "0", "manufacturer loaded");
   doc.getElementById("regName").value = "Test Tea 100g";
   doc.getElementById("regBatch").value = "BATCH-E2E";
@@ -86,8 +86,6 @@ async function main() {
 
   console.log("Persona 3: Distributor receives the in-transit product #2 via the Receive button");
   ({ doc, errors } = await openPage(2));
-  doc.getElementById("addrInput").value = ADDR;
-  doc.getElementById("connectBtn").click();
   await waitFor(() => doc.querySelector('button[data-act="receive"]'), "Receive button visible");
   doc.querySelector('button[data-act="receive"]').click();
   await waitFor(() => doc.getElementById("dlg").hasAttribute("open"), "dialog opened");
@@ -98,8 +96,6 @@ async function main() {
 
   console.log("Persona 4: Retailer without stock sees a readable error when forced to act wrongly");
   ({ doc, errors } = await openPage(3));
-  doc.getElementById("addrInput").value = ADDR;
-  doc.getElementById("connectBtn").click();
   await waitFor(() => doc.getElementById("roleBadge").textContent.includes("Retailer"), "retailer loaded");
   doc.getElementById("regName").value = "x"; doc.getElementById("regBatch").value = "y";
   doc.getElementById("regBtn").click();

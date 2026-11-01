@@ -7,7 +7,7 @@ const path = require("path");
 const NAMES = [
   "factory", "truck", "warehouse", "storefront", "user-circle", "package", "plus-circle", "path",
   "shield-check", "magnifying-glass", "arrow-clockwise", "x", "copy", "check", "check-circle",
-  "warning-octagon", "arrow-u-up-left", "arrow-right", "arrow-left", "map-pin", "clock", "wallet", "seal-check",
+  "cube", "warning-octagon", "arrow-u-up-left", "arrow-right", "arrow-left", "map-pin", "clock", "wallet", "seal-check",
   "compass", "play", "bag", "info", "crown", "eye", "link", "warning",
 ];
 

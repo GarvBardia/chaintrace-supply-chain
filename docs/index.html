@@ -166,23 +166,6 @@ input[type="checkbox"] { width: 18px; height: 18px; min-height: 0; accent-color:
 }
 .rchip [data-icon] { width: 1em; height: 1em; }
 
-/* ---------- landing ---------- */
-.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 56px; align-items: center; padding: 56px 0 40px; }
-.hero h1 { font-size: clamp(2.2rem, 4.6vw, 3.5rem); letter-spacing: -0.035em; line-height: 1.04; max-width: 14ch; }
-.lede { font-size: 1.15rem; color: var(--muted); max-width: 46ch; margin: 18px 0 28px; line-height: 1.5; }
-.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
-.hero-visual { position: relative; padding: 28px; border-radius: 24px; background: radial-gradient(120% 120% at 100% 0%, var(--accent-soft), transparent 62%); }
-.hero-visual .pcard { box-shadow: var(--shadow-lg); }
-.how { padding: 40px 0 8px; }
-.how h2 { margin-bottom: 20px; }
-.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); }
-.flow li { position: relative; padding: 22px 22px 6px 0; display: grid; gap: 6px; align-content: start; }
-.flow li + li { padding-left: 22px; border-left: 1px solid var(--line); }
-.flow b { font-size: 1.02rem; }
-.flow li > span:last-child { color: var(--muted); font-size: 0.92rem; }
-.flow-ic { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; font-size: 1.35rem; color: var(--rc); background: color-mix(in srgb, var(--rc) 13%, var(--surface)); margin-bottom: 6px; }
-.flow-ic [data-icon] { width: 1em; height: 1em; }
-
 /* ---------- cards / setup ---------- */
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 22px; box-shadow: var(--shadow); }
 .setup { max-width: 640px; margin: 24px auto; }
@@ -237,7 +220,6 @@ input[type="checkbox"] { width: 18px; height: 18px; min-height: 0; accent-color:
 .pcard.enter { animation: rise 0.45s var(--ease) both; animation-delay: calc(var(--i, 0) * 50ms); }
 .pcard:hover { border-color: var(--line-strong); transform: translateY(-2px); }
 .pcard.is-recalled { border-color: color-mix(in srgb, var(--danger) 55%, var(--line)); background: linear-gradient(var(--danger-soft), var(--surface) 64%); }
-.pcard.is-tour { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); }
 .pc-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
 .pc-name { font-size: 1.08rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; }
 .pc-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; color: var(--muted); margin-top: 4px; font-size: 0.84rem; }
@@ -284,14 +266,6 @@ input[type="checkbox"] { width: 18px; height: 18px; min-height: 0; accent-color:
 .sk-card { display: grid; gap: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); }
 .sk-line { height: 14px; } .sk-line.w60 { width: 60%; } .sk-line.w35 { width: 35%; } .sk-bar { height: 36px; border-radius: 18px; }
 .notice { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; margin: 0 0 16px; border-radius: var(--r-s); background: var(--warn-soft); color: var(--text); border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent); font-size: 0.9rem; }
-
-/* ---------- nudge (tour highlight) ---------- */
-.nudge { position: relative; }
-.nudge::after { content: ""; position: absolute; inset: -5px; border-radius: inherit; border: 2px solid var(--accent); pointer-events: none; animation: ping 1.6s ease-out infinite; }
-.seg-btn.nudge::after { border-radius: 999px; }
-.tab.nudge::after { display: none; }
-.tab.nudge { color: var(--accent); }
-.tab.nudge::before { content: ""; position: absolute; inset: 6px 4px; border: 2px solid var(--accent); border-radius: var(--r-s); animation: ping 1.6s ease-out infinite; pointer-events: none; }
 
 /* ---------- track page ---------- */
 .trackbar { max-width: 420px; margin: 16px 0 10px; }
@@ -344,21 +318,6 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
 .toast.out { opacity: 0; transition: opacity 0.3s; }
 @media (prefers-color-scheme: dark) { .toast.err { color: #1b0504; } }
 
-/* ---------- guided tour ---------- */
-.tour { position: fixed; z-index: 40; right: 20px; bottom: 20px; width: 360px; max-width: calc(100vw - 32px); padding: 18px 18px 0; background: var(--surface); border: 1px solid var(--accent); border-radius: var(--r-card); box-shadow: var(--shadow-lg); overflow: hidden; animation: pop 0.35s var(--ease); }
-.tour-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-.tour-step { font-size: 0.78rem; font-weight: 700; color: var(--accent); }
-.tour h3 { font-size: 1.08rem; margin-bottom: 6px; }
-.tour p { font-size: 0.92rem; color: var(--muted); margin-bottom: 12px; }
-.tour p b { color: var(--text); }
-.tour-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.tour-actions:empty { display: none; }
-.tour-bar { margin: 0 -18px; height: 4px; background: var(--surface-2); }
-.tour-bar i { display: block; height: 100%; background: var(--accent); transition: width 0.5s var(--ease); }
-
-.booting .rolebar, .booting .tabs, .booting .statrow, .booting .toolbar, .booting .filters { display: none; }
-.foot { text-align: center; color: var(--muted); font-size: 0.82rem; padding: 20px; border-top: 1px solid var(--line); }
-
 /* ---------- motion ---------- */
 @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(0.97); } to { opacity: 1; transform: none; } }
@@ -374,18 +333,12 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
-  .nudge::after, .tab.nudge::before { opacity: 1; }
-  .tk.current .tk-dot::after { opacity: 0.5; }
+    .tk.current .tk-dot::after { opacity: 0.5; }
 }
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 28px; }
-  .hero-visual { padding: 18px; }
   .trk-cols { grid-template-columns: 1fr; gap: 24px; }
-  .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .flow li:nth-child(3) { padding-left: 0; border-left: 0; }
-  .flow li:nth-child(n+3) { border-top: 1px solid var(--line); margin-top: 22px; }
 }
 @media (max-width: 720px) {
   .pgrid, .grid2 { grid-template-columns: 1fr; }
@@ -395,10 +348,6 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
   main { padding: 16px 16px 56px; }
   .top-in { padding: 0 16px; min-height: 58px; }
   .brand-name { font-size: 1rem; }
-  .hero-cta .btn { flex: 1 1 100%; }
-  .flow { grid-template-columns: 1fr; }
-  .flow li, .flow li + li { padding: 18px 0 4px; border-left: 0; margin-top: 0; }
-  .flow li + li { border-top: 1px solid var(--line); }
   .tk-lbl { display: none; }
   .tracker.big .tk-lbl { display: block; font-size: 0.64rem; }
   .tk-dot { width: 32px; height: 32px; font-size: 0.95rem; }
@@ -410,22 +359,83 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
   .facts div { grid-template-columns: 1fr; gap: 2px; }
   .statrow { gap: 20px 28px; }
   .wallet .pill, #acctBtn { display: none; }
-  .flow li:nth-child(n+3) { margin-top: 0; }
-  .tour { right: 0; left: 0; bottom: 0; width: auto; max-width: none; border-radius: var(--r-card) var(--r-card) 0 0; border-width: 1px 0 0; }
-  body.tour-on { padding-bottom: 230px; }
   .toasts { bottom: 12px; }
-  body.tour-on .toasts { bottom: 210px; }
   .card { padding: 18px; }
+}
+
+/* ---------- status bar, network select ---------- */
+.statusbar { max-width: 1120px; margin: 0 auto; padding: 0 20px; display: flex; gap: 6px 22px; flex-wrap: wrap; align-items: center; min-height: 34px; font-size: 0.8rem; color: var(--muted); }
+.st { display: inline-flex; align-items: center; gap: 8px; }
+.st-k { font-weight: 600; }
+.st b { color: var(--text); font-weight: 600; }
+.addr-btn { font: inherit; font-family: var(--mono); font-size: 0.8rem; color: var(--text); background: none; border: 0; padding: 2px 6px; border-radius: 6px; cursor: pointer; }
+.addr-btn:hover { background: var(--surface-2); }
+.netsel select { min-height: 36px; padding: 0 30px 0 12px; font-size: 0.86rem; font-weight: 600; border-radius: 999px; width: auto; }
+
+/* ---------- tooltips ---------- */
+.tip { display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--muted); cursor: help; flex: none; }
+.tip:hover, .tip:focus-visible { color: var(--accent); background: var(--accent-soft); }
+.tip [data-icon], .tip .ico { font-size: 1.05rem; }
+.btn-grp { display: inline-flex; align-items: center; gap: 2px; }
+.tipbox { position: fixed; z-index: 70; max-width: 280px; padding: 10px 12px; border-radius: var(--r-s); background: var(--text); color: var(--bg); font-size: 0.82rem; line-height: 1.4; box-shadow: var(--shadow-lg); pointer-events: none; }
+.tipbox b { display: block; margin-bottom: 2px; }
+
+/* ---------- blocks ---------- */
+.row.between { justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.blocks { display: grid; gap: 10px; }
+.blk { display: grid; grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1.9fr) minmax(0, 1.5fr) 80px 130px; gap: 6px 16px; align-items: center; width: 100%; text-align: left; font: inherit; color: inherit; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); cursor: pointer; transition: border-color 0.18s, transform 0.2s var(--ease); }
+.blk:hover { border-color: var(--line-strong); transform: translateY(-1px); }
+.blk.head { background: none; border: 0; box-shadow: none; padding: 0 16px; cursor: default; font-size: 0.74rem; font-weight: 700; color: var(--muted); text-transform: none; }
+.blk.head:hover { transform: none; }
+.blk .num { font-weight: 700; font-family: var(--mono); }
+.blk .fn { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
+.blk .ft { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.blk .gas, .blk .when { color: var(--muted); font-size: 0.84rem; }
+.blk .hash { display: inline-flex; align-items: center; gap: 6px; }
+.blk [data-k]::before { content: attr(data-k); display: none; font-size: 0.72rem; font-weight: 700; color: var(--muted); margin-right: 8px; }
+.nchip { display: inline-flex; align-items: center; min-height: 24px; padding: 2px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; color: var(--muted); background: var(--surface-2); border: 1px solid var(--line); }
+.txref { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.txlink { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.blkno { font-weight: 700; font-size: 0.78rem; padding: 1px 8px; border-radius: 999px; background: var(--surface-2); color: var(--text); }
+
+/* ---------- dialog extras ---------- */
+.dlg-hint { display: flex; gap: 8px; align-items: flex-start; font-size: 0.86rem; color: var(--muted); margin: -6px 0 16px; padding: 10px 12px; background: var(--surface-2); border-radius: var(--r-s); }
+.dlg-hint .ico { margin-top: 2px; color: var(--accent); }
+dialog.wide { width: min(560px, calc(100vw - 32px)); }
+.kvs { display: grid; gap: 0; margin: 0; }
+.kvs div { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
+.kvs div:last-child { border-bottom: 0; }
+.kvs dt { color: var(--muted); }
+.kvs dd { margin: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; overflow-wrap: anywhere; }
+select { appearance: none; -webkit-appearance: none; padding-right: 34px; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2388968f' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 14px; }
+.pick + input { margin-top: 8px; }
+.booting .rolebar, .booting .statrow, .booting .toolbar, .booting .filters { display: none; }
+.booting .tabs { opacity: 0.5; pointer-events: none; }
+
+@media (max-width: 900px) {
+  .blk.head { display: none; }
+  .blk { grid-template-columns: minmax(0, 1fr) auto; }
+  .blk .num { grid-column: 1; }
+  .blk .when { grid-column: 2; grid-row: 1; text-align: right; }
+  .blk .fn, .blk .ft, .blk .hashc { grid-column: 1 / -1; }
+  .blk .gas { grid-column: 1 / -1; }
+  .blk [data-k]::before { display: inline; }
+}
+@media (max-width: 560px) {
+  .statusbar { padding: 6px 16px; gap: 2px 16px; }
+  .tab { padding: 0 11px; font-size: 0.88rem; }
+  .tab [data-icon] { display: none; }
+  .netsel select { max-width: 150px; }
 }
 
 </style>
 </head>
-<body data-view="landing">
+<body>
   <a class="skip" href="#main">Skip to content</a>
 
   <header class="top">
     <div class="top-in">
-      <a class="brand" href="#" id="brandLink" aria-label="ChainTrace home">
+      <a class="brand" href="#/products" id="brandLink" aria-label="ChainTrace home">
         <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
           <rect width="64" height="64" rx="16" fill="currentColor"></rect>
           <path d="M16 42 L32 22 L48 42" fill="none" stroke="var(--logo-ink)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -436,46 +446,28 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
         <span class="brand-name">ChainTrace</span>
       </a>
       <div class="wallet">
-        <span id="netBadge" class="pill hidden"></span>
+        <label class="netsel">
+          <span class="sr-only">Network</span>
+          <select id="netSel">
+            <option value="sim">Simulated chain</option>
+            <option value="wallet">Use my wallet (MetaMask)</option>
+          </select>
+        </label>
         <span id="roleBadge" class="pill hidden"></span>
         <button id="acctBtn" class="chip-btn mono hidden" type="button" title="Copy your address"><span id="acct"></span></button>
-        <button id="tourBtn" class="btn hidden" type="button"></button>
       </div>
+    </div>
+    <div class="statusbar" id="statusBar" aria-label="Chain status">
+      <span class="st"><span class="st-k">Block</span><b id="stBlock" class="mono">-</b></span>
+      <span class="st"><span class="st-k">Network</span><b id="stNet">Starting chain...</b></span>
+      <span class="st"><span class="st-k">Contract</span><button id="stAddr" class="addr-btn mono" type="button" title="Copy contract address">-</button><button id="stChange" class="addr-btn hidden" type="button">Change</button></span>
     </div>
   </header>
 
   <main id="main">
-    <!-- ================= LANDING ================= -->
-    <div id="landing">
-      <section class="hero">
-        <div class="hero-copy">
-          <h1>Follow every product from factory to shelf.</h1>
-          <p class="lede">ChainTrace records each hand-over on Ethereum, so anyone can verify where a product has been.</p>
-          <div class="hero-cta">
-            <button id="demoBtn" class="btn primary lg" type="button"></button>
-            <button id="connectBtn" class="btn lg" type="button"></button>
-          </div>
-        </div>
-        <div class="hero-visual" aria-hidden="true">
-          <div id="heroSample"></div>
-        </div>
-      </section>
-
-      <section class="how" aria-labelledby="howTitle">
-        <h2 id="howTitle">How it works</h2>
-        <ol class="flow">
-          <li><span class="flow-ic role-manufacturer" data-icon="factory"></span><b>Manufacturer</b><span>Registers the product and ships it on.</span></li>
-          <li><span class="flow-ic role-distributor" data-icon="warehouse"></span><b>Distributor</b><span>Confirms arrival, then ships to a retailer.</span></li>
-          <li><span class="flow-ic role-retailer" data-icon="storefront"></span><b>Retailer</b><span>Receives the goods and marks them sold.</span></li>
-          <li><span class="flow-ic role-visitor" data-icon="user-circle"></span><b>Customer</b><span>Looks up the full journey, no account needed.</span></li>
-        </ol>
-      </section>
-    </div>
-
-    <!-- MetaMask: contract address (hidden until MetaMask is connected) -->
+    <!-- MetaMask only: contract address -->
     <section class="card setup hidden" id="setup">
       <h2>Load your contract</h2>
-      <p class="muted small">Deploy <span class="mono">SupplyChainTracker.sol</span> in Remix, then paste the deployed address.</p>
       <div class="row">
         <label class="grow"><span class="lbl">Contract address</span>
           <input id="addrInput" class="mono" placeholder="0x..." autocomplete="off" spellcheck="false" />
@@ -485,12 +477,7 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
       <p id="setupMsg" class="small" role="status"></p>
     </section>
 
-    <!-- ================= APP ================= -->
-    <div id="app" class="hidden">
-      <div id="demoBar" class="demobar hidden">
-        <span class="demo-note"><b>Demo mode.</b> A private test blockchain runs inside this page and resets when you refresh.</span>
-      </div>
-
+    <div id="app" class="booting">
       <div class="rolebar">
         <div id="roleSwitchWrap" class="hidden">
           <span class="lbl" id="actingLbl">Acting as</span>
@@ -503,6 +490,7 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
         <button class="tab active" data-tab="products" role="tab" aria-selected="true" type="button"><span data-icon="package"></span>Products</button>
         <button class="tab" data-tab="register" role="tab" aria-selected="false" type="button"><span data-icon="plus-circle"></span>Register</button>
         <button class="tab" data-tab="track" role="tab" aria-selected="false" type="button"><span data-icon="path"></span>Track</button>
+        <button class="tab" data-tab="blocks" role="tab" aria-selected="false" type="button"><span data-icon="cube"></span>Blocks</button>
         <button class="tab" data-tab="admin" role="tab" aria-selected="false" type="button"><span data-icon="shield-check"></span>Admin</button>
       </nav>
 
@@ -535,13 +523,16 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
           <h2>Register a new product</h2>
           <p id="regNote" class="notice hidden"></p>
           <div class="form">
+            <label><span class="lbl">Fill sample</span>
+              <select id="regSample"><option value="">Choose a sample product...</option></select>
+            </label>
             <label><span class="lbl">Product name</span><input id="regName" placeholder="Organic Coffee 250g" /></label>
             <label><span class="lbl">Batch number</span><input id="regBatch" placeholder="BATCH-2026-001" /></label>
             <label><span class="lbl">Location</span><input id="regLoc" placeholder="Coorg Estate, Karnataka" /></label>
-            <label><span class="lbl">IPFS CID <em>(optional)</em></span><input id="regCid" class="mono" placeholder="Qm... for a certificate or image" /></label>
+            <label><span class="lbl">IPFS CID <em>(optional)</em></span><input id="regCid" class="mono" placeholder="Qm..." spellcheck="false" /></label>
             <div class="row">
               <button id="regBtn" class="btn primary" type="button">Register product</button>
-              <button id="regFill" class="btn ghost" type="button">Fill an example</button>
+              <button class="tip" type="button" data-tip="registerProduct() is a transaction. It creates the product, stores the first history record and emits a ProductRegistered event. It costs gas." aria-label="What is happening on-chain"><span data-icon="info"></span></button>
             </div>
           </div>
         </div>
@@ -549,16 +540,25 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
 
       <!-- TRACK -->
       <section id="tab-track" class="panel hidden" role="tabpanel">
-        <h2>Track a product</h2>
-        <p class="muted small">Anyone can verify a product's full journey. No role needed.</p>
         <div class="row trackbar">
-          <label class="grow"><span class="lbl">Product ID</span>
-            <input id="trackId" type="number" min="1" placeholder="1" inputmode="numeric" />
+          <label class="grow"><span class="lbl">Product</span>
+            <select id="trackSel"><option value="">Choose a product...</option></select>
           </label>
-          <button id="trackBtn" class="btn primary" type="button">Track</button>
+          <button class="tip" type="button" data-tip="Tracking only reads data with getProduct() and getHistory(). Reads are free: no transaction, no gas, no wallet." aria-label="What is happening on-chain"><span data-icon="info"></span></button>
         </div>
-        <div id="trackQuick" class="filters"></div>
         <div id="trackResult" aria-live="polite"></div>
+      </section>
+
+      <!-- BLOCKS -->
+      <section id="tab-blocks" class="panel hidden" role="tabpanel">
+        <div class="row between">
+          <div>
+            <h2>Latest blocks</h2>
+            <p class="muted small">Every action below is a transaction inside a block. Select a row to see what it did.</p>
+          </div>
+          <button id="blocksRefresh" class="btn sm" type="button"><span data-icon="arrow-clockwise"></span>Refresh</button>
+        </div>
+        <div id="blockRows" class="blocks" aria-live="polite"></div>
       </section>
 
       <!-- ADMIN -->
@@ -569,7 +569,13 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
           <div class="card">
             <h3>Assign role</h3>
             <div class="form">
-              <label><span class="lbl">Wallet address</span><input id="roleAddr" class="mono" placeholder="0x..." spellcheck="false" /></label>
+              <label><span class="lbl">Fill sample</span>
+                <select id="adminSample"><option value="">Choose a sample...</option></select>
+              </label>
+              <div><span class="lbl">Account</span>
+                <select id="roleAddrSel" class="pick"></select>
+                <input id="roleAddr" class="mono hidden" placeholder="0x..." spellcheck="false" />
+              </div>
               <label><span class="lbl">Role</span>
                 <select id="roleSel">
                   <option value="1">Manufacturer</option>
@@ -578,12 +584,18 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
                   <option value="0">None (revoke)</option>
                 </select>
               </label>
-              <button id="roleBtn" class="btn primary" type="button">Set role</button>
+              <div class="row">
+                <button id="roleBtn" class="btn primary" type="button">Set role</button>
+                <button class="tip" type="button" data-tip="setRole() is admin-only. It writes the role into the contract's roles mapping, so later calls can check who may do what." aria-label="What is happening on-chain"><span data-icon="info"></span></button>
+              </div>
             </div>
             <div class="divider"></div>
-            <label><span class="lbl">Check an address</span>
-              <span class="row"><input id="lookupAddr" class="mono grow" placeholder="0x..." spellcheck="false" /><button id="lookupBtn" class="btn" type="button">Check</button></span>
-            </label>
+            <div><span class="lbl">Check an account</span>
+              <div class="row">
+                <span class="grow"><select id="lookupAddrSel" class="pick"></select><input id="lookupAddr" class="mono hidden" placeholder="0x..." spellcheck="false" /></span>
+                <button id="lookupBtn" class="btn" type="button">Check</button>
+              </div>
+            </div>
             <p id="lookupOut" class="small" role="status"></p>
           </div>
           <div class="card">
@@ -592,36 +604,27 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
             <div class="row">
               <button id="pauseBtn" class="btn danger" type="button">Pause</button>
               <button id="unpauseBtn" class="btn" type="button">Unpause</button>
+              <button class="tip" type="button" data-tip="pause() and unpause() flip a flag in the contract. While paused, every state-changing call is rejected." aria-label="What is happening on-chain"><span data-icon="info"></span></button>
             </div>
             <div class="divider"></div>
             <h3>Transfer admin</h3>
-            <label><span class="lbl">New admin address</span>
-              <span class="row"><input id="newAdmin" class="mono grow" placeholder="0x..." spellcheck="false" /><button id="adminBtn" class="btn danger" type="button">Transfer</button></span>
-            </label>
+            <div><span class="lbl">New admin</span>
+              <div class="row">
+                <span class="grow"><select id="newAdminSel" class="pick"></select><input id="newAdmin" class="mono hidden" placeholder="0x..." spellcheck="false" /></span>
+                <button id="adminBtn" class="btn danger" type="button">Transfer</button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
     </div>
   </main>
 
-  <footer class="foot">ChainTrace is a course project for Ethereum Smart Contract Using Solidity (IT_4421).</footer>
-
-  <!-- guided tour panel -->
-  <aside id="tour" class="tour hidden" aria-live="polite" aria-label="Guided tour">
-    <div class="tour-head">
-      <span id="tourStep" class="tour-step"></span>
-      <button id="tourClose" class="icon-btn" type="button" aria-label="Close the tour"><span data-icon="x"></span></button>
-    </div>
-    <h3 id="tourTitle"></h3>
-    <p id="tourBody"></p>
-    <div class="tour-actions" id="tourActions"></div>
-    <div class="tour-bar" aria-hidden="true"><i id="tourProg"></i></div>
-  </aside>
-
-  <!-- generic input dialog -->
+  <!-- generic dialog (forms and transaction details) -->
   <dialog id="dlg" aria-labelledby="dlgTitle">
     <form method="dialog" id="dlgForm">
       <h3 id="dlgTitle"></h3>
+      <p id="dlgHint" class="dlg-hint hidden"></p>
       <div id="dlgFields" class="form"></div>
       <div class="row end">
         <button value="cancel" class="btn" id="dlgCancel" type="button">Cancel</button>
@@ -630,6 +633,7 @@ dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
     </form>
   </dialog>
 
+  <div id="tipBox" class="tipbox hidden" role="tooltip"></div>
   <div id="toast" class="toasts" role="status" aria-live="polite"></div>
 
   <script>
@@ -1439,7 +1443,7 @@ window.SUPPLY_CHAIN_ABI = [
 </script>
 <script>
 // Generated by scripts/build-icons.js from @phosphor-icons/core (MIT). Do not edit by hand.
-window.ICONS = {"factory":"<path d=\"M116,176a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h28A8,8,0,0,1,116,176Zm60-8H148a8,8,0,0,0,0,16h28a8,8,0,0,0,0-16Zm64,48a8,8,0,0,1-8,8H24a8,8,0,0,1,0-16h8V88a8,8,0,0,1,12.8-6.4L96,120V88a8,8,0,0,1,12.8-6.4l38.74,29.05L159.1,29.74A16.08,16.08,0,0,1,174.94,16h18.12A16.08,16.08,0,0,1,208.9,29.74l15,105.13s.08.78.08,1.13v72h8A8,8,0,0,1,240,216Zm-77.86-94.4,8.53,6.4h36.11L193.06,32H174.94ZM48,208H208V144H168a8,8,0,0,1-4.8-1.6l-14.4-10.8,0,0L112,104v32a8,8,0,0,1-12.8,6.4L48,104Z\"/>","truck":"<path d=\"M255.42,117l-14-35A15.93,15.93,0,0,0,226.58,72H192V64a8,8,0,0,0-8-8H32A16,16,0,0,0,16,72V184a16,16,0,0,0,16,16H49a32,32,0,0,0,62,0h50a32,32,0,0,0,62,0h17a16,16,0,0,0,16-16V120A7.94,7.94,0,0,0,255.42,117ZM192,88h34.58l9.6,24H192ZM32,72H176v64H32ZM80,208a16,16,0,1,1,16-16A16,16,0,0,1,80,208Zm81-24H111a32,32,0,0,0-62,0H32V152H176v12.31A32.11,32.11,0,0,0,161,184Zm31,24a16,16,0,1,1,16-16A16,16,0,0,1,192,208Zm48-24H223a32.06,32.06,0,0,0-31-24V128h48Z\"/>","warehouse":"<path d=\"M240,184h-8V57.9l9.67-2.08a8,8,0,1,0-3.35-15.64l-224,48A8,8,0,0,0,16,104a8.16,8.16,0,0,0,1.69-.18L24,102.47V184H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM40,99,216,61.33V184H192V128a8,8,0,0,0-8-8H72a8,8,0,0,0-8,8v56H40Zm136,53H80V136h96ZM80,168h96v16H80Z\"/>","storefront":"<path d=\"M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z\"/>","user-circle":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z\"/>","package":"<path d=\"M223.68,66.15,135.68,18a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,32l80.34,44-29.77,16.3-80.35-44ZM128,120,47.66,76l33.9-18.56,80.34,44ZM40,90l80,43.78v85.79L40,175.82Zm176,85.78h0l-80,43.79V133.82l32-17.51V152a8,8,0,0,0,16,0V107.55L216,90v85.77Z\"/>","plus-circle":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z\"/>","path":"<path d=\"M200,168a32.06,32.06,0,0,0-31,24H72a32,32,0,0,1,0-64h96a40,40,0,0,0,0-80H72a8,8,0,0,0,0,16h96a24,24,0,0,1,0,48H72a48,48,0,0,0,0,96h97a32,32,0,1,0,31-40Zm0,48a16,16,0,1,1,16-16A16,16,0,0,1,200,216Z\"/>","shield-check":"<path d=\"M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z\"/>","magnifying-glass":"<path d=\"M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z\"/>","arrow-clockwise":"<path d=\"M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1,0-16H211.4L184.81,71.64l-.25-.24a80,80,0,1,0-1.67,114.78,8,8,0,0,1,11,11.63A95.44,95.44,0,0,1,128,224h-1.32A96,96,0,1,1,195.75,60L224,85.8V56a8,8,0,1,1,16,0Z\"/>","x":"<path d=\"M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z\"/>","copy":"<path d=\"M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z\"/>","check":"<path d=\"M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z\"/>","check-circle":"<path d=\"M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z\"/>","warning-octagon":"<path d=\"M120,136V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0ZM232,91.55v72.9a15.86,15.86,0,0,1-4.69,11.31l-51.55,51.55A15.86,15.86,0,0,1,164.45,232H91.55a15.86,15.86,0,0,1-11.31-4.69L28.69,175.76A15.86,15.86,0,0,1,24,164.45V91.55a15.86,15.86,0,0,1,4.69-11.31L80.24,28.69A15.86,15.86,0,0,1,91.55,24h72.9a15.86,15.86,0,0,1,11.31,4.69l51.55,51.55A15.86,15.86,0,0,1,232,91.55Zm-16,0L164.45,40H91.55L40,91.55v72.9L91.55,216h72.9L216,164.45ZM128,160a12,12,0,1,0,12,12A12,12,0,0,0,128,160Z\"/>","arrow-u-up-left":"<path d=\"M232,144a64.07,64.07,0,0,1-64,64H80a8,8,0,0,1,0-16h88a48,48,0,0,0,0-96H51.31l34.35,34.34a8,8,0,0,1-11.32,11.32l-48-48a8,8,0,0,1,0-11.32l48-48A8,8,0,0,1,85.66,45.66L51.31,80H168A64.07,64.07,0,0,1,232,144Z\"/>","arrow-right":"<path d=\"M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z\"/>","arrow-left":"<path d=\"M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z\"/>","map-pin":"<path d=\"M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z\"/>","clock":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z\"/>","wallet":"<path d=\"M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z\"/>","seal-check":"<path d=\"M225.86,102.82c-3.77-3.94-7.67-8-9.14-11.57-1.36-3.27-1.44-8.69-1.52-13.94-.15-9.76-.31-20.82-8-28.51s-18.75-7.85-28.51-8c-5.25-.08-10.67-.16-13.94-1.52-3.56-1.47-7.63-5.37-11.57-9.14C146.28,23.51,138.44,16,128,16s-18.27,7.51-25.18,14.14c-3.94,3.77-8,7.67-11.57,9.14C88,40.64,82.56,40.72,77.31,40.8c-9.76.15-20.82.31-28.51,8S41,67.55,40.8,77.31c-.08,5.25-.16,10.67-1.52,13.94-1.47,3.56-5.37,7.63-9.14,11.57C23.51,109.72,16,117.56,16,128s7.51,18.27,14.14,25.18c3.77,3.94,7.67,8,9.14,11.57,1.36,3.27,1.44,8.69,1.52,13.94.15,9.76.31,20.82,8,28.51s18.75,7.85,28.51,8c5.25.08,10.67.16,13.94,1.52,3.56,1.47,7.63,5.37,11.57,9.14C109.72,232.49,117.56,240,128,240s18.27-7.51,25.18-14.14c3.94-3.77,8-7.67,11.57-9.14,3.27-1.36,8.69-1.44,13.94-1.52,9.76-.15,20.82-.31,28.51-8s7.85-18.75,8-28.51c.08-5.25.16-10.67,1.52-13.94,1.47-3.56,5.37-7.63,9.14-11.57C232.49,146.28,240,138.44,240,128S232.49,109.73,225.86,102.82Zm-11.55,39.29c-4.79,5-9.75,10.17-12.38,16.52-2.52,6.1-2.63,13.07-2.73,19.82-.1,7-.21,14.33-3.32,17.43s-10.39,3.22-17.43,3.32c-6.75.1-13.72.21-19.82,2.73-6.35,2.63-11.52,7.59-16.52,12.38S132,224,128,224s-9.15-4.92-14.11-9.69-10.17-9.75-16.52-12.38c-6.1-2.52-13.07-2.63-19.82-2.73-7-.1-14.33-.21-17.43-3.32s-3.22-10.39-3.32-17.43c-.1-6.75-.21-13.72-2.73-19.82-2.63-6.35-7.59-11.52-12.38-16.52S32,132,32,128s4.92-9.15,9.69-14.11,9.75-10.17,12.38-16.52c2.52-6.1,2.63-13.07,2.73-19.82.1-7,.21-14.33,3.32-17.43S70.51,56.9,77.55,56.8c6.75-.1,13.72-.21,19.82-2.73,6.35-2.63,11.52-7.59,16.52-12.38S124,32,128,32s9.15,4.92,14.11,9.69,10.17,9.75,16.52,12.38c6.1,2.52,13.07,2.63,19.82,2.73,7,.1,14.33.21,17.43,3.32s3.22,10.39,3.32,17.43c.1,6.75.21,13.72,2.73,19.82,2.63,6.35,7.59,11.52,12.38,16.52S224,124,224,128,219.08,137.15,214.31,142.11ZM173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34Z\"/>","compass":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM172.42,72.84l-64,32a8.05,8.05,0,0,0-3.58,3.58l-32,64A8,8,0,0,0,80,184a8.1,8.1,0,0,0,3.58-.84l64-32a8.05,8.05,0,0,0,3.58-3.58l32-64a8,8,0,0,0-10.74-10.74ZM138,138,97.89,158.11,118,118l40.15-20.07Z\"/>","play":"<path d=\"M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.83,88Z\"/>","bag":"<path d=\"M216,64H176a48,48,0,0,0-96,0H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM128,32a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm88,168H40V80H80V96a8,8,0,0,0,16,0V80h64V96a8,8,0,0,0,16,0V80h40Z\"/>","info":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z\"/>","crown":"<path d=\"M248,80a28,28,0,1,0-51.12,15.77l-26.79,33L146,73.4a28,28,0,1,0-36.06,0L85.91,128.74l-26.79-33a28,28,0,1,0-26.6,12L47,194.63A16,16,0,0,0,62.78,208H193.22A16,16,0,0,0,209,194.63l14.47-86.85A28,28,0,0,0,248,80ZM128,40a12,12,0,1,1-12,12A12,12,0,0,1,128,40ZM24,80A12,12,0,1,1,36,92,12,12,0,0,1,24,80ZM193.22,192H62.78L48.86,108.52,81.79,149A8,8,0,0,0,88,152a7.83,7.83,0,0,0,1.08-.07,8,8,0,0,0,6.26-4.74l29.3-67.4a27,27,0,0,0,6.72,0l29.3,67.4a8,8,0,0,0,6.26,4.74A7.83,7.83,0,0,0,168,152a8,8,0,0,0,6.21-3l32.93-40.52ZM220,92a12,12,0,1,1,12-12A12,12,0,0,1,220,92Z\"/>","eye":"<path d=\"M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z\"/>","link":"<path d=\"M240,88.23a54.43,54.43,0,0,1-16,37L189.25,160a54.27,54.27,0,0,1-38.63,16h-.05A54.63,54.63,0,0,1,96,119.84a8,8,0,0,1,16,.45A38.62,38.62,0,0,0,150.58,160h0a38.39,38.39,0,0,0,27.31-11.31l34.75-34.75a38.63,38.63,0,0,0-54.63-54.63l-11,11A8,8,0,0,1,135.7,59l11-11A54.65,54.65,0,0,1,224,48,54.86,54.86,0,0,1,240,88.23ZM109,185.66l-11,11A38.41,38.41,0,0,1,70.6,208h0a38.63,38.63,0,0,1-27.29-65.94L78,107.31A38.63,38.63,0,0,1,144,135.71a8,8,0,0,0,16,.45A54.86,54.86,0,0,0,144,96a54.65,54.65,0,0,0-77.27,0L32,130.75A54.62,54.62,0,0,0,70.56,224h0a54.28,54.28,0,0,0,38.64-16l11-11A8,8,0,0,0,109,185.66Z\"/>","warning":"<path d=\"M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z\"/>"};
+window.ICONS = {"factory":"<path d=\"M116,176a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h28A8,8,0,0,1,116,176Zm60-8H148a8,8,0,0,0,0,16h28a8,8,0,0,0,0-16Zm64,48a8,8,0,0,1-8,8H24a8,8,0,0,1,0-16h8V88a8,8,0,0,1,12.8-6.4L96,120V88a8,8,0,0,1,12.8-6.4l38.74,29.05L159.1,29.74A16.08,16.08,0,0,1,174.94,16h18.12A16.08,16.08,0,0,1,208.9,29.74l15,105.13s.08.78.08,1.13v72h8A8,8,0,0,1,240,216Zm-77.86-94.4,8.53,6.4h36.11L193.06,32H174.94ZM48,208H208V144H168a8,8,0,0,1-4.8-1.6l-14.4-10.8,0,0L112,104v32a8,8,0,0,1-12.8,6.4L48,104Z\"/>","truck":"<path d=\"M255.42,117l-14-35A15.93,15.93,0,0,0,226.58,72H192V64a8,8,0,0,0-8-8H32A16,16,0,0,0,16,72V184a16,16,0,0,0,16,16H49a32,32,0,0,0,62,0h50a32,32,0,0,0,62,0h17a16,16,0,0,0,16-16V120A7.94,7.94,0,0,0,255.42,117ZM192,88h34.58l9.6,24H192ZM32,72H176v64H32ZM80,208a16,16,0,1,1,16-16A16,16,0,0,1,80,208Zm81-24H111a32,32,0,0,0-62,0H32V152H176v12.31A32.11,32.11,0,0,0,161,184Zm31,24a16,16,0,1,1,16-16A16,16,0,0,1,192,208Zm48-24H223a32.06,32.06,0,0,0-31-24V128h48Z\"/>","warehouse":"<path d=\"M240,184h-8V57.9l9.67-2.08a8,8,0,1,0-3.35-15.64l-224,48A8,8,0,0,0,16,104a8.16,8.16,0,0,0,1.69-.18L24,102.47V184H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM40,99,216,61.33V184H192V128a8,8,0,0,0-8-8H72a8,8,0,0,0-8,8v56H40Zm136,53H80V136h96ZM80,168h96v16H80Z\"/>","storefront":"<path d=\"M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z\"/>","user-circle":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z\"/>","package":"<path d=\"M223.68,66.15,135.68,18a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,32l80.34,44-29.77,16.3-80.35-44ZM128,120,47.66,76l33.9-18.56,80.34,44ZM40,90l80,43.78v85.79L40,175.82Zm176,85.78h0l-80,43.79V133.82l32-17.51V152a8,8,0,0,0,16,0V107.55L216,90v85.77Z\"/>","plus-circle":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z\"/>","path":"<path d=\"M200,168a32.06,32.06,0,0,0-31,24H72a32,32,0,0,1,0-64h96a40,40,0,0,0,0-80H72a8,8,0,0,0,0,16h96a24,24,0,0,1,0,48H72a48,48,0,0,0,0,96h97a32,32,0,1,0,31-40Zm0,48a16,16,0,1,1,16-16A16,16,0,0,1,200,216Z\"/>","shield-check":"<path d=\"M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z\"/>","magnifying-glass":"<path d=\"M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z\"/>","arrow-clockwise":"<path d=\"M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1,0-16H211.4L184.81,71.64l-.25-.24a80,80,0,1,0-1.67,114.78,8,8,0,0,1,11,11.63A95.44,95.44,0,0,1,128,224h-1.32A96,96,0,1,1,195.75,60L224,85.8V56a8,8,0,1,1,16,0Z\"/>","x":"<path d=\"M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z\"/>","copy":"<path d=\"M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z\"/>","check":"<path d=\"M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z\"/>","check-circle":"<path d=\"M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z\"/>","cube":"<path d=\"M223.68,66.15,135.68,18h0a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,32h0l80.34,44L128,120,47.66,76ZM40,90l80,43.78v85.79L40,175.82Zm96,129.57V133.82L216,90v85.78Z\"/>","warning-octagon":"<path d=\"M120,136V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0ZM232,91.55v72.9a15.86,15.86,0,0,1-4.69,11.31l-51.55,51.55A15.86,15.86,0,0,1,164.45,232H91.55a15.86,15.86,0,0,1-11.31-4.69L28.69,175.76A15.86,15.86,0,0,1,24,164.45V91.55a15.86,15.86,0,0,1,4.69-11.31L80.24,28.69A15.86,15.86,0,0,1,91.55,24h72.9a15.86,15.86,0,0,1,11.31,4.69l51.55,51.55A15.86,15.86,0,0,1,232,91.55Zm-16,0L164.45,40H91.55L40,91.55v72.9L91.55,216h72.9L216,164.45ZM128,160a12,12,0,1,0,12,12A12,12,0,0,0,128,160Z\"/>","arrow-u-up-left":"<path d=\"M232,144a64.07,64.07,0,0,1-64,64H80a8,8,0,0,1,0-16h88a48,48,0,0,0,0-96H51.31l34.35,34.34a8,8,0,0,1-11.32,11.32l-48-48a8,8,0,0,1,0-11.32l48-48A8,8,0,0,1,85.66,45.66L51.31,80H168A64.07,64.07,0,0,1,232,144Z\"/>","arrow-right":"<path d=\"M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z\"/>","arrow-left":"<path d=\"M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z\"/>","map-pin":"<path d=\"M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z\"/>","clock":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z\"/>","wallet":"<path d=\"M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z\"/>","seal-check":"<path d=\"M225.86,102.82c-3.77-3.94-7.67-8-9.14-11.57-1.36-3.27-1.44-8.69-1.52-13.94-.15-9.76-.31-20.82-8-28.51s-18.75-7.85-28.51-8c-5.25-.08-10.67-.16-13.94-1.52-3.56-1.47-7.63-5.37-11.57-9.14C146.28,23.51,138.44,16,128,16s-18.27,7.51-25.18,14.14c-3.94,3.77-8,7.67-11.57,9.14C88,40.64,82.56,40.72,77.31,40.8c-9.76.15-20.82.31-28.51,8S41,67.55,40.8,77.31c-.08,5.25-.16,10.67-1.52,13.94-1.47,3.56-5.37,7.63-9.14,11.57C23.51,109.72,16,117.56,16,128s7.51,18.27,14.14,25.18c3.77,3.94,7.67,8,9.14,11.57,1.36,3.27,1.44,8.69,1.52,13.94.15,9.76.31,20.82,8,28.51s18.75,7.85,28.51,8c5.25.08,10.67.16,13.94,1.52,3.56,1.47,7.63,5.37,11.57,9.14C109.72,232.49,117.56,240,128,240s18.27-7.51,25.18-14.14c3.94-3.77,8-7.67,11.57-9.14,3.27-1.36,8.69-1.44,13.94-1.52,9.76-.15,20.82-.31,28.51-8s7.85-18.75,8-28.51c.08-5.25.16-10.67,1.52-13.94,1.47-3.56,5.37-7.63,9.14-11.57C232.49,146.28,240,138.44,240,128S232.49,109.73,225.86,102.82Zm-11.55,39.29c-4.79,5-9.75,10.17-12.38,16.52-2.52,6.1-2.63,13.07-2.73,19.82-.1,7-.21,14.33-3.32,17.43s-10.39,3.22-17.43,3.32c-6.75.1-13.72.21-19.82,2.73-6.35,2.63-11.52,7.59-16.52,12.38S132,224,128,224s-9.15-4.92-14.11-9.69-10.17-9.75-16.52-12.38c-6.1-2.52-13.07-2.63-19.82-2.73-7-.1-14.33-.21-17.43-3.32s-3.22-10.39-3.32-17.43c-.1-6.75-.21-13.72-2.73-19.82-2.63-6.35-7.59-11.52-12.38-16.52S32,132,32,128s4.92-9.15,9.69-14.11,9.75-10.17,12.38-16.52c2.52-6.1,2.63-13.07,2.73-19.82.1-7,.21-14.33,3.32-17.43S70.51,56.9,77.55,56.8c6.75-.1,13.72-.21,19.82-2.73,6.35-2.63,11.52-7.59,16.52-12.38S124,32,128,32s9.15,4.92,14.11,9.69,10.17,9.75,16.52,12.38c6.1,2.52,13.07,2.63,19.82,2.73,7,.1,14.33.21,17.43,3.32s3.22,10.39,3.32,17.43c.1,6.75.21,13.72,2.73,19.82,2.63,6.35,7.59,11.52,12.38,16.52S224,124,224,128,219.08,137.15,214.31,142.11ZM173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34Z\"/>","compass":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM172.42,72.84l-64,32a8.05,8.05,0,0,0-3.58,3.58l-32,64A8,8,0,0,0,80,184a8.1,8.1,0,0,0,3.58-.84l64-32a8.05,8.05,0,0,0,3.58-3.58l32-64a8,8,0,0,0-10.74-10.74ZM138,138,97.89,158.11,118,118l40.15-20.07Z\"/>","play":"<path d=\"M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.83,88Z\"/>","bag":"<path d=\"M216,64H176a48,48,0,0,0-96,0H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM128,32a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm88,168H40V80H80V96a8,8,0,0,0,16,0V80h64V96a8,8,0,0,0,16,0V80h40Z\"/>","info":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z\"/>","crown":"<path d=\"M248,80a28,28,0,1,0-51.12,15.77l-26.79,33L146,73.4a28,28,0,1,0-36.06,0L85.91,128.74l-26.79-33a28,28,0,1,0-26.6,12L47,194.63A16,16,0,0,0,62.78,208H193.22A16,16,0,0,0,209,194.63l14.47-86.85A28,28,0,0,0,248,80ZM128,40a12,12,0,1,1-12,12A12,12,0,0,1,128,40ZM24,80A12,12,0,1,1,36,92,12,12,0,0,1,24,80ZM193.22,192H62.78L48.86,108.52,81.79,149A8,8,0,0,0,88,152a7.83,7.83,0,0,0,1.08-.07,8,8,0,0,0,6.26-4.74l29.3-67.4a27,27,0,0,0,6.72,0l29.3,67.4a8,8,0,0,0,6.26,4.74A7.83,7.83,0,0,0,168,152a8,8,0,0,0,6.21-3l32.93-40.52ZM220,92a12,12,0,1,1,12-12A12,12,0,0,1,220,92Z\"/>","eye":"<path d=\"M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z\"/>","link":"<path d=\"M240,88.23a54.43,54.43,0,0,1-16,37L189.25,160a54.27,54.27,0,0,1-38.63,16h-.05A54.63,54.63,0,0,1,96,119.84a8,8,0,0,1,16,.45A38.62,38.62,0,0,0,150.58,160h0a38.39,38.39,0,0,0,27.31-11.31l34.75-34.75a38.63,38.63,0,0,0-54.63-54.63l-11,11A8,8,0,0,1,135.7,59l11-11A54.65,54.65,0,0,1,224,48,54.86,54.86,0,0,1,240,88.23ZM109,185.66l-11,11A38.41,38.41,0,0,1,70.6,208h0a38.63,38.63,0,0,1-27.29-65.94L78,107.31A38.63,38.63,0,0,1,144,135.71a8,8,0,0,0,16,.45A54.86,54.86,0,0,0,144,96a54.65,54.65,0,0,0-77.27,0L32,130.75A54.62,54.62,0,0,0,70.56,224h0a54.28,54.28,0,0,0,38.64-16l11-11A8,8,0,0,0,109,185.66Z\"/>","warning":"<path d=\"M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z\"/>"};
 
 </script>
 <script>
@@ -1504,12 +1508,19 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
   const TL_TITLES = ["Manufactured", "Shipped to distributor", "Received by distributor", "Shipped to retailer", "Received by retailer", "Sold to customer"];
   const KEYS = ["", "manufacturer", "distributor", "retailer"];
   const ROLE_META = {
-    admin: { label: "Admin", icon: "crown", can: "Assign roles, pause or unpause the contract, and recall any product." },
-    manufacturer: { label: "Manufacturer", icon: "factory", can: "Register products, ship them to a distributor, and recall your own products." },
-    distributor: { label: "Distributor", icon: "warehouse", can: "Receive shipments from a manufacturer and ship them on to a retailer." },
-    retailer: { label: "Retailer", icon: "storefront", can: "Receive shipments from a distributor and mark products as sold." },
-    visitor: { label: "Visitor", icon: "eye", can: "View and track any product. You cannot change anything." },
+    admin: { label: "Admin", icon: "crown", can: "Assign roles, pause the contract, recall any product." },
+    manufacturer: { label: "Manufacturer", icon: "factory", can: "Register products, ship to a distributor, recall own products." },
+    distributor: { label: "Distributor", icon: "warehouse", can: "Receive from a manufacturer, ship on to a retailer." },
+    retailer: { label: "Retailer", icon: "storefront", can: "Receive from a distributor, mark products as sold." },
+    visitor: { label: "Visitor", icon: "eye", can: "View and track any product. Read-only." },
   };
+  const PERSONAS = [
+    { key: "admin", label: "Admin" },
+    { key: "manufacturer", label: "Manufacturer" },
+    { key: "distributor", label: "Distributor" },
+    { key: "retailer", label: "Retailer" },
+    { key: "visitor", label: "Visitor" },
+  ];
   const FILTERS = [
     { id: "all", label: "All", test: () => true },
     { id: "made", label: "Manufactured", test: (p) => !p.recalled && p.stage === 0 },
@@ -1520,12 +1531,46 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     { id: "recalled", label: "Recalled", test: (p) => p.recalled },
   ];
 
+  // What each contract call does, in one line (used in tooltips, dialogs and the transaction detail).
+  const FN = {
+    registerProduct: "Creates the product, stores its first history record and emits ProductRegistered.",
+    shipProduct: "Marks the product as in transit and names the recipient as pending owner. The sender stays owner until the recipient confirms.",
+    receiveProduct: "The pending owner confirms arrival, becomes the owner and the stage moves forward.",
+    cancelShipment: "The sender takes the product back before the recipient has confirmed it.",
+    markSold: "The retailer closes the journey. The product reaches its final stage.",
+    recallProduct: "Permanently flags the product as recalled and stores the reason. A recalled product is frozen.",
+    setRole: "Admin only. Writes a role for an address into the contract, so later calls can check who may do what.",
+    pause: "Admin only. Flips a switch in the contract: while paused, every state-changing call is rejected.",
+    unpause: "Admin only. Switches the contract back on after a pause.",
+    transferAdmin: "Admin only. Hands the admin rights to another address.",
+    deploy: "Creates the SupplyChainTracker contract on the chain. It happens once.",
+  };
+  const COST = " It is a transaction, so it is mined into a block and costs gas.";
+
+  const REG_SAMPLES = [
+    { name: "Organic Coffee 250g", batch: "BATCH-2026-001", loc: "Coorg Estate, Karnataka", cid: "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG" },
+    { name: "Cold-Press Olive Oil 1L", batch: "BATCH-2026-002", loc: "Kochi Plant, Kerala", cid: "QmT78zSuBmuS4z925WZfrqQ1qHaJ56DQaTfyMUF7F8ff5o" },
+    { name: "Basmati Rice 5kg", batch: "BATCH-2026-003", loc: "Karnal Mill, Haryana", cid: "QmRAQB6YaCyidP37UdDnjFY5vQuiBrcqdyoW1CuDgwxkD4" },
+    { name: "Paracetamol 500mg Strips (cold chain)", batch: "BATCH-PH-2026-104", loc: "Hyderabad Pharma Park", cid: "QmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51" },
+    { name: "Cotton T-Shirt Lot (500 pcs)", batch: "BATCH-TX-2026-077", loc: "Tiruppur Garment Unit", cid: "QmZ4tDuvesekSs4qM5ZBKpXiZGun7S2CYtEZRB3DYXkjGx" },
+    { name: "Lithium Battery Pack 48V", batch: "BATCH-EV-2026-019", loc: "Pune Cell Assembly", cid: "QmPZ9gcCEpqKTo6aq61g2nXGUhM4iCL3ewB6LDXZCtioEB" },
+  ];
+  const LOCS = ["Warehouse", "Port", "Distribution Hub", "Store #12"];
+  const SOLD_LOCS = ["Store #12", "Store #7, City Mall", "Online fulfilment centre"];
+  const REASONS = ["Quality defect", "Contamination", "Regulatory order", "Temperature excursion (cold chain)", "Counterfeit suspected"];
+  const ADMIN_SAMPLES = [
+    { label: "Make the Visitor a Retailer", acct: 4, role: 3 },
+    { label: "Make the Visitor a Distributor", acct: 4, role: 2 },
+    { label: "Make the Visitor a Manufacturer", acct: 4, role: 1 },
+    { label: "Revoke the Distributor", acct: 2, role: 0 },
+  ];
+
   const $ = (id) => document.getElementById(id);
   const short = (a) => (a && a !== ethers.ZeroAddress ? a.slice(0, 6) + "..." + a.slice(-4) : "-");
+  const shortHash = (h) => (h ? h.slice(0, 10) + "..." + h.slice(-6) : "-");
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const fmtTime = (t) => new Date(Number(t) * 1000).toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
   const lc = (a) => String(a || "").toLowerCase();
-  const reduceMotion = () => window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const ICONS = window.ICONS || {};
   const icon = (n) => `<svg class="ic" viewBox="0 0 256 256" aria-hidden="true" focusable="false">${ICONS[n] || ""}</svg>`;
@@ -1533,16 +1578,18 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
   function hydrateIcons(root = document) {
     root.querySelectorAll("[data-icon]").forEach((el) => { el.innerHTML = icon(el.dataset.icon); });
   }
+  const tip = (fn, titleText) => `<button type="button" class="tip" data-tip="${esc(FN[fn])}" data-tipt="${esc(titleText || fn + "()")}" aria-label="What is happening on-chain: ${esc(FN[fn])}">${ico("info")}</button>`;
 
-  let provider, signer, account, contract;
+  let provider, signer, account, contract, contractAddr = "";
   let me = { role: 0, isAdmin: false };
   let adminAddr = "";
   let products = [];
   let loaded = false;
   let filter = "all";
   let query = "";
-  let curTab = "products";
-  let personaIdx = 0;
+  let personaIdx = 1;
+  let netName = "";
+  let demo = null; // set when running on the built-in in-browser blockchain
   const roleOf = new Map(); // lowercase address -> role key, refreshed on every data load
   const seenIds = new Set();
 
@@ -1576,13 +1623,12 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     }
   }
 
-  // Interface used to decode revert data (available even before a contract is loaded).
+  // Interface used to decode revert data and transactions (available even before a contract is loaded).
   const IFACE = new ethers.Interface(window.SUPPLY_CHAIN_ABI);
-  function readContract_iface() { return IFACE; }
 
   // Turn contract custom errors into readable text.
   function explain(err) {
-    const decoded = readContract_iface() && window.decodeContractError(readContract_iface(), err);
+    const decoded = window.decodeContractError(IFACE, err);
     const name = decoded?.name;
     const args = decoded?.args || [];
     const map = {
@@ -1605,36 +1651,89 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     return err?.shortMessage || err?.reason || err?.message || String(err);
   }
 
-  // Input dialog. A field may carry `chips` (quick-fill values) and a prefilled `value`.
-  function askFields(title, fields) {
+  // ---------- dialog (forms + details). Opening pushes a history entry so Back closes it. ----------
+  let dlgOpen = false, dlgSettle = null, skipPop = 0, popDone = null;
+
+  window.addEventListener("popstate", () => {
+    if (skipPop > 0) { skipPop--; if (popDone) { popDone(); popDone = null; } return; }
+    if (dlgOpen && dlgSettle) dlgSettle(false, true);
+  });
+
+  // fields: {type:"text"|"select", label, placeholder, mono, value, options:[{label,value}], other}
+  // samples: [{label, values:{fieldIndex: value}}]  ->  "Fill sample" dropdown at the top of the form
+  function openDialog({ title, hint, fields = [], samples = null, okLabel = "Confirm", info = null, wide = false, closeOnly = false }) {
     return new Promise((resolve) => {
       const dlg = $("dlg");
       $("dlgTitle").textContent = title;
-      $("dlgFields").innerHTML = fields
-        .map((f, i) => `<label><span class="lbl">${esc(f.label)}</span><input data-i="${i}" class="${f.mono ? "mono" : ""}" placeholder="${esc(f.placeholder || "")}" value="${esc(f.value || "")}" autocomplete="off" spellcheck="false">${
-          f.chips ? `<span class="quick">${f.chips.map((c) => `<button type="button" class="fchip${c.nudge ? " nudge" : ""}" data-fill="${i}" data-value="${esc(c.value)}">${esc(c.label)}</button>`).join("")}</span>` : ""
-        }</label>`)
-        .join("");
+      const h = $("dlgHint");
+      h.classList.toggle("hidden", !hint);
+      h.innerHTML = hint ? ico("info") + `<span>${esc(hint)}</span>` : "";
+      dlg.classList.toggle("wide", !!wide);
+
+      const sampleHtml = samples
+        ? `<label><span class="lbl">Fill sample</span><select data-sample><option value="">Choose a sample...</option>${samples.map((s, i) => `<option value="${i}">${esc(s.label)}</option>`).join("")}</select></label>`
+        : "";
+      const fieldHtml = fields.map((f, i) => {
+        if (f.type === "select") {
+          const opts = (f.options || []).map((o) => `<option value="${esc(o.value)}"${o.value === f.value ? " selected" : ""}>${esc(o.label)}</option>`).join("");
+          return `<div data-f="${i}"><span class="lbl">${esc(f.label)}</span><select data-sel>${opts}${f.other ? `<option value="__other">Other address...</option>` : ""}</select>${f.other ? `<input data-other class="mono hidden" placeholder="0x..." autocomplete="off" spellcheck="false">` : ""}</div>`;
+        }
+        return `<label data-f="${i}"><span class="lbl">${esc(f.label)}</span><input data-in class="${f.mono ? "mono" : ""}" placeholder="${esc(f.placeholder || "")}" value="${esc(f.value || "")}" autocomplete="off" spellcheck="false"></label>`;
+      }).join("");
+      $("dlgFields").innerHTML = sampleHtml + fieldHtml + (info || "");
+
+      const box = $("dlgFields");
+      const fieldEl = (i) => box.querySelector(`[data-f="${i}"]`);
+      box.onchange = (e) => {
+        const t = e.target;
+        if (t.matches("[data-sample]")) {
+          const s = samples[Number(t.value)];
+          if (!s) return;
+          for (const [i, v] of Object.entries(s.values)) {
+            const el = fieldEl(i);
+            const inp = el?.querySelector("[data-in]");
+            if (inp) inp.value = v;
+          }
+        }
+        if (t.matches("[data-sel]")) {
+          const o = t.parentElement.querySelector("[data-other]");
+          if (o) { o.classList.toggle("hidden", t.value !== "__other"); if (t.value === "__other") o.focus(); }
+        }
+      };
+
+      $("dlgCancel").classList.toggle("hidden", closeOnly);
+      $("dlgOk").textContent = okLabel;
+
       let settled = false;
-      const done = (ok) => {
+      const done = async (ok, fromPop) => {
         if (settled) return;
         settled = true;
-        const vals = ok ? [...$("dlgFields").querySelectorAll("input")].map((i) => i.value.trim()) : null;
+        const vals = ok
+          ? fields.map((f, i) => {
+              const el = fieldEl(i);
+              if (f.type === "select") {
+                const s = el.querySelector("[data-sel]");
+                return s.value === "__other" ? el.querySelector("[data-other]").value.trim() : s.value;
+              }
+              return el.querySelector("[data-in]").value.trim();
+            })
+          : null;
+        dlgOpen = false;
+        dlgSettle = null;
         if (dlg.hasAttribute("open")) dlg.close();
-        dlg.onclose = null;
-        setTimeout(updateTour, 0);
+        dlg.onclose = null; dlg.oncancel = null;
+        if (!fromPop) {
+          // remove the history entry that was pushed when the dialog opened, and wait until that is done
+          await new Promise((r) => { skipPop++; popDone = r; history.back(); setTimeout(() => { if (popDone === r) { popDone = null; skipPop = Math.max(0, skipPop - 1); } r(); }, 500); });
+        }
         resolve(vals);
-      };
-      $("dlgFields").onclick = (e) => {
-        const c = e.target.closest("[data-fill]");
-        if (!c) return;
-        $("dlgFields").querySelector(`input[data-i="${c.dataset.fill}"]`).value = c.dataset.value;
-        c.classList.remove("nudge");
       };
       $("dlgOk").onclick = (e) => { e.preventDefault(); done(true); };
       $("dlgCancel").onclick = (e) => { e.preventDefault(); done(false); };
-      dlg.onclose = () => done(false);
-      dlg.oncancel = () => done(false);
+      dlg.oncancel = (e) => { e.preventDefault(); done(false); };
+      dlgSettle = done;
+      dlgOpen = true;
+      history.pushState({ dlg: 1 }, "", location.href);
       dlg.showModal();
     });
   }
@@ -1645,7 +1744,7 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
       pending = toast(demo ? `${label}: sending...` : `${label}: confirm in MetaMask...`, "info", 60000);
       const tx = await fn();
       dismiss(pending);
-      pending = toast(`${label}: waiting for confirmation...`, "info", 60000);
+      pending = toast(`${label}: waiting for the block...`, "info", 60000);
       await tx.wait();
       dismiss(pending);
       toast(`${label} confirmed.`, "ok");
@@ -1659,21 +1758,44 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     }
   }
 
-  // ---------- views ----------
-  function setView(v) {
-    document.body.dataset.view = v;
-    $("landing").classList.toggle("hidden", v !== "landing");
-    $("setup").classList.toggle("hidden", v !== "connect");
-    $("app").classList.toggle("hidden", v !== "app");
+  // ---------- routing: #/products #/register #/track #/track/3 #/blocks #/admin ----------
+  const TABS = ["products", "register", "track", "blocks", "admin"];
+  function parseHash() {
+    const m = location.hash.replace(/^#\/?/, "").split("/");
+    return { tab: TABS.includes(m[0]) ? m[0] : "products", id: m[1] && /^\d+$/.test(m[1]) ? Number(m[1]) : null };
   }
+  function go(path) {
+    const h = "#" + path;
+    if (location.hash === h) route();
+    else location.hash = h; // pushes a history entry; hashchange renders it
+  }
+  function showTab(name) {
+    document.querySelectorAll(".tab").forEach((t) => {
+      const on = t.dataset.tab === name;
+      t.classList.toggle("active", on);
+      t.setAttribute("aria-selected", on);
+      t.tabIndex = on ? 0 : -1;
+    });
+    document.querySelectorAll(".panel").forEach((p) => p.classList.toggle("hidden", p.id !== "tab-" + name));
+  }
+  function route() {
+    const { tab, id } = parseHash();
+    showTab(tab);
+    if (tab === "track") renderTrackRoute(id);
+    if (tab === "blocks") loadBlocks();
+  }
+  window.addEventListener("hashchange", route);
 
   // ---------- Wallet / contract ----------
-  let demo = null; // set when running on the built-in in-browser blockchain
+  const ssGet = (k) => { try { return sessionStorage.getItem(k); } catch (_) { return null; } };
+  const ssSet = (k, v) => { try { v === null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch (_) {} };
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
 
   async function connect() {
     if (!window.ethereum) {
-      toast("MetaMask not found. Start the demo instead, or install MetaMask.", "err", 9000);
-      return;
+      toast("MetaMask not found. Using the simulated chain instead.", "err", 7000);
+      return false;
     }
     try {
       provider = new ethers.BrowserProvider(window.ethereum);
@@ -1681,16 +1803,19 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
       signer = await provider.getSigner();
       account = await signer.getAddress();
       showAccount();
-      $("connectBtn").innerHTML = ico("check") + "Connected";
       await showNetwork();
       window.ethereum.on?.("accountsChanged", () => location.reload());
       window.ethereum.on?.("chainChanged", () => location.reload());
       const saved = lsGet("chaintrace.address");
       if (saved && !$("addrInput").value) $("addrInput").value = saved;
-      if (!loaded) setView("connect");
+      initPickers();
+      $("setup").classList.toggle("hidden", !!$("addrInput").value);
       if ($("addrInput").value) await loadContract();
+      else { $("app").classList.remove("booting"); updateStatus(); }
+      return true;
     } catch (e) {
       toast(explain(e), "err");
+      return false;
     }
   }
 
@@ -1699,29 +1824,12 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     $("acctBtn").classList.remove("hidden");
   }
 
-  // ---------- Demo mode: a private blockchain running inside this page ----------
-  const PERSONAS = [
-    { key: "admin", label: "Admin" },
-    { key: "manufacturer", label: "Manufacturer" },
-    { key: "distributor", label: "Distributor" },
-    { key: "retailer", label: "Retailer" },
-    { key: "visitor", label: "Visitor" },
-  ];
-
-  function setDemoButton(busy) {
-    const b = $("demoBtn");
-    b.disabled = busy;
-    b.innerHTML = busy ? `<span class="spin"></span>Starting...` : ico("play") + "Start demo";
-  }
-
+  // ---------- Simulated chain: a private blockchain running inside this page ----------
   async function startDemo() {
     if (!window.Ganache || !window.SUPPLY_CHAIN_BYTECODE) {
-      return toast("Demo mode is only in the standalone file (ChainTrace-Standalone.html).", "err", 8000);
+      toast("The simulated chain is only in the standalone file. Use your wallet instead.", "err", 8000);
+      return false;
     }
-    setDemoButton(true);
-    // show the app shell with skeletons straight away; booting the chain takes a few seconds
-    $("app").classList.add("booting");
-    setView("app");
     renderProducts();
     await new Promise((r) => requestAnimationFrame(() => setTimeout(r, 40)));
     try {
@@ -1767,30 +1875,25 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
       await as(3, (c) => c.markSold(1, "Store #12, Bengaluru"));
       await as(1, (c) => c.registerProduct("Cold-Press Olive Oil 1L", "BATCH-002", "", "Kochi Plant"));
       await as(1, (c) => c.shipProduct(2, accts[2], "Kochi Plant"));
-      idx = 0;
+      idx = personaIdx; // start as the Manufacturer so the first actions are available
 
       demo = { accts, setIdx: (i) => (idx = i) };
       signer = await provider.getSigner();
       account = await signer.getAddress();
       showAccount();
       $("addrInput").value = addr;
-      $("tourBtn").classList.remove("hidden");
-      $("tourBtn").innerHTML = ico("compass") + "Take the tour";
 
       buildRoleSwitch();
       $("roleSwitchWrap").classList.remove("hidden");
-      $("demoBar").innerHTML = `<span class="demo-note"><b>Demo mode.</b> A private test blockchain runs inside this page and resets when you refresh.</span>`;
-      $("demoBar").classList.remove("hidden");
+      initPickers();
       await showNetwork();
       await loadContract();
-      $("app").classList.remove("booting");
-      toast("Demo blockchain is ready. Try the tour, or switch roles yourself.", "ok", 6000);
+      return true;
     } catch (e) {
       console.error(e);
       $("app").classList.remove("booting");
-      setView("landing");
-      setDemoButton(false);
-      toast("Could not start demo: " + explain(e), "err", 9000);
+      toast("Could not start the simulated chain: " + explain(e), "err", 9000);
+      return false;
     }
   }
 
@@ -1841,40 +1944,44 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     }
   }
 
-  function lsGet(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }
-  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
-
   async function showNetwork() {
     const net = await provider.getNetwork();
-    const b = $("netBadge");
-    b.textContent = demo || window.ethereum?.isDemo ? "Demo chain" : NETWORKS[Number(net.chainId)] || `Chain ${net.chainId}`;
-    b.className = "pill net";
+    netName = demo || window.ethereum?.isDemo ? "Simulated chain" : NETWORKS[Number(net.chainId)] || `Chain ${net.chainId}`;
+    $("stNet").textContent = netName;
+  }
+
+  async function updateStatus() {
+    try { $("stBlock").textContent = "#" + (await provider.getBlockNumber()); } catch (_) {}
+    if (netName) $("stNet").textContent = netName;
+    const a = $("stAddr");
+    a.textContent = contractAddr ? short(contractAddr) : "not loaded";
+    a.disabled = !contractAddr;
+    $("stChange").classList.toggle("hidden", !!demo || !contractAddr);
   }
 
   async function loadContract() {
     const addr = $("addrInput").value.trim();
     const msg = $("setupMsg");
-    if (!signer) return toast("Connect MetaMask first.", "err");
+    if (!signer) return toast("Connect your wallet first.", "err");
     if (!ethers.isAddress(addr)) { msg.textContent = "That is not a valid address."; msg.className = "small err-text"; return; }
     try {
       const code = await provider.getCode(addr);
       if (code === "0x") throw new Error("No contract at this address on the selected network. Check the network in MetaMask.");
       contract = new ethers.Contract(addr, window.SUPPLY_CHAIN_ABI, signer);
+      contractAddr = addr;
       await contract.admin(); // sanity check that the ABI matches
       if (!demo) lsSet("chaintrace.address", addr);
-      msg.textContent = "Contract loaded.";
-      msg.className = "small ok-text";
-      if (!demo) {
-        $("demoBar").innerHTML = `<span class="demo-note">Contract <span class="mono">${esc(short(addr))}</span></span><button id="changeContract" class="btn sm ghost" type="button">Change</button>`;
-        $("demoBar").classList.remove("hidden");
-      }
-      setView("app");
+      msg.textContent = "";
+      $("setup").classList.add("hidden");
       await refreshAll();
+      $("app").classList.remove("booting");
       subscribe();
+      route();
     } catch (e) {
       msg.textContent = explain(e);
       msg.className = "small err-text";
-      if (document.body.dataset.view === "app" && !loaded) setView("connect");
+      $("setup").classList.remove("hidden");
+      $("app").classList.remove("booting");
     }
   }
 
@@ -1905,9 +2012,7 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
 
     $("pauseState").textContent = paused ? "PAUSED" : "Running";
     $("pauseState").className = paused ? "err-text" : "ok-text";
-    $("adminNote").textContent = me.isAdmin
-      ? "You are the admin."
-      : "You are not the admin: these controls will be rejected by the contract.";
+    $("adminNote").textContent = me.isAdmin ? "You are the admin." : "You are not the admin: the contract will reject these controls.";
 
     products = count > 0n ? (await contract.getProducts(1, count)).map((p) => ({
       id: Number(p.id), name: p.name, batch: p.batchNumber, cid: p.metadataCID,
@@ -1916,16 +2021,15 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     })) : [];
 
     roleOf.clear();
-    await ensureRoles([account, ...products.flatMap((p) => [p.owner, p.pending, p.manufacturer])]);
+    await ensureRoles([account, ...(demo ? demo.accts : []), ...products.flatMap((p) => [p.owner, p.pending, p.manufacturer])]);
     loaded = true;
-
-    if (tour.on && !tour.id && products.length > tour.baseCount) tour.id = products[products.length - 1].id;
 
     renderRoleBar();
     renderProducts();
-    renderTrackQuick();
+    renderTrackSel();
     renderRegNote();
-    updateTour();
+    updateStatus();
+    if (parseHash().tab === "blocks") loadBlocks();
   }
 
   const activeKeys = () => {
@@ -1935,11 +2039,22 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     return k.length ? k : ["visitor"];
   };
   const rchip = (key) => `<span class="rchip role-${key}">${ico(ROLE_META[key].icon)}${ROLE_META[key].label}</span>`;
+  const nchip = (t) => `<span class="nchip">${esc(t)}</span>`;
+
+  // a readable name for any address: its role, else its demo account name, else the short address
+  function nameChip(addr) {
+    if (!addr) return nchip("New contract");
+    if (contractAddr && lc(addr) === lc(contractAddr)) return nchip("Contract");
+    const key = roleOf.get(lc(addr));
+    if (key) return rchip(key);
+    const i = demo ? demo.accts.findIndex((x) => lc(x) === lc(addr)) : -1;
+    return i >= 0 ? rchip(PERSONAS[i].key) : nchip(short(addr));
+  }
 
   function renderRoleBar() {
     const keys = activeKeys();
     const rb = $("roleBadge");
-    rb.innerHTML = keys.map(rchip).join(" ").replace(/<span class="rchip/g, '<span class="rchip');
+    rb.innerHTML = keys.map(rchip).join(" ");
     rb.className = "pill " + (me.isAdmin ? "admin" : me.role ? "role" : "");
     $("rolePerms").innerHTML = keys.map((k) => `<span>${rchip(k)} ${esc(ROLE_META[k].can)}</span>`).join(" ");
   }
@@ -1948,7 +2063,7 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     const n = $("regNote");
     if (me.role === 1) { n.classList.add("hidden"); return; }
     n.classList.remove("hidden");
-    n.innerHTML = ico("info") + `<span>Only the Manufacturer role can register products.${demo ? " Switch to Manufacturer in the Acting as control above." : ""}</span>`;
+    n.innerHTML = ico("info") + `<span>Only the Manufacturer role can register products.${demo ? " Switch to Manufacturer above." : ""}</span>`;
   }
 
   // who: a role chip (when known) plus the short address
@@ -1956,9 +2071,9 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     if (!addr || addr === ethers.ZeroAddress) return '<span class="muted">-</span>';
     const key = roleOf.get(lc(addr));
     const you = lc(addr) === lc(account);
-    return `${key ? rchip(key) : ""}<span class="addr">${esc(short(addr))}</span>${you ? '<span class="muted small">(you)</span>' : ""}${withCopy ? copyBtn(addr) : ""}`;
+    return `${key ? rchip(key) : ""}<span class="addr">${esc(short(addr))}</span>${you ? '<span class="muted small">(you)</span>' : ""}${withCopy ? copyBtn(addr, "Copy address") : ""}`;
   }
-  const copyBtn = (v) => `<button type="button" class="copy" data-copy="${esc(v)}" title="Copy address" aria-label="Copy address">${ico("copy")}</button>`;
+  const copyBtn = (v, label) => `<button type="button" class="copy" data-copy="${esc(v)}" title="${esc(label)}" aria-label="${esc(label)}">${ico("copy")}</button>`;
 
   function needsMyAction(p) {
     return lc(p.owner) === lc(account) || lc(p.pending) === lc(account);
@@ -1987,6 +2102,8 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
   }
 
   // ---------- products ----------
+  const matches = (p, q) => `${p.name} ${p.batch} #${p.id} ${p.id}`.toLowerCase().includes(q.toLowerCase());
+
   function renderFilters() {
     const base = products.filter((p) => !query || matches(p, query));
     $("stageFilters").innerHTML = FILTERS.map((f) => {
@@ -1994,18 +2111,15 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
       return `<button type="button" class="fchip" data-filter="${f.id}" aria-pressed="${filter === f.id}">${f.label} <i>${n}</i></button>`;
     }).join("");
   }
-  const matches = (p, q) => `${p.name} ${p.batch} #${p.id} ${p.id}`.toLowerCase().includes(q.toLowerCase());
 
   function empty(iconName, title, text, btn) {
-    return `<div class="empty"><span class="em-ic">${icon(iconName)}</span><h3>${esc(title)}</h3><p>${esc(text)}</p>${btn || ""}</div>`;
+    return `<div class="empty"><span class="em-ic">${icon(iconName)}</span><h3>${esc(title)}</h3>${text ? `<p>${esc(text)}</p>` : ""}${btn || ""}</div>`;
   }
+  const skeletonCards = (n) => Array.from({ length: n }, () =>
+    `<div class="sk-card" aria-hidden="true"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-bar"></div><div class="sk sk-line w35"></div></div>`).join("");
 
   function renderProducts() {
-    if (!loaded) {
-      $("productRows").innerHTML = Array.from({ length: 4 }, () =>
-        `<div class="sk-card" aria-hidden="true"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-bar"></div><div class="sk sk-line w35"></div></div>`).join("");
-      return;
-    }
+    if (!loaded) { $("productRows").innerHTML = skeletonCards(4); return; }
     $("statTotal").textContent = products.length;
     $("statTransit").textContent = products.filter((p) => p.stage === 1 || p.stage === 3).length;
     $("statSold").textContent = products.filter((p) => p.stage === 5).length;
@@ -2019,8 +2133,8 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     if (!list.length) {
       const filtered = products.length && (filter !== "all" || query || $("mineOnly").checked);
       $("productRows").innerHTML = filtered
-        ? empty("magnifying-glass", $("mineOnly").checked && filter === "all" && !query ? "Nothing needs your action" : "No matching products", "Try a different search or stage, or clear the filters.", `<button class="btn sm" type="button" data-clear="1">Clear filters</button>`)
-        : empty("package", "No products yet", me.role === 1 ? "Register the first product to start its journey." : "A Manufacturer registers the first product.", me.role === 1 ? `<button class="btn primary sm" type="button" data-goto="register">Register a product</button>` : "");
+        ? empty("magnifying-glass", $("mineOnly").checked && filter === "all" && !query ? "Nothing needs your action" : "No matching products", "", `<button class="btn sm" type="button" data-clear="1">Clear filters</button>`)
+        : empty("package", "No products yet", me.role === 1 ? "" : "A Manufacturer registers the first product.", me.role === 1 ? `<button class="btn primary sm" type="button" data-goto="/register">Register a product</button>` : "");
       return;
     }
 
@@ -2034,20 +2148,21 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
   function pcardHtml(p, i, isNew) {
     const mineOwner = lc(p.owner) === lc(account);
     const mineIncoming = lc(p.pending) === lc(account);
+    const grp = (btn, fn) => `<span class="btn-grp">${btn}${tip(fn)}</span>`;
     const acts = [`<button class="btn sm" data-act="track" data-id="${p.id}">${ico("path")}Track</button>`];
     if (!p.recalled) {
-      if (mineOwner && (p.stage === 0 || p.stage === 2)) acts.push(`<button class="btn sm primary" data-act="ship" data-id="${p.id}">${ico("truck")}Ship</button>`);
-      if (mineOwner && (p.stage === 1 || p.stage === 3)) acts.push(`<button class="btn sm" data-act="cancel" data-id="${p.id}">${ico("arrow-u-up-left")}Cancel shipment</button>`);
-      if (mineIncoming) acts.push(`<button class="btn sm primary" data-act="receive" data-id="${p.id}">${ico("check")}Receive</button>`);
-      if (mineOwner && p.stage === 4 && me.role === 3) acts.push(`<button class="btn sm primary" data-act="sold" data-id="${p.id}">${ico("bag")}Mark sold</button>`);
+      if (mineOwner && (p.stage === 0 || p.stage === 2)) acts.push(grp(`<button class="btn sm primary" data-act="ship" data-id="${p.id}">${ico("truck")}Ship</button>`, "shipProduct"));
+      if (mineOwner && (p.stage === 1 || p.stage === 3)) acts.push(grp(`<button class="btn sm" data-act="cancel" data-id="${p.id}">${ico("arrow-u-up-left")}Cancel shipment</button>`, "cancelShipment"));
+      if (mineIncoming) acts.push(grp(`<button class="btn sm primary" data-act="receive" data-id="${p.id}">${ico("check")}Receive</button>`, "receiveProduct"));
+      if (mineOwner && p.stage === 4 && me.role === 3) acts.push(grp(`<button class="btn sm primary" data-act="sold" data-id="${p.id}">${ico("bag")}Mark sold</button>`, "markSold"));
     }
-    if (!p.recalled && (me.isAdmin || lc(p.manufacturer) === lc(account))) acts.push(`<button class="btn sm danger" data-act="recall" data-id="${p.id}">${ico("warning-octagon")}Recall</button>`);
+    if (!p.recalled && (me.isAdmin || lc(p.manufacturer) === lc(account))) acts.push(grp(`<button class="btn sm danger" data-act="recall" data-id="${p.id}">${ico("warning-octagon")}Recall</button>`, "recallProduct"));
 
     const transit = p.stage === 1 || p.stage === 3;
     const holder = transit
       ? `${whoHtml(p.owner)}<span class="muted" aria-label="to">${ico("arrow-right")}</span>${whoHtml(p.pending)}`
       : `<span>Held by</span>${whoHtml(p.owner)}`;
-    const cls = ["pcard", p.recalled ? "is-recalled" : "", tour.on && tour.id === p.id ? "is-tour" : "", isNew && loaded ? "enter" : ""].join(" ");
+    const cls = ["pcard", p.recalled ? "is-recalled" : "", isNew && loaded ? "enter" : ""].join(" ");
     return `<article class="${cls}" data-id="${p.id}" style="--i:${Math.min(i, 8)}">
       <div class="pc-head">
         <div><div class="pc-name">${esc(p.name)}</div><div class="pc-meta"><span class="mono">#${p.id}</span><span class="mono">${esc(p.batch)}</span></div></div>
@@ -2059,62 +2174,73 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     </article>`;
   }
 
-  function heroSample() {
-    const el = $("heroSample");
-    if (!el) return;
-    el.innerHTML = `<article class="pcard enter">
-      <div class="pc-head">
-        <div><div class="pc-name">Single-Origin Coffee 250g</div><div class="pc-meta"><span class="mono">#7</span><span class="mono">BATCH-2026-014</span></div></div>
-        <span class="badge transit">Shipped to retailer</span>
-      </div>
-      ${trackerHtml(3, false)}
-      <div class="pc-holder">${rchip("distributor")}<span class="muted">${ico("arrow-right")}</span>${rchip("retailer")}</div>
-    </article>`;
-  }
-
   // ---------- Actions ----------
-  const suggest = {
-    ship0: { to: 2, loc: "Wayanad Apiary" },
-    ship2: { to: 3, loc: "Mysuru Hub" },
-    receive1: { loc: "Mysuru Hub" },
-    receive3: { loc: "Store #12, Bengaluru" },
-    sold: { loc: "Store #12, Bengaluru" },
-  };
+  const locSamples = (list, idx) => list.map((l) => ({ label: l, values: { [idx]: l } }));
+
+  // demo accounts that may receive a shipment, listed by name with a short address
+  function recipientOptions(target) {
+    if (!demo) return null;
+    const all = demo.accts.map((a, i) => ({ a, i, label: `${PERSONAS[i].label} ${short(a)}`, value: a }));
+    const match = all.filter((x) => roleOf.get(lc(x.a)) === target);
+    return (match.length ? match : all.filter((x) => lc(x.a) !== lc(account))).map(({ label, value }) => ({ label, value }));
+  }
 
   async function onAction(act, id) {
     const p = products.find((x) => x.id === id);
-    if (act === "track") { switchTab("track"); $("trackId").value = id; return trackProduct(); }
-    const touring = tour.on && tour.id === id;
+    if (act === "track") return go("/track/" + id);
 
     if (act === "ship") {
       const target = p.stage === 0 ? "distributor" : "retailer";
-      const s = suggest["ship" + p.stage];
-      const chips = demo ? [{ label: `Use the demo ${target}`, value: demo.accts[s.to], nudge: touring }] : null;
-      const v = await askFields(`Ship product #${id} to a ${target}`, [
-        { label: `${target[0].toUpperCase() + target.slice(1)} wallet address`, placeholder: "0x...", mono: true, chips, value: touring && demo ? demo.accts[s.to] : "" },
-        { label: "Dispatch location", placeholder: "Bengaluru warehouse", value: touring ? s.loc : "" },
-      ]);
+      const opts = recipientOptions(target);
+      const v = await openDialog({
+        title: `Ship product #${id} to a ${target}`,
+        hint: "On-chain: " + FN.shipProduct + COST,
+        samples: locSamples(LOCS, 1),
+        okLabel: "Ship",
+        fields: [
+          opts
+            ? { type: "select", label: `Recipient (${target})`, options: opts, other: true }
+            : { type: "text", label: `${target[0].toUpperCase() + target.slice(1)} wallet address`, placeholder: "0x...", mono: true },
+          { type: "text", label: "Dispatch location", placeholder: "Choose a sample or type" },
+        ],
+      });
       if (!v) return;
       if (!ethers.isAddress(v[0])) return toast("Invalid recipient address.", "err");
       return sendTx("Ship", () => contract.shipProduct(id, v[0], v[1]));
     }
     if (act === "receive") {
-      const v = await askFields(`Receive product #${id}`, [{ label: "Where was it received?", placeholder: "Mysuru hub", value: touring ? suggest["receive" + p.stage].loc : "" }]);
+      const v = await openDialog({
+        title: `Receive product #${id}`, hint: "On-chain: " + FN.receiveProduct + COST, okLabel: "Receive",
+        samples: locSamples(LOCS, 0),
+        fields: [{ type: "text", label: "Where was it received?", placeholder: "Choose a sample or type" }],
+      });
       if (!v) return;
       return sendTx("Receive", () => contract.receiveProduct(id, v[0]));
     }
     if (act === "cancel") {
-      const v = await askFields(`Cancel shipment of #${id}`, [{ label: "Location", placeholder: "Warehouse" }]);
+      const v = await openDialog({
+        title: `Cancel shipment of #${id}`, hint: "On-chain: " + FN.cancelShipment + COST, okLabel: "Cancel shipment",
+        samples: locSamples(LOCS, 0),
+        fields: [{ type: "text", label: "Location", placeholder: "Choose a sample or type" }],
+      });
       if (!v) return;
       return sendTx("Cancel shipment", () => contract.cancelShipment(id, v[0]));
     }
     if (act === "sold") {
-      const v = await askFields(`Mark #${id} as sold`, [{ label: "Store / location", placeholder: "Store #12", value: touring ? suggest.sold.loc : "" }]);
+      const v = await openDialog({
+        title: `Mark #${id} as sold`, hint: "On-chain: " + FN.markSold + COST, okLabel: "Mark sold",
+        samples: locSamples(SOLD_LOCS, 0),
+        fields: [{ type: "text", label: "Store / location", placeholder: "Choose a sample or type" }],
+      });
       if (!v) return;
       return sendTx("Mark sold", () => contract.markSold(id, v[0]));
     }
     if (act === "recall") {
-      const v = await askFields(`Recall product #${id}`, [{ label: "Reason (stored permanently on-chain)", placeholder: "Quality defect" }]);
+      const v = await openDialog({
+        title: `Recall product #${id}`, hint: "On-chain: " + FN.recallProduct + COST, okLabel: "Recall",
+        samples: REASONS.map((r) => ({ label: r, values: { 0: r } })),
+        fields: [{ type: "text", label: "Reason (stored permanently on-chain)", placeholder: "Choose a sample or type" }],
+      });
       if (!v) return;
       return sendTx("Recall", () => contract.recallProduct(id, v[0]));
     }
@@ -2124,32 +2250,47 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     const name = $("regName").value.trim(), batch = $("regBatch").value.trim();
     if (!name || !batch) return toast("Name and batch number are required.", "err");
     const ok = await sendTx("Register product", () => contract.registerProduct(name, batch, $("regCid").value.trim(), $("regLoc").value.trim()));
-    if (ok) { ["regName", "regBatch", "regCid", "regLoc"].forEach((i) => ($(i).value = "")); switchTab("products"); }
+    if (ok) { ["regName", "regBatch", "regCid", "regLoc"].forEach((i) => ($(i).value = "")); $("regSample").value = ""; go("/products"); }
   }
 
   // ---------- Track ----------
-  function renderTrackQuick() {
-    const el = $("trackQuick");
-    el.innerHTML = products.length
-      ? products.slice().reverse().slice(0, 6).map((p) => `<button type="button" class="fchip" data-track="${p.id}">#${p.id} ${esc(p.name)}</button>`).join("")
-      : "";
-    if (!$("trackResult").innerHTML.trim()) {
-      $("trackResult").innerHTML = empty("compass", "Pick a product to follow", "Enter a product ID above, or choose one of the recent products.");
-    }
+  function renderTrackSel() {
+    const sel = $("trackSel");
+    const cur = parseHash().id || sel.value;
+    sel.innerHTML = `<option value="">Choose a product...</option>` + products.slice().reverse().map((p) => `<option value="${p.id}">#${p.id} ${esc(p.name)}</option>`).join("");
+    sel.value = cur && products.some((p) => p.id === Number(cur)) ? String(cur) : "";
   }
 
-  async function trackProduct() {
-    const id = Number($("trackId").value);
+  let trackToken = 0;
+  function renderTrackRoute(id) {
     const out = $("trackResult");
-    if (!id) return toast("Enter a product ID.", "err");
+    if (!loaded) { out.innerHTML = `<div class="sk-card" aria-hidden="true"><div class="sk sk-line w60"></div><div class="sk sk-bar"></div></div>`; return; }
+    $("trackSel").value = id && products.some((p) => p.id === id) ? String(id) : "";
+    if (!id) { trackToken++; out.innerHTML = empty("compass", "Pick a product to follow", ""); return; }
+    trackProduct(id);
+  }
+
+  // tx hash + block for each history record: the contract emits one event per record, in the same order
+  async function txRefs(id) {
+    try {
+      const names = ["ProductRegistered", "ProductShipped", "ProductReceived", "ShipmentCancelled", "ProductSold", "ProductRecalled"];
+      const logs = (await Promise.all(names.map((n) => contract.queryFilter(contract.filters[n](id), 0, "latest")))).flat();
+      logs.sort((a, b) => a.blockNumber - b.blockNumber || a.index - b.index);
+      return logs.map((l) => ({ hash: l.transactionHash, block: l.blockNumber }));
+    } catch (_) { return []; }
+  }
+
+  async function trackProduct(id) {
+    const out = $("trackResult");
+    const token = ++trackToken;
     out.innerHTML = `<div class="sk-card" aria-hidden="true"><div class="sk sk-line w60"></div><div class="sk sk-bar"></div><div class="sk sk-line w35"></div><div class="sk sk-line w60"></div></div>`;
     try {
-      const [p, hist] = await Promise.all([contract.getProduct(id), contract.getHistory(id)]);
+      const [p, hist, refs] = await Promise.all([contract.getProduct(id), contract.getHistory(id), txRefs(id)]);
       await ensureRoles([p.manufacturer, p.currentOwner, p.pendingOwner, ...hist.map((r) => r.actor)]);
+      if (token !== trackToken) return;
       const stage = Number(p.stage);
-      const prod = { id: Number(p.id), stage, recalled: p.recalled };
       const cid = p.metadataCID
-        ? `<a class="mono" target="_blank" rel="noopener" href="https://ipfs.io/ipfs/${encodeURIComponent(p.metadataCID)}">${esc(p.metadataCID)}</a>${copyBtn(p.metadataCID).replace("Copy address", "Copy CID")}`
+        ? `<a class="mono" target="_blank" rel="noopener" href="https://ipfs.io/ipfs/${encodeURIComponent(p.metadataCID)}">${esc(shortHash(p.metadataCID))}</a>${copyBtn(p.metadataCID, "Copy CID")}`
         : '<span class="muted">None</span>';
       const std = ["Product manufactured", "Shipment dispatched", "Shipment received", "Sold to customer", "Shipment cancelled by sender"];
       const steps = hist.map((r, i) => {
@@ -2158,6 +2299,7 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
         const cancelled = note === "Shipment cancelled by sender";
         const title = isRecall ? "Recalled" : cancelled ? "Shipment cancelled" : TL_TITLES[Number(r.stage)];
         const ic = isRecall ? "warning-octagon" : cancelled ? "arrow-u-up-left" : STEPS[Number(r.stage)].i;
+        const ref = refs.length === hist.length ? refs[i] : null;
         return `<li class="${isRecall ? "recall" : cancelled ? "cancel" : ""}" style="--i:${Math.min(i, 10)}">
           <span class="tl-ic">${icon(ic)}</span>
           <div class="tl-body">
@@ -2168,6 +2310,7 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
               ${r.location ? `<span class="who">${ico("map-pin")}${esc(r.location)}</span>` : ""}
               <time datetime="${new Date(Number(r.timestamp) * 1000).toISOString()}">${ico("clock")}${fmtTime(r.timestamp)}</time>
             </div>
+            ${ref ? `<div class="tl-meta"><span class="txref"><span class="blkno">Block ${ref.block}</span><button type="button" class="txlink" data-tx="${ref.hash}" title="Show transaction details">${shortHash(ref.hash)}</button>${copyBtn(ref.hash, "Copy transaction hash")}</span></div>` : ""}
           </div></li>`;
       }).join("");
       out.innerHTML = `<div class="trk">
@@ -2191,177 +2334,173 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
           </div>
         </div>
       </div>`;
-      if (tour.on && tour.id === prod.id && stage === 5) { tour.tracked = true; updateTour(); }
     } catch (e) {
-      out.innerHTML = empty("warning-octagon", "Could not find that product", explain(e));
+      if (token === trackToken) out.innerHTML = empty("warning-octagon", "Could not find that product", explain(e));
+    }
+  }
+
+  // ---------- Blocks ----------
+  let blkToken = 0;
+  async function loadBlocks() {
+    const el = $("blockRows");
+    if (!provider || !contract) { el.innerHTML = skeletonCards(3); return; }
+    const token = ++blkToken;
+    try {
+      const head = await provider.getBlockNumber();
+      const nums = [];
+      for (let n = head; n >= Math.max(0, head - 19); n--) nums.push(n);
+      const blocks = (await Promise.all(nums.map((n) => provider.getBlock(n, true)))).filter(Boolean);
+      const rows = blocks.flatMap((b) => (b.prefetchedTransactions || []).map((tx) => ({ b, tx })));
+      const receipts = await Promise.all(rows.map((r) => provider.getTransactionReceipt(r.tx.hash)));
+      await ensureRoles(rows.flatMap((r) => [r.tx.from, r.tx.to]));
+      if (token !== blkToken) return;
+      if (!rows.length) { el.innerHTML = empty("cube", "No transactions yet", ""); return; }
+      el.innerHTML = `<div class="blk head" aria-hidden="true"><span>Block</span><span>Function</span><span>From / To</span><span>Tx hash</span><span>Gas used</span><span>Time</span></div>` +
+        rows.map((r, i) => {
+          const fn = fnName(r.tx);
+          return `<div class="blk">
+            <span class="num" data-k="Block">#${r.b.number}</span>
+            <span class="fn" data-k="Function">${esc(fn)}</span>
+            <span class="ft" data-k="From / To">${nameChip(r.tx.from)}<span class="muted">${ico("arrow-right")}</span>${nameChip(r.tx.to)}</span>
+            <span class="hash hashc" data-k="Tx"><button type="button" class="txlink" data-tx="${r.tx.hash}" title="Show transaction details">${shortHash(r.tx.hash)}</button>${copyBtn(r.tx.hash, "Copy transaction hash")}</span>
+            <span class="gas" data-k="Gas">${Number(receipts[i]?.gasUsed || 0).toLocaleString()}</span>
+            <span class="when" data-k="Time">${fmtTime(r.b.timestamp)}</span>
+          </div>`;
+        }).join("");
+    } catch (e) {
+      if (token === blkToken) el.innerHTML = empty("warning-octagon", "Could not load blocks", explain(e));
+    }
+  }
+
+  function fnName(tx) {
+    if (!tx.to) return "deploy()";
+    try { return (IFACE.parseTransaction({ data: tx.data, value: tx.value })?.name || "call") + "()"; } catch (_) { return "unknown()"; }
+  }
+
+  async function openTx(hash) {
+    try {
+      const [tx, rc] = await Promise.all([provider.getTransaction(hash), provider.getTransactionReceipt(hash)]);
+      const blk = await provider.getBlock(rc.blockNumber);
+      let parsed = null;
+      try { parsed = tx.to ? IFACE.parseTransaction({ data: tx.data, value: tx.value }) : null; } catch (_) {}
+      const key = parsed ? parsed.name : "deploy";
+      await ensureRoles([tx.from, tx.to]);
+      const val = (inp, v) => (inp.type === "address" ? `${nameChip(v)} <span class="addr">${esc(short(v))}</span>` : `<span class="mono">${esc(String(v))}</span>`);
+      const args = parsed ? parsed.fragment.inputs.map((inp, i) => `<div><dt>${esc(inp.name)}</dt><dd>${val(inp, parsed.args[i])}</dd></div>`).join("") : "";
+      const info = `<dl class="kvs">
+        <div><dt>Function</dt><dd><b>${esc(fnName(tx))}</b></dd></div>
+        <div><dt>Block</dt><dd><span class="mono">#${rc.blockNumber}</span></dd></div>
+        <div><dt>Tx hash</dt><dd><span class="mono">${esc(shortHash(hash))}</span>${copyBtn(hash, "Copy transaction hash")}</dd></div>
+        <div><dt>From</dt><dd>${nameChip(tx.from)} <span class="addr">${esc(short(tx.from))}</span></dd></div>
+        <div><dt>To</dt><dd>${nameChip(tx.to)} ${tx.to ? `<span class="addr">${esc(short(tx.to))}</span>` : ""}</dd></div>
+        <div><dt>Gas used</dt><dd>${Number(rc.gasUsed).toLocaleString()}</dd></div>
+        <div><dt>Status</dt><dd>${rc.status === 1 ? "Success" : "Failed"}</dd></div>
+        <div><dt>Time</dt><dd>${fmtTime(blk.timestamp)}</dd></div>
+        ${args}
+      </dl>`;
+      await openDialog({ title: "Transaction", hint: FN[key] || "", info, okLabel: "Close", wide: true, closeOnly: true });
+    } catch (e) {
+      toast("Could not load that transaction: " + explain(e), "err");
     }
   }
 
   // ---------- Admin ----------
+  const PICKS = [["roleAddrSel", "roleAddr"], ["lookupAddrSel", "lookupAddr"], ["newAdminSel", "newAdmin"]];
+  function initPickers() {
+    for (const [s, i] of PICKS) {
+      const sel = $(s), inp = $(i);
+      if (!demo) { sel.classList.add("hidden"); inp.classList.remove("hidden"); continue; }
+      sel.classList.remove("hidden");
+      sel.innerHTML = demo.accts.map((a, n) => `<option value="${a}">${PERSONAS[n].label} ${short(a)}</option>`).join("") + `<option value="__other">Other address...</option>`;
+      inp.classList.add("hidden");
+      sel.onchange = () => { inp.classList.toggle("hidden", sel.value !== "__other"); };
+    }
+    $("roleAddrSel").value = demo ? demo.accts[4] : "";
+    $("adminSample").innerHTML = `<option value="">Choose a sample...</option>` + ADMIN_SAMPLES.map((s, n) => `<option value="${n}">${esc(s.label)}</option>`).join("");
+    $("adminSample").parentElement.classList.toggle("hidden", !demo);
+  }
+  const pickVal = (s, i) => ($(s).classList.contains("hidden") || $(s).value === "__other" ? $(i).value.trim() : $(s).value);
+
   async function setRole() {
-    const a = $("roleAddr").value.trim();
+    const a = pickVal("roleAddrSel", "roleAddr");
     if (!ethers.isAddress(a)) return toast("Invalid address.", "err");
     sendTx("Set role", () => contract.setRole(a, Number($("roleSel").value)));
   }
   async function lookupRole() {
-    const a = $("lookupAddr").value.trim();
+    const a = pickVal("lookupAddrSel", "lookupAddr");
     if (!ethers.isAddress(a)) return ($("lookupOut").textContent = "Invalid address.");
     const r = await contract.roles(a);
     $("lookupOut").textContent = `${short(a)} has role: ${ROLES[Number(r)]}`;
   }
 
-  // ---------- Tabs & wiring ----------
-  function switchTab(name) {
-    curTab = name;
-    document.querySelectorAll(".tab").forEach((t) => {
-      const on = t.dataset.tab === name;
-      t.classList.toggle("active", on);
-      t.setAttribute("aria-selected", on);
-      t.tabIndex = on ? 0 : -1;
-    });
-    document.querySelectorAll(".panel").forEach((p) => p.classList.toggle("hidden", p.id !== "tab-" + name));
-    updateTour();
+  // ---------- tooltips ----------
+  const tipBox = $("tipBox");
+  let tipTimer = null;
+  function showTip(el) {
+    const t = el.dataset.tip;
+    if (!t) return;
+    tipBox.innerHTML = (el.dataset.tipt ? `<b>${esc(el.dataset.tipt)}</b>` : "") + esc(t);
+    tipBox.classList.remove("hidden");
+    const r = el.getBoundingClientRect(), bw = tipBox.offsetWidth, bh = tipBox.offsetHeight;
+    const left = Math.min(Math.max(8, r.left + r.width / 2 - bw / 2), window.innerWidth - bw - 8);
+    const top = r.top - bh - 8 < 8 ? r.bottom + 8 : r.top - bh - 8;
+    tipBox.style.left = left + "px";
+    tipBox.style.top = top + "px";
   }
-
-  // ---------- Guided tour (demo only) ----------
-  const tour = { on: false, id: null, baseCount: 0, tracked: false, lastTarget: null };
-  const TOUR_TOTAL = 7;
-
-  function tourPlan() {
-    const p = tour.id ? products.find((x) => x.id === tour.id) : null;
-    if (!p) return { n: 1, role: "manufacturer", tab: "register", title: "Register a product", act: "register" };
-    if (p.recalled) return { n: 8, done: true, title: "This product was recalled", text: "A recall freezes the product on the blockchain, so the tour ends here." };
-    switch (p.stage) {
-      case 0: return { n: 2, role: "manufacturer", tab: "products", title: "Ship it to the distributor", act: "ship" };
-      case 1: return { n: 3, role: "distributor", tab: "products", title: "Receive the shipment", act: "receive" };
-      case 2: return { n: 4, role: "distributor", tab: "products", title: "Ship it to the retailer", act: "ship" };
-      case 3: return { n: 5, role: "retailer", tab: "products", title: "Receive it at the store", act: "receive" };
-      case 4: return { n: 6, role: "retailer", tab: "products", title: "Mark it sold", act: "sold" };
-      default:
-        return tour.tracked
-          ? { n: 8, done: true, title: "That is the full journey", text: "Every hand-over is now a permanent record on the blockchain. Anyone can verify it, with no account." }
-          : { n: 7, role: null, tab: "track", title: "Track the journey", act: "track" };
-    }
-  }
-
-  const ACT_TEXT = {
-    ship: "Press the highlighted <b>Ship</b> button on your product. The recipient is filled in for you, so just confirm.",
-    receive: "Press the highlighted <b>Receive</b> button, then confirm the dialog.",
-    sold: "Press the highlighted <b>Mark sold</b> button, then confirm the dialog.",
-    track: "Press the highlighted <b>Track</b> button to see every hand-over of your product.",
-  };
-
-  function updateTour() {
-    document.querySelectorAll(".nudge").forEach((x) => x.classList.remove("nudge"));
-    document.querySelectorAll(".pcard.is-tour").forEach((x) => x.classList.remove("is-tour"));
-    const panel = $("tour");
-    if (!tour.on || !demo) {
-      panel.classList.add("hidden");
-      document.body.classList.remove("tour-on");
-      return;
-    }
-    panel.classList.remove("hidden");
-    document.body.classList.add("tour-on");
-    if (tour.id) document.querySelector(`.pcard[data-id="${tour.id}"]`)?.classList.add("is-tour");
-
-    const plan = tourPlan();
-    const curKey = PERSONAS[personaIdx].key;
-    const acts = [];
-    let target = null, text;
-    $("tourTitle").textContent = plan.title;
-    $("tourStep").textContent = plan.done ? "Tour complete" : `Step ${plan.n} of ${TOUR_TOTAL}`;
-    $("tourProg").style.width = (plan.done ? 100 : ((plan.n - 1) / TOUR_TOTAL) * 100) + "%";
-
-    if (plan.done) {
-      text = plan.text;
-      acts.push(`<button class="btn sm primary" type="button" data-tour="finish">Finish</button>`);
-    } else if (plan.role && curKey !== plan.role) {
-      const lbl = ROLE_META[plan.role].label;
-      target = $("roleSwitch").querySelector(`[data-key="${plan.role}"]`);
-      text = `Switch to <b>${lbl}</b> with the highlighted "Acting as" control. Only this role can do the next step.`;
-      acts.push(`<button class="btn sm" type="button" data-tour="switch" data-i="${PERSONAS.findIndex((x) => x.key === plan.role)}">Switch for me</button>`);
-    } else if (curTab !== plan.tab) {
-      const names = { products: "Products", register: "Register", track: "Track" };
-      target = document.querySelector(`.tab[data-tab="${plan.tab}"]`);
-      text = `Open the highlighted <b>${names[plan.tab]}</b> tab.`;
-    } else if (plan.act === "register") {
-      if (!$("regName").value.trim()) {
-        target = $("regFill");
-        text = "Press <b>Fill an example</b>, then <b>Register product</b>. The product is written to the blockchain.";
-      } else {
-        target = $("regBtn");
-        text = "Now press the highlighted <b>Register product</b> button.";
-      }
-    } else if (plan.act === "track") {
-      $("trackId").value = tour.id;
-      target = $("trackBtn");
-      text = ACT_TEXT.track;
-    } else {
-      target = document.querySelector(`.pcard[data-id="${tour.id}"] [data-act="${plan.act}"]`);
-      text = ACT_TEXT[plan.act];
-    }
-    $("tourBody").innerHTML = text;
-    $("tourActions").innerHTML = acts.join("");
-    if (target) {
-      target.classList.add("nudge");
-      if (target !== tour.lastTarget) target.scrollIntoView({ block: "center", behavior: reduceMotion() ? "auto" : "smooth" });
-    }
-    tour.lastTarget = target;
-  }
-
-  function startTour() {
-    if (!demo) return toast("The tour runs in the demo. Press Start demo first.", "info");
-    Object.assign(tour, { on: true, id: null, baseCount: products.length, tracked: false, lastTarget: null });
-    $("trackResult").innerHTML = "";
-    renderTrackQuick();
-    switchTab(curTab === "register" ? "register" : "products");
-  }
-  function stopTour() {
-    tour.on = false;
-    updateTour();
-  }
+  const hideTip = () => tipBox.classList.add("hidden");
+  document.addEventListener("mouseover", (e) => { const t = e.target.closest("[data-tip]"); if (t) showTip(t); });
+  document.addEventListener("mouseout", (e) => { if (e.target.closest("[data-tip]")) hideTip(); });
+  document.addEventListener("focusin", (e) => { const t = e.target.closest("[data-tip]"); if (t) showTip(t); });
+  document.addEventListener("focusout", hideTip);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideTip(); });
 
   // ---------- events ----------
-  $("connectBtn").onclick = connect;
   $("loadBtn").onclick = loadContract;
   $("refreshBtn").onclick = async () => { if (contract) { await refreshAll(); toast("Products updated.", "info", 1800); } };
+  $("blocksRefresh").onclick = () => loadBlocks();
   $("mineOnly").onchange = renderProducts;
   $("searchInput").oninput = (e) => { query = e.target.value.trim(); renderProducts(); };
   $("regBtn").onclick = registerProduct;
-  $("regFill").onclick = () => {
-    $("regName").value = "Single-Origin Honey 500g";
-    $("regBatch").value = "BATCH-2026-003";
-    $("regLoc").value = "Wayanad Apiary, Kerala";
-    updateTour();
+  $("regSample").innerHTML = `<option value="">Choose a sample product...</option>` + REG_SAMPLES.map((s, i) => `<option value="${i}">${esc(s.name)}</option>`).join("");
+  $("regSample").onchange = (e) => {
+    const s = REG_SAMPLES[Number(e.target.value)];
+    if (!s) return;
+    $("regName").value = s.name; $("regBatch").value = s.batch; $("regLoc").value = s.loc; $("regCid").value = s.cid;
   };
-  $("regName").addEventListener("input", updateTour);
-  $("trackBtn").onclick = trackProduct;
-  $("trackId").onkeydown = (e) => { if (e.key === "Enter") trackProduct(); };
+  $("trackSel").onchange = (e) => go(e.target.value ? "/track/" + e.target.value : "/track");
+  $("adminSample").onchange = (e) => {
+    const s = ADMIN_SAMPLES[Number(e.target.value)];
+    if (!s || !demo) return;
+    $("roleAddrSel").value = demo.accts[s.acct];
+    $("roleAddrSel").onchange?.();
+    $("roleSel").value = String(s.role);
+  };
   $("roleBtn").onclick = setRole;
   $("lookupBtn").onclick = lookupRole;
   $("pauseBtn").onclick = () => sendTx("Pause", () => contract.pause());
   $("unpauseBtn").onclick = () => sendTx("Unpause", () => contract.unpause());
-  $("adminBtn").onclick = () => {
-    const a = $("newAdmin").value.trim();
+  $("adminBtn").onclick = async () => {
+    const a = pickVal("newAdminSel", "newAdmin");
     if (!ethers.isAddress(a)) return toast("Invalid address.", "err");
-    if (confirm("Transfer admin rights? You will lose admin access.")) sendTx("Transfer admin", () => contract.transferAdmin(a));
+    const ok = await openDialog({ title: "Transfer admin rights?", hint: "On-chain: " + FN.transferAdmin + " You will lose admin access.", okLabel: "Transfer", info: `<p class="small">New admin: <span class="mono">${esc(short(a))}</span></p>` });
+    if (ok) sendTx("Transfer admin", () => contract.transferAdmin(a));
   };
   document.querySelectorAll(".tab").forEach((t) => {
-    t.onclick = () => switchTab(t.dataset.tab);
+    t.onclick = () => go("/" + t.dataset.tab);
     t.onkeydown = (e) => {
       const tabs = [...document.querySelectorAll(".tab")];
       const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
       if (!d) return;
       e.preventDefault();
       const n = tabs[(tabs.indexOf(t) + d + tabs.length) % tabs.length];
-      n.focus(); switchTab(n.dataset.tab);
+      n.focus(); go("/" + n.dataset.tab);
     };
   });
   $("productRows").onclick = (e) => {
     const b = e.target.closest("button");
-    if (!b) return;
+    if (!b || b.classList.contains("tip")) return;
     if (b.dataset.act) return onAction(b.dataset.act, Number(b.dataset.id));
-    if (b.dataset.goto) return switchTab(b.dataset.goto);
+    if (b.dataset.goto) return go(b.dataset.goto);
     if (b.dataset.clear) {
       filter = "all"; query = ""; $("searchInput").value = ""; $("mineOnly").checked = false; renderProducts();
     }
@@ -2370,11 +2509,9 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     const b = e.target.closest("[data-filter]");
     if (b) { filter = b.dataset.filter; renderProducts(); }
   };
-  $("trackQuick").onclick = (e) => {
-    const b = e.target.closest("[data-track]");
-    if (b) { $("trackId").value = b.dataset.track; trackProduct(); }
-  };
   document.addEventListener("click", async (e) => {
+    const tp = e.target.closest(".tip");
+    if (tp) { showTip(tp); clearTimeout(tipTimer); tipTimer = setTimeout(hideTip, 5000); return; }
     const c = e.target.closest("[data-copy]");
     if (c) {
       await copyText(c.dataset.copy);
@@ -2383,28 +2520,42 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
       setTimeout(() => c.classList.remove("copied"), 1200);
       return;
     }
-    if (e.target.closest("#changeContract")) { setView("connect"); return; }
-    const t = e.target.closest("[data-tour]");
-    if (t) {
-      if (t.dataset.tour === "finish") stopTour();
-      if (t.dataset.tour === "switch") switchPersona(Number(t.dataset.i));
-    }
+    const tx = e.target.closest("[data-tx]");
+    if (tx) openTx(tx.dataset.tx);
   });
   $("acctBtn").onclick = async () => { await copyText(account); toast("Your address was copied.", "info", 1600); };
-  $("brandLink").onclick = (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: reduceMotion() ? "auto" : "smooth" }); };
-  $("tourBtn").onclick = startTour;
-  $("tourClose").onclick = stopTour;
+  $("stAddr").onclick = async () => { if (contractAddr) { await copyText(contractAddr); toast("Contract address copied.", "info", 1600); } };
+  $("stChange").onclick = () => { $("setup").classList.remove("hidden"); $("addrInput").focus(); };
+  $("netSel").onchange = (e) => {
+    ssSet("chaintrace.net", e.target.value === "wallet" ? "wallet" : null);
+    location.reload();
+  };
 
-  $("demoBtn").onclick = startDemo;
-  hydrateIcons();
-  heroSample();
-  setDemoButton(false);
-  $("connectBtn").innerHTML = ico("wallet") + "Connect MetaMask";
-  if (!window.Ganache) $("demoBtn").classList.add("hidden");
-  renderProducts();
-  renderTrackQuick();
-  const saved = lsGet("chaintrace.address");
-  if (saved) $("addrInput").value = saved;
+  // ---------- start ----------
+  async function boot() {
+    hydrateIcons();
+    renderProducts();
+    $("trackResult").innerHTML = "";
+    $("statTotal").textContent = "0";
+    const saved = lsGet("chaintrace.address");
+    if (saved) $("addrInput").value = saved;
+    if (!location.hash || !TABS.includes(parseHash().tab) || !/^#\/(products|register|track|blocks|admin)(\/\d+)?$/.test(location.hash)) history.replaceState(null, "", "#/products");
+    showTab(parseHash().tab);
+
+    if (ssGet("chaintrace.net") === "wallet") {
+      $("netSel").value = "wallet";
+      if (await connect()) return;
+      ssSet("chaintrace.net", null);
+      $("netSel").value = "sim";
+    }
+    $("setup").classList.add("hidden");
+    if (window.Ganache) { await startDemo(); return; }
+    // plain frontend folder (no in-browser chain): MetaMask only
+    $("netSel").value = "wallet";
+    $("app").classList.remove("booting");
+    await connect();
+  }
+  boot();
 })();
 
 </script>
