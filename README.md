@@ -16,7 +16,7 @@ supply-chain-tracker/
 
 ## Quickest way: run it on ANY laptop (no install)
 
-Open **`dist/ChainTrace-Standalone.html`** (a single file) by double-clicking it in Chrome, Edge, Firefox or Safari, then click **Try demo (no wallet)**.
+Open **`dist/ChainTrace-Standalone.html`** (a single file) by double-clicking it in Chrome, Edge, Firefox or Safari. It starts its own private test blockchain automatically.
 
 - No Node, MetaMask, Remix, internet or server needed. The file contains the DApp, ethers.js and a private Ethereum chain that runs inside the browser tab.
 - It deploys the contract, assigns roles and loads two sample products automatically.
