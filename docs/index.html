@@ -3,241 +3,574 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f4f6f5" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0c1210" media="(prefers-color-scheme: dark)" />
+  <meta name="description" content="ChainTrace records every hand-over of a product on Ethereum so anyone can verify its journey." />
   <title>ChainTrace - Supply Chain Tracker</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230a7f5a'/%3E%3Cpath d='M16 42 L32 22 L48 42' fill='none' stroke='%23fff' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='42' r='6' fill='%23fff'/%3E%3Ccircle cx='32' cy='22' r='6' fill='%23fff'/%3E%3Ccircle cx='48' cy='42' r='6' fill='%23fff'/%3E%3C/svg%3E" />
   <style>
+/* ChainTrace UI. Native CSS, system fonts, one emerald accent, light + dark via prefers-color-scheme.
+   Shape rule: buttons/inputs 10px, cards 16px, badges and chips fully round. */
 :root {
-  --bg: #0e1116;
-  --panel: #161b22;
-  --panel2: #1c232d;
-  --line: #2a3340;
-  --text: #e6edf3;
-  --muted: #8b98a8;
-  --accent: #3ddc97;
-  --accent-ink: #06281a;
-  --danger: #ff6b6b;
-  --warn: #f5b942;
-  --blue: #5aa9ff;
-  --radius: 12px;
+  --bg: #f4f6f5;
+  --surface: #ffffff;
+  --surface-2: #eef2f0;
+  --line: #dbe2de;
+  --line-strong: #c3ccc7;
+  --text: #0f1714;
+  --muted: #55625c;
+  --accent: #0a7f5a;
+  --accent-ink: #ffffff;
+  --accent-soft: #e0f3ea;
+  --accent-ring: rgba(10, 127, 90, 0.35);
+  --danger: #bd332a;
+  --danger-soft: #fbe9e7;
+  --warn: #8a5a00;
+  --warn-soft: #fbf0d9;
+  --c-adm: #0f1714;
+  --c-man: #99530a;
+  --c-dis: #1d5ccb;
+  --c-ret: #7a3ec0;
+  --c-vis: #4c5954;
+  --logo-ink: #ffffff;
+  --shadow: 0 1px 2px rgba(15, 35, 28, 0.06), 0 8px 24px -12px rgba(15, 35, 28, 0.18);
+  --shadow-lg: 0 2px 4px rgba(15, 35, 28, 0.06), 0 24px 48px -20px rgba(15, 35, 28, 0.28);
+  --r-s: 10px;
+  --r-card: 16px;
+  --font: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Roboto, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c1210;
+    --surface: #131c18;
+    --surface-2: #1a2621;
+    --line: #26352f;
+    --line-strong: #36483f;
+    --text: #e8efec;
+    --muted: #9aa9a2;
+    --accent: #3ddc97;
+    --accent-ink: #04200f;
+    --accent-soft: #123327;
+    --accent-ring: rgba(61, 220, 151, 0.4);
+    --danger: #ff7b72;
+    --danger-soft: #3a1b19;
+    --warn: #f0b955;
+    --warn-soft: #382a0e;
+    --c-adm: #e8efec;
+    --c-man: #ffb454;
+    --c-dis: #7cb0ff;
+    --c-ret: #c8a2ff;
+    --c-vis: #aab8b1;
+    --logo-ink: #04200f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.4), 0 24px 48px -20px rgba(0, 0, 0, 0.7);
+  }
+}
+
 * { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
-  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif; line-height: 1.5;
+  font-family: var(--font); font-size: 15px; line-height: 1.5;
+  min-height: 100dvh; display: flex; flex-direction: column;
 }
-.mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 0.85rem; }
+main { flex: 1; width: 100%; max-width: 1120px; margin: 0 auto; padding: 24px 20px 64px; }
+h1, h2, h3 { margin: 0; line-height: 1.15; letter-spacing: -0.02em; }
+h2 { font-size: 1.35rem; margin-bottom: 6px; }
+h3 { font-size: 1.02rem; margin-bottom: 8px; letter-spacing: -0.01em; }
+p { margin: 0 0 10px; }
+a { color: var(--accent); }
+.mono { font-family: var(--mono); font-size: 0.84rem; }
 .muted { color: var(--muted); }
-.small { font-size: 0.85rem; }
+.small { font-size: 0.86rem; }
 .hidden { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 12px; top: -48px; background: var(--accent); color: var(--accent-ink); padding: 8px 14px; border-radius: var(--r-s); z-index: 100; font-weight: 600; }
+.skip:focus { top: 10px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
 
-.top {
-  display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
-  padding: 16px 28px; border-bottom: 1px solid var(--line); background: var(--panel);
-  position: sticky; top: 0; z-index: 5;
-}
-.brand { display: flex; align-items: center; gap: 12px; }
-.brand h1 { margin: 0; font-size: 1.2rem; letter-spacing: 0.02em; }
-.brand p { margin: 0; font-size: 0.78rem; color: var(--muted); }
-.logo {
-  width: 40px; height: 40px; border-radius: 10px; background: var(--accent); color: var(--accent-ink);
-  display: grid; place-items: center; font-weight: 800;
-}
-.wallet { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+[data-icon], .ico { display: inline-flex; width: 1.15em; height: 1.15em; flex: none; }
+[data-icon] svg, .ico svg, .ic { width: 100%; height: 100%; fill: currentColor; display: block; }
+.tk-dot .ic { width: 1em; height: 1em; }
+.tl-ic .ic, .em-ic .ic { width: 1em; height: 1em; }
 
-main { max-width: 1100px; margin: 0 auto; padding: 24px 20px 80px; }
-h2 { margin: 0 0 6px; font-size: 1.15rem; }
-h3 { margin: 0 0 10px; font-size: 1rem; }
+/* ---------- header ---------- */
+.top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+.top-in { max-width: 1120px; margin: 0 auto; padding: 0 20px; min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--accent); text-decoration: none; }
+.brand .logo { width: 34px; height: 34px; }
+.brand-name { color: var(--text); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+.wallet { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 
-.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 18px; }
-.card.inner { background: var(--panel2); margin: 0; }
-.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
-
-.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.row.between { justify-content: space-between; margin-bottom: 12px; }
-.row.end { justify-content: flex-end; margin-top: 16px; }
-.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 12px; }
-
-input, select {
-  background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 8px;
-  padding: 10px 12px; font-size: 0.95rem; min-width: 0; flex: 1;
-}
-input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
-.form { display: flex; flex-direction: column; gap: 12px; max-width: 520px; }
-.form label { display: flex; flex-direction: column; gap: 5px; font-size: 0.85rem; color: var(--muted); }
-.check { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--muted); }
-.check input { flex: none; }
-
+/* ---------- buttons, inputs ---------- */
 .btn {
-  background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 8px;
-  padding: 9px 16px; cursor: pointer; font-size: 0.9rem; font-weight: 600; white-space: nowrap;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap;
+  font: inherit; font-weight: 600; font-size: 0.92rem; line-height: 1;
+  min-height: 40px; padding: 0 16px; border-radius: var(--r-s);
+  background: var(--surface); color: var(--text); border: 1px solid var(--line-strong);
+  cursor: pointer; transition: transform 0.18s var(--ease), background-color 0.18s, border-color 0.18s, box-shadow 0.18s;
 }
-.btn:hover { border-color: var(--muted); }
+.btn:hover { border-color: var(--text); transform: translateY(-1px); }
+.btn:active { transform: translateY(0) scale(0.98); }
 .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-.btn.danger { background: transparent; color: var(--danger); border-color: var(--danger); }
-.btn.small { padding: 5px 10px; font-size: 0.8rem; }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn.primary:hover { box-shadow: 0 6px 16px -6px var(--accent-ring); border-color: var(--accent); }
+.btn.danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 50%, var(--line)); }
+.btn.danger:hover { background: var(--danger-soft); border-color: var(--danger); }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--muted); }
+.btn.ghost:hover { color: var(--text); background: var(--surface-2); }
+.btn.sm { min-height: 34px; padding: 0 12px; font-size: 0.86rem; }
+.btn.lg { min-height: 50px; padding: 0 24px; font-size: 1rem; }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn .spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: spin 0.7s linear infinite; }
+.icon-btn { display: inline-grid; place-items: center; width: 32px; height: 32px; border: 0; border-radius: var(--r-s); background: transparent; color: var(--muted); cursor: pointer; }
+.icon-btn:hover { background: var(--surface-2); color: var(--text); }
+.chip-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--text); cursor: pointer; }
+.chip-btn:hover { border-color: var(--text); }
 
-.pill { padding: 3px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; border: 1px solid var(--line); }
-.pill.admin { color: var(--warn); border-color: var(--warn); }
-.pill.role { color: var(--accent); border-color: var(--accent); }
-.pill.net { color: var(--blue); border-color: var(--blue); }
-.pill.warn { color: var(--danger); border-color: var(--danger); }
-
-.tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-.tab {
-  background: transparent; color: var(--muted); border: 1px solid transparent; border-radius: 8px;
-  padding: 8px 16px; font-weight: 600; cursor: pointer;
+.lbl { display: block; font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.01em; }
+.lbl em { font-style: normal; font-weight: 400; }
+input, select {
+  width: 100%; min-height: 42px; padding: 0 12px; font: inherit; color: var(--text);
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--r-s);
+  transition: border-color 0.18s, box-shadow 0.18s;
 }
-.tab.active { background: var(--panel); color: var(--text); border-color: var(--line); }
+input::placeholder { color: var(--muted); opacity: 0.8; }
+input:hover, select:hover { border-color: var(--muted); }
+input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); }
+input[type="checkbox"] { width: 18px; height: 18px; min-height: 0; accent-color: var(--accent); }
+.row { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+.row.end { justify-content: flex-end; margin-top: 18px; }
+.row > .grow, .grow { flex: 1 1 220px; min-width: 0; }
+.form { display: grid; gap: 14px; }
+.narrow { max-width: 560px; }
+.divider { height: 1px; background: var(--line); margin: 18px 0; }
+.ok-text { color: var(--accent); }
+.err-text { color: var(--danger); }
 
-.statrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 18px; }
-.stat { background: var(--panel2); border-radius: 10px; padding: 12px 14px; }
-.stat span { font-size: 1.6rem; font-weight: 800; display: block; }
-.stat label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.pill { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 0 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 600; border: 1px solid var(--line-strong); color: var(--muted); background: var(--surface); }
+.pill.role, .pill.admin { color: var(--text); padding: 0; border: 0; background: none; }
 
-.tablewrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-th { text-align: left; color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 10px; border-bottom: 1px solid var(--line); }
-td { padding: 11px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
-td .acts { display: flex; gap: 6px; flex-wrap: wrap; }
-
-.stage { padding: 3px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; background: var(--panel2); }
-.stage.s0 { color: var(--blue); }
-.stage.s1, .stage.s3 { color: var(--warn); }
-.stage.s2, .stage.s4 { color: var(--accent); }
-.stage.s5 { color: #c4a8ff; }
-.stage.recalled { color: var(--danger); background: rgba(255,107,107,0.12); }
-
-.timeline { list-style: none; margin: 20px 0 0; padding: 0; border-left: 2px solid var(--line); }
-.timeline li { position: relative; padding: 0 0 22px 22px; }
-.timeline li::before {
-  content: ""; position: absolute; left: -7px; top: 5px; width: 12px; height: 12px; border-radius: 50%;
-  background: var(--accent); border: 2px solid var(--bg);
+/* ---------- role colours ---------- */
+.role-admin { --rc: var(--c-adm); }
+.role-manufacturer { --rc: var(--c-man); }
+.role-distributor { --rc: var(--c-dis); }
+.role-retailer { --rc: var(--c-ret); }
+.role-visitor { --rc: var(--c-vis); }
+.rchip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px 2px 8px; min-height: 24px; border-radius: 999px;
+  font-size: 0.78rem; font-weight: 700; color: var(--rc);
+  background: color-mix(in srgb, var(--rc) 13%, var(--surface)); border: 1px solid color-mix(in srgb, var(--rc) 30%, transparent);
 }
-.timeline li.recall::before { background: var(--danger); }
-.timeline .t { font-weight: 700; }
-.timeline .meta { color: var(--muted); font-size: 0.82rem; }
-.kv { display: grid; grid-template-columns: 140px 1fr; gap: 6px 14px; margin-top: 14px; font-size: 0.9rem; }
-.kv dt { color: var(--muted); } .kv dd { margin: 0; word-break: break-all; }
+.rchip [data-icon] { width: 1em; height: 1em; }
 
-dialog { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; width: min(460px, 92vw); }
-dialog::backdrop { background: rgba(0,0,0,0.6); }
+/* ---------- landing ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 56px; align-items: center; padding: 56px 0 40px; }
+.hero h1 { font-size: clamp(2.2rem, 4.6vw, 3.5rem); letter-spacing: -0.035em; line-height: 1.04; max-width: 14ch; }
+.lede { font-size: 1.15rem; color: var(--muted); max-width: 46ch; margin: 18px 0 28px; line-height: 1.5; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-visual { position: relative; padding: 28px; border-radius: 24px; background: radial-gradient(120% 120% at 100% 0%, var(--accent-soft), transparent 62%); }
+.hero-visual .pcard { box-shadow: var(--shadow-lg); }
+.how { padding: 40px 0 8px; }
+.how h2 { margin-bottom: 20px; }
+.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.flow li { position: relative; padding: 22px 22px 6px 0; display: grid; gap: 6px; align-content: start; }
+.flow li + li { padding-left: 22px; border-left: 1px solid var(--line); }
+.flow b { font-size: 1.02rem; }
+.flow li > span:last-child { color: var(--muted); font-size: 0.92rem; }
+.flow-ic { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; font-size: 1.35rem; color: var(--rc); background: color-mix(in srgb, var(--rc) 13%, var(--surface)); margin-bottom: 6px; }
+.flow-ic [data-icon] { width: 1em; height: 1em; }
 
-.toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--panel2);
-  border: 1px solid var(--line); border-radius: 10px; padding: 12px 18px; max-width: 90vw; z-index: 20; font-size: 0.9rem;
+/* ---------- cards / setup ---------- */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); padding: 22px; box-shadow: var(--shadow); }
+.setup { max-width: 640px; margin: 24px auto; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 16px; }
+
+/* ---------- demo + role bar ---------- */
+.demobar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 0.86rem; color: var(--muted); padding: 0 0 14px; }
+.demobar b { color: var(--text); }
+.rolebar { display: grid; gap: 10px; padding: 16px 18px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); margin-bottom: 18px; }
+.rolebar #roleSwitchWrap { display: grid; gap: 4px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg-btn {
+  position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border-radius: 999px;
+  font: inherit; font-weight: 600; font-size: 0.9rem; cursor: pointer; color: var(--rc);
+  background: var(--surface); border: 1px solid color-mix(in srgb, var(--rc) 30%, var(--line));
+  transition: transform 0.18s var(--ease), background-color 0.18s, border-color 0.18s;
 }
-.toast.ok { border-color: var(--accent); }
-.toast.err { border-color: var(--danger); color: var(--danger); }
-.ok-text { color: var(--accent); } .err-text { color: var(--danger); }
+.seg-btn:hover { background: color-mix(in srgb, var(--rc) 10%, var(--surface)); transform: translateY(-1px); }
+.seg-btn:active { transform: scale(0.97); }
+.seg-btn[aria-checked="true"] { background: color-mix(in srgb, var(--rc) 16%, var(--surface)); border-color: var(--rc); box-shadow: inset 0 0 0 1px var(--rc); }
+.seg-btn small { font-weight: 500; opacity: 0.8; font-size: 0.74rem; }
+.perms { margin: 0; font-size: 0.9rem; color: var(--muted); display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+.perms b { color: var(--text); }
 
-@media (max-width: 640px) { .top { padding: 12px 16px; } .kv { grid-template-columns: 1fr; } }
+/* ---------- tabs ---------- */
+.tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); margin-bottom: 22px; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { position: relative; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; font: inherit; font-weight: 600; font-size: 0.93rem; color: var(--muted); background: none; border: 0; cursor: pointer; white-space: nowrap; border-radius: var(--r-s) var(--r-s) 0 0; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); }
+.tab.active::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 3px; border-radius: 3px 3px 0 0; background: var(--accent); }
+.panel { animation: rise 0.35s var(--ease) both; }
 
-.demobar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding:10px 28px; background:rgba(61,220,151,0.1); border-bottom:1px solid var(--accent); font-size:0.88rem; }
-.demobar label { display:flex; align-items:center; gap:8px; color:var(--muted); }
-.demobar select { flex:none; padding:6px 10px; }
+/* ---------- products ---------- */
+.statrow { display: flex; gap: 36px; flex-wrap: wrap; margin-bottom: 20px; }
+.stat { display: grid; gap: 0; }
+.stat span { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat label { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
+.toolbar { display: flex; gap: 12px 16px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.search { position: relative; flex: 1 1 260px; max-width: 420px; display: block; }
+.search input { padding-left: 38px; }
+.search-ic { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.check { display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; cursor: pointer; user-select: none; }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+.fchip { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 14px; border-radius: 999px; font: inherit; font-size: 0.86rem; font-weight: 600; cursor: pointer; color: var(--muted); background: var(--surface); border: 1px solid var(--line); transition: background-color 0.18s, color 0.18s, border-color 0.18s, transform 0.18s var(--ease); }
+.fchip:hover { color: var(--text); border-color: var(--line-strong); }
+.fchip[aria-pressed="true"] { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.fchip i { font-style: normal; font-variant-numeric: tabular-nums; opacity: 0.75; }
+
+.pgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pcard { position: relative; display: grid; gap: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: var(--shadow); transition: transform 0.25s var(--ease), border-color 0.2s; }
+.pcard.enter { animation: rise 0.45s var(--ease) both; animation-delay: calc(var(--i, 0) * 50ms); }
+.pcard:hover { border-color: var(--line-strong); transform: translateY(-2px); }
+.pcard.is-recalled { border-color: color-mix(in srgb, var(--danger) 55%, var(--line)); background: linear-gradient(var(--danger-soft), var(--surface) 64%); }
+.pcard.is-tour { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); }
+.pc-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+.pc-name { font-size: 1.08rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.25; }
+.pc-meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; color: var(--muted); margin-top: 4px; font-size: 0.84rem; }
+.pc-holder { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 0.88rem; color: var(--muted); }
+.acts { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.badge { display: inline-flex; align-items: center; gap: 6px; min-height: 26px; padding: 0 11px; border-radius: 999px; font-size: 0.76rem; font-weight: 700; white-space: nowrap; color: var(--accent); background: var(--accent-soft); }
+.badge.transit { color: var(--warn); background: var(--warn-soft); }
+.badge.done { color: var(--text); background: var(--surface-2); }
+.badge.recalled { color: var(--danger); background: var(--danger-soft); }
+.badge [data-icon] { width: 1em; height: 1em; }
+
+/* ---------- pipeline tracker ---------- */
+.tracker { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.tk { position: relative; display: grid; justify-items: center; gap: 6px; text-align: center; }
+.tk::before { content: ""; position: absolute; top: 17px; right: 50%; width: 100%; height: 3px; border-radius: 3px; background: var(--line); }
+.tk:first-child::before { display: none; }
+.tk.done::before, .tk.current::before { background: var(--accent); }
+.tk-dot { position: relative; z-index: 1; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; font-size: 1.05rem; color: var(--muted); background: var(--surface); border: 2px solid var(--line-strong); transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
+.tk.done .tk-dot { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.tk.current .tk-dot { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.tk.current.final .tk-dot { color: var(--accent-ink); background: var(--accent); }
+.tk.current .tk-dot::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--accent); opacity: 0; }
+.tk-lbl { font-size: 0.7rem; line-height: 1.2; color: var(--muted); font-weight: 600; }
+.tk.current .tk-lbl, .tk.done .tk-lbl { color: var(--text); }
+.tk.ahead::before { background: repeating-linear-gradient(90deg, var(--accent) 0 6px, transparent 6px 12px); }
+.tracker.bad .tk.done::before, .tracker.bad .tk.current::before { background: var(--danger); }
+.tracker.bad .tk.done .tk-dot { background: var(--danger); border-color: var(--danger); color: #fff; }
+.tracker.bad .tk.current .tk-dot { color: var(--danger); border-color: var(--danger); background: var(--danger-soft); }
+.tracker.bad .tk.current .tk-dot::after { border-color: var(--danger); }
+.tk-now { margin: 10px 0 0; font-size: 0.84rem; color: var(--muted); }
+.tk-now b { color: var(--text); }
+.tracker.big { max-width: 760px; }
+.tracker.big .tk-dot { width: 44px; height: 44px; font-size: 1.25rem; }
+.tracker.big .tk::before { top: 21px; }
+.tracker.big .tk-lbl { font-size: 0.8rem; }
+
+/* ---------- empty + skeleton ---------- */
+.empty { display: grid; justify-items: center; gap: 8px; text-align: center; padding: 48px 20px; border: 1px dashed var(--line-strong); border-radius: var(--r-card); color: var(--muted); grid-column: 1 / -1; }
+.empty .em-ic { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; background: var(--surface-2); color: var(--muted); font-size: 1.6rem; }
+.empty h3 { color: var(--text); margin: 4px 0 0; }
+.empty p { margin: 0; max-width: 40ch; }
+.sk { background: linear-gradient(100deg, var(--surface-2) 30%, color-mix(in srgb, var(--surface-2) 55%, var(--surface)) 50%, var(--surface-2) 70%); background-size: 200% 100%; border-radius: 8px; }
+.sk-card { display: grid; gap: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); }
+.sk-line { height: 14px; } .sk-line.w60 { width: 60%; } .sk-line.w35 { width: 35%; } .sk-bar { height: 36px; border-radius: 18px; }
+.notice { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; margin: 0 0 16px; border-radius: var(--r-s); background: var(--warn-soft); color: var(--text); border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent); font-size: 0.9rem; }
+
+/* ---------- nudge (tour highlight) ---------- */
+.nudge { position: relative; }
+.nudge::after { content: ""; position: absolute; inset: -5px; border-radius: inherit; border: 2px solid var(--accent); pointer-events: none; animation: ping 1.6s ease-out infinite; }
+.seg-btn.nudge::after { border-radius: 999px; }
+.tab.nudge::after { display: none; }
+.tab.nudge { color: var(--accent); }
+.tab.nudge::before { content: ""; position: absolute; inset: 6px 4px; border: 2px solid var(--accent); border-radius: var(--r-s); animation: ping 1.6s ease-out infinite; pointer-events: none; }
+
+/* ---------- track page ---------- */
+.trackbar { max-width: 420px; margin: 16px 0 10px; }
+.trk { display: grid; gap: 28px; margin-top: 18px; animation: rise 0.4s var(--ease) both; }
+.trk-head { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; align-items: flex-start; }
+.trk-head h3 { font-size: 1.5rem; margin: 0; }
+.trk-top { padding: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); display: grid; gap: 22px; }
+.trk-top.is-recalled { border-color: color-mix(in srgb, var(--danger) 55%, var(--line)); }
+.trk-cols { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 32px; align-items: start; }
+.facts { display: grid; gap: 0; margin: 0; }
+.facts div { display: grid; grid-template-columns: 1fr; gap: 4px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.facts.card { padding: 8px 20px; }
+.facts div:last-child { border-bottom: 0; }
+.facts dt { color: var(--muted); font-size: 0.86rem; }
+.facts dd { margin: 0; min-width: 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; overflow-wrap: anywhere; }
+.copy { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; transition: color 0.18s, border-color 0.18s, background-color 0.18s; }
+.copy:hover { color: var(--text); border-color: var(--line-strong); }
+.copy.copied { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.addr { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.timeline li { position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; padding-bottom: 22px; animation: rise 0.45s var(--ease) both; animation-delay: calc(var(--i, 0) * 70ms); }
+.timeline li::before { content: ""; position: absolute; left: 21px; top: 44px; bottom: 0; width: 2px; background: var(--line-strong); }
+.timeline li:last-child { padding-bottom: 0; }
+.timeline li:last-child::before { display: none; }
+.tl-ic { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; font-size: 1.25rem; color: var(--accent); background: var(--accent-soft); border: 2px solid var(--accent); z-index: 1; }
+.timeline li.recall .tl-ic { color: var(--danger); background: var(--danger-soft); border-color: var(--danger); }
+.timeline li.cancel .tl-ic { color: var(--warn); background: var(--warn-soft); border-color: var(--warn); }
+.tl-body { padding-top: 2px; min-width: 0; }
+.tl-title { font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; }
+.timeline li.recall .tl-title { color: var(--danger); }
+.tl-note { color: var(--muted); font-size: 0.9rem; margin: 2px 0 6px; }
+.tl-meta { display: flex; gap: 6px 12px; flex-wrap: wrap; align-items: center; font-size: 0.84rem; color: var(--muted); }
+.tl-meta .who { display: inline-flex; align-items: center; gap: 6px; }
+.tl-meta time { display: inline-flex; align-items: center; gap: 5px; }
+.trk-sec h3 { margin-bottom: 18px; }
+
+/* ---------- dialog ---------- */
+dialog { width: min(440px, calc(100vw - 32px)); padding: 24px; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card); box-shadow: var(--shadow-lg); }
+dialog::backdrop { background: rgba(8, 14, 12, 0.55); backdrop-filter: blur(3px); }
+dialog[open] { animation: pop 0.25s var(--ease); }
+dialog h3 { font-size: 1.15rem; margin-bottom: 16px; }
+.quick { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.quick .fchip { min-height: 30px; font-size: 0.8rem; }
+
+/* ---------- toasts ---------- */
+.toasts { position: fixed; z-index: 60; left: 50%; bottom: 20px; transform: translateX(-50%); display: grid; gap: 8px; width: min(440px, calc(100vw - 32px)); pointer-events: none; }
+.toast { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: var(--r-s); background: var(--text); color: var(--bg); box-shadow: var(--shadow-lg); font-size: 0.92rem; pointer-events: auto; animation: toast-in 0.35s var(--ease) both; }
+.toast [data-icon] { margin-top: 2px; font-size: 1.1em; }
+.toast.err { background: var(--danger); color: #fff; }
+.toast.out { opacity: 0; transition: opacity 0.3s; }
+@media (prefers-color-scheme: dark) { .toast.err { color: #1b0504; } }
+
+/* ---------- guided tour ---------- */
+.tour { position: fixed; z-index: 40; right: 20px; bottom: 20px; width: 360px; max-width: calc(100vw - 32px); padding: 18px 18px 0; background: var(--surface); border: 1px solid var(--accent); border-radius: var(--r-card); box-shadow: var(--shadow-lg); overflow: hidden; animation: pop 0.35s var(--ease); }
+.tour-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.tour-step { font-size: 0.78rem; font-weight: 700; color: var(--accent); }
+.tour h3 { font-size: 1.08rem; margin-bottom: 6px; }
+.tour p { font-size: 0.92rem; color: var(--muted); margin-bottom: 12px; }
+.tour p b { color: var(--text); }
+.tour-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.tour-actions:empty { display: none; }
+.tour-bar { margin: 0 -18px; height: 4px; background: var(--surface-2); }
+.tour-bar i { display: block; height: 100%; background: var(--accent); transition: width 0.5s var(--ease); }
+
+.booting .rolebar, .booting .tabs, .booting .statrow, .booting .toolbar, .booting .filters { display: none; }
+.foot { text-align: center; color: var(--muted); font-size: 0.82rem; padding: 20px; border-top: 1px solid var(--line); }
+
+/* ---------- motion ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes pop { from { opacity: 0; transform: translateY(8px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes toast-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes ping { 0% { opacity: 0.9; transform: scale(0.96); } 80%, 100% { opacity: 0; transform: scale(1.12); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes march { to { background-position: 24px 0; } }
+.sk { animation: shimmer 1.4s linear infinite; }
+.tk.ahead::before { animation: march 0.9s linear infinite; }
+.tk.current .tk-dot::after { animation: ping 2s ease-out infinite; }
+.tk.current.final .tk-dot::after { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+  .nudge::after, .tab.nudge::before { opacity: 1; }
+  .tk.current .tk-dot::after { opacity: 0.5; }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 28px; }
+  .hero-visual { padding: 18px; }
+  .trk-cols { grid-template-columns: 1fr; gap: 24px; }
+  .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flow li:nth-child(3) { padding-left: 0; border-left: 0; }
+  .flow li:nth-child(n+3) { border-top: 1px solid var(--line); margin-top: 22px; }
+}
+@media (max-width: 720px) {
+  .pgrid, .grid2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  body { font-size: 14.5px; }
+  main { padding: 16px 16px 56px; }
+  .top-in { padding: 0 16px; min-height: 58px; }
+  .brand-name { font-size: 1rem; }
+  .hero-cta .btn { flex: 1 1 100%; }
+  .flow { grid-template-columns: 1fr; }
+  .flow li, .flow li + li { padding: 18px 0 4px; border-left: 0; margin-top: 0; }
+  .flow li + li { border-top: 1px solid var(--line); }
+  .tk-lbl { display: none; }
+  .tracker.big .tk-lbl { display: block; font-size: 0.64rem; }
+  .tk-dot { width: 32px; height: 32px; font-size: 0.95rem; }
+  .tk::before { top: 15px; }
+  .tracker.big .tk-dot { width: 34px; height: 34px; }
+  .tracker.big .tk::before { top: 16px; }
+  .seg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .seg-btn { justify-content: flex-start; padding: 0 12px; }
+  .facts div { grid-template-columns: 1fr; gap: 2px; }
+  .statrow { gap: 20px 28px; }
+  .wallet .pill, #acctBtn { display: none; }
+  .flow li:nth-child(n+3) { margin-top: 0; }
+  .tour { right: 0; left: 0; bottom: 0; width: auto; max-width: none; border-radius: var(--r-card) var(--r-card) 0 0; border-width: 1px 0 0; }
+  body.tour-on { padding-bottom: 230px; }
+  .toasts { bottom: 12px; }
+  body.tour-on .toasts { bottom: 210px; }
+  .card { padding: 18px; }
+}
 
 </style>
 </head>
-<body>
+<body data-view="landing">
+  <a class="skip" href="#main">Skip to content</a>
+
   <header class="top">
-    <div class="brand">
-      <div class="logo">CT</div>
-      <div>
-        <h1>ChainTrace</h1>
-        <p>On-chain supply chain tracker</p>
+    <div class="top-in">
+      <a class="brand" href="#" id="brandLink" aria-label="ChainTrace home">
+        <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+          <rect width="64" height="64" rx="16" fill="currentColor"></rect>
+          <path d="M16 42 L32 22 L48 42" fill="none" stroke="var(--logo-ink)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <circle cx="16" cy="42" r="6" fill="var(--logo-ink)"></circle>
+          <circle cx="32" cy="22" r="6" fill="var(--logo-ink)"></circle>
+          <circle cx="48" cy="42" r="6" fill="var(--logo-ink)"></circle>
+        </svg>
+        <span class="brand-name">ChainTrace</span>
+      </a>
+      <div class="wallet">
+        <span id="netBadge" class="pill hidden"></span>
+        <span id="roleBadge" class="pill hidden"></span>
+        <button id="acctBtn" class="chip-btn mono hidden" type="button" title="Copy your address"><span id="acct"></span></button>
+        <button id="tourBtn" class="btn hidden" type="button"></button>
       </div>
-    </div>
-    <div class="wallet">
-      <span id="netBadge" class="pill hidden"></span>
-      <span id="roleBadge" class="pill hidden"></span>
-      <span id="acct" class="mono muted"></span>
-      <button id="demoBtn" class="btn primary">Try demo (no wallet)</button>
-      <button id="connectBtn" class="btn">Connect MetaMask</button>
     </div>
   </header>
 
-  <div id="demoBar" class="demobar hidden">
-    <span><b>Demo mode</b> - a private test blockchain running inside this page (resets when you refresh).</span>
-    <label>Acting as <select id="demoSel"></select></label>
-  </div>
+  <main id="main">
+    <!-- ================= LANDING ================= -->
+    <div id="landing">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1>Follow every product from factory to shelf.</h1>
+          <p class="lede">ChainTrace records each hand-over on Ethereum, so anyone can verify where a product has been.</p>
+          <div class="hero-cta">
+            <button id="demoBtn" class="btn primary lg" type="button"></button>
+            <button id="connectBtn" class="btn lg" type="button"></button>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div id="heroSample"></div>
+        </div>
+      </section>
 
-  <main>
-    <!-- Contract address -->
-    <section class="card" id="setup">
-      <h2>Contract</h2>
-      <p class="muted small">Deploy <span class="mono">SupplyChainTracker.sol</span> in Remix, then paste the deployed address here.</p>
+      <section class="how" aria-labelledby="howTitle">
+        <h2 id="howTitle">How it works</h2>
+        <ol class="flow">
+          <li><span class="flow-ic role-manufacturer" data-icon="factory"></span><b>Manufacturer</b><span>Registers the product and ships it on.</span></li>
+          <li><span class="flow-ic role-distributor" data-icon="warehouse"></span><b>Distributor</b><span>Confirms arrival, then ships to a retailer.</span></li>
+          <li><span class="flow-ic role-retailer" data-icon="storefront"></span><b>Retailer</b><span>Receives the goods and marks them sold.</span></li>
+          <li><span class="flow-ic role-visitor" data-icon="user-circle"></span><b>Customer</b><span>Looks up the full journey, no account needed.</span></li>
+        </ol>
+      </section>
+    </div>
+
+    <!-- MetaMask: contract address (hidden until MetaMask is connected) -->
+    <section class="card setup hidden" id="setup">
+      <h2>Load your contract</h2>
+      <p class="muted small">Deploy <span class="mono">SupplyChainTracker.sol</span> in Remix, then paste the deployed address.</p>
       <div class="row">
-        <input id="addrInput" class="mono" placeholder="0x... deployed contract address" />
-        <button id="loadBtn" class="btn">Load contract</button>
+        <label class="grow"><span class="lbl">Contract address</span>
+          <input id="addrInput" class="mono" placeholder="0x..." autocomplete="off" spellcheck="false" />
+        </label>
+        <button id="loadBtn" class="btn primary" type="button">Load contract</button>
       </div>
-      <p id="setupMsg" class="small"></p>
+      <p id="setupMsg" class="small" role="status"></p>
     </section>
 
+    <!-- ================= APP ================= -->
     <div id="app" class="hidden">
-      <nav class="tabs">
-        <button class="tab active" data-tab="products">Products</button>
-        <button class="tab" data-tab="register">Register</button>
-        <button class="tab" data-tab="track">Track</button>
-        <button class="tab" data-tab="admin">Admin</button>
+      <div id="demoBar" class="demobar hidden">
+        <span class="demo-note"><b>Demo mode.</b> A private test blockchain runs inside this page and resets when you refresh.</span>
+      </div>
+
+      <div class="rolebar">
+        <div id="roleSwitchWrap" class="hidden">
+          <span class="lbl" id="actingLbl">Acting as</span>
+          <div id="roleSwitch" class="seg" role="radiogroup" aria-labelledby="actingLbl"></div>
+        </div>
+        <p id="rolePerms" class="perms" aria-live="polite"></p>
+      </div>
+
+      <nav class="tabs" role="tablist" aria-label="Sections">
+        <button class="tab active" data-tab="products" role="tab" aria-selected="true" type="button"><span data-icon="package"></span>Products</button>
+        <button class="tab" data-tab="register" role="tab" aria-selected="false" type="button"><span data-icon="plus-circle"></span>Register</button>
+        <button class="tab" data-tab="track" role="tab" aria-selected="false" type="button"><span data-icon="path"></span>Track</button>
+        <button class="tab" data-tab="admin" role="tab" aria-selected="false" type="button"><span data-icon="shield-check"></span>Admin</button>
       </nav>
 
       <!-- PRODUCTS -->
-      <section id="tab-products" class="panel">
+      <section id="tab-products" class="panel" role="tabpanel">
         <div class="statrow">
           <div class="stat"><span id="statTotal">0</span><label>Products</label></div>
           <div class="stat"><span id="statTransit">0</span><label>In transit</label></div>
           <div class="stat"><span id="statSold">0</span><label>Sold</label></div>
           <div class="stat"><span id="statRecalled">0</span><label>Recalled</label></div>
         </div>
-        <div class="row between">
-          <h2>All products</h2>
-          <div class="row">
-            <label class="check"><input type="checkbox" id="mineOnly" /> Only mine / needing my action</label>
-            <button id="refreshBtn" class="btn small">Refresh</button>
-          </div>
+
+        <div class="toolbar">
+          <label class="search">
+            <span class="sr-only">Search products</span>
+            <span class="search-ic" data-icon="magnifying-glass"></span>
+            <input id="searchInput" type="search" placeholder="Search name, batch or ID" autocomplete="off" />
+          </label>
+          <label class="check"><input type="checkbox" id="mineOnly" /> <span>Needs my action</span></label>
+          <button id="refreshBtn" class="btn sm" type="button"><span data-icon="arrow-clockwise"></span>Refresh</button>
         </div>
-        <div class="tablewrap">
-          <table>
-            <thead><tr><th>ID</th><th>Product</th><th>Batch</th><th>Stage</th><th>Holder</th><th>Actions</th></tr></thead>
-            <tbody id="productRows"><tr><td colspan="6" class="muted">Load a contract to see products.</td></tr></tbody>
-          </table>
-        </div>
+        <div id="stageFilters" class="filters" role="group" aria-label="Filter by stage"></div>
+
+        <div id="productRows" class="pgrid" aria-live="polite"></div>
       </section>
 
       <!-- REGISTER -->
-      <section id="tab-register" class="panel hidden">
-        <h2>Register a new product</h2>
-        <p class="muted small">Only accounts with the <b>Manufacturer</b> role can do this.</p>
-        <div class="form">
-          <label>Product name<input id="regName" placeholder="Organic Coffee 250g" /></label>
-          <label>Batch number<input id="regBatch" placeholder="BATCH-2026-001" /></label>
-          <label>IPFS CID (optional)<input id="regCid" class="mono" placeholder="Qm... (certificate / image)" /></label>
-          <label>Location<input id="regLoc" placeholder="Coorg Estate, Karnataka" /></label>
-          <button id="regBtn" class="btn primary">Register product</button>
+      <section id="tab-register" class="panel hidden" role="tabpanel">
+        <div class="narrow">
+          <h2>Register a new product</h2>
+          <p id="regNote" class="notice hidden"></p>
+          <div class="form">
+            <label><span class="lbl">Product name</span><input id="regName" placeholder="Organic Coffee 250g" /></label>
+            <label><span class="lbl">Batch number</span><input id="regBatch" placeholder="BATCH-2026-001" /></label>
+            <label><span class="lbl">Location</span><input id="regLoc" placeholder="Coorg Estate, Karnataka" /></label>
+            <label><span class="lbl">IPFS CID <em>(optional)</em></span><input id="regCid" class="mono" placeholder="Qm... for a certificate or image" /></label>
+            <div class="row">
+              <button id="regBtn" class="btn primary" type="button">Register product</button>
+              <button id="regFill" class="btn ghost" type="button">Fill an example</button>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- TRACK -->
-      <section id="tab-track" class="panel hidden">
+      <section id="tab-track" class="panel hidden" role="tabpanel">
         <h2>Track a product</h2>
         <p class="muted small">Anyone can verify a product's full journey. No role needed.</p>
-        <div class="row">
-          <input id="trackId" type="number" min="1" placeholder="Product ID" />
-          <button id="trackBtn" class="btn primary">Track</button>
+        <div class="row trackbar">
+          <label class="grow"><span class="lbl">Product ID</span>
+            <input id="trackId" type="number" min="1" placeholder="1" inputmode="numeric" />
+          </label>
+          <button id="trackBtn" class="btn primary" type="button">Track</button>
         </div>
-        <div id="trackResult"></div>
+        <div id="trackQuick" class="filters"></div>
+        <div id="trackResult" aria-live="polite"></div>
       </section>
 
       <!-- ADMIN -->
-      <section id="tab-admin" class="panel hidden">
+      <section id="tab-admin" class="panel hidden" role="tabpanel">
         <h2>Admin</h2>
         <p id="adminNote" class="muted small"></p>
         <div class="grid2">
-          <div class="card inner">
+          <div class="card">
             <h3>Assign role</h3>
             <div class="form">
-              <label>Wallet address<input id="roleAddr" class="mono" placeholder="0x..." /></label>
-              <label>Role
+              <label><span class="lbl">Wallet address</span><input id="roleAddr" class="mono" placeholder="0x..." spellcheck="false" /></label>
+              <label><span class="lbl">Role</span>
                 <select id="roleSel">
                   <option value="1">Manufacturer</option>
                   <option value="2">Distributor</option>
@@ -245,45 +578,59 @@ dialog::backdrop { background: rgba(0,0,0,0.6); }
                   <option value="0">None (revoke)</option>
                 </select>
               </label>
-              <button id="roleBtn" class="btn primary">Set role</button>
+              <button id="roleBtn" class="btn primary" type="button">Set role</button>
             </div>
-            <div class="row" style="margin-top:14px">
-              <input id="lookupAddr" class="mono" placeholder="Check an address's role 0x..." />
-              <button id="lookupBtn" class="btn small">Check</button>
-            </div>
-            <p id="lookupOut" class="small"></p>
+            <div class="divider"></div>
+            <label><span class="lbl">Check an address</span>
+              <span class="row"><input id="lookupAddr" class="mono grow" placeholder="0x..." spellcheck="false" /><button id="lookupBtn" class="btn" type="button">Check</button></span>
+            </label>
+            <p id="lookupOut" class="small" role="status"></p>
           </div>
-          <div class="card inner">
+          <div class="card">
             <h3>Emergency controls</h3>
             <p class="small muted">Contract status: <b id="pauseState">-</b></p>
             <div class="row">
-              <button id="pauseBtn" class="btn danger">Pause</button>
-              <button id="unpauseBtn" class="btn">Unpause</button>
+              <button id="pauseBtn" class="btn danger" type="button">Pause</button>
+              <button id="unpauseBtn" class="btn" type="button">Unpause</button>
             </div>
-            <h3 style="margin-top:22px">Transfer admin</h3>
-            <div class="row">
-              <input id="newAdmin" class="mono" placeholder="New admin 0x..." />
-              <button id="adminBtn" class="btn small danger">Transfer</button>
-            </div>
+            <div class="divider"></div>
+            <h3>Transfer admin</h3>
+            <label><span class="lbl">New admin address</span>
+              <span class="row"><input id="newAdmin" class="mono grow" placeholder="0x..." spellcheck="false" /><button id="adminBtn" class="btn danger" type="button">Transfer</button></span>
+            </label>
           </div>
         </div>
       </section>
     </div>
   </main>
 
+  <footer class="foot">ChainTrace is a course project for Ethereum Smart Contract Using Solidity (IT_4421).</footer>
+
+  <!-- guided tour panel -->
+  <aside id="tour" class="tour hidden" aria-live="polite" aria-label="Guided tour">
+    <div class="tour-head">
+      <span id="tourStep" class="tour-step"></span>
+      <button id="tourClose" class="icon-btn" type="button" aria-label="Close the tour"><span data-icon="x"></span></button>
+    </div>
+    <h3 id="tourTitle"></h3>
+    <p id="tourBody"></p>
+    <div class="tour-actions" id="tourActions"></div>
+    <div class="tour-bar" aria-hidden="true"><i id="tourProg"></i></div>
+  </aside>
+
   <!-- generic input dialog -->
-  <dialog id="dlg">
+  <dialog id="dlg" aria-labelledby="dlgTitle">
     <form method="dialog" id="dlgForm">
       <h3 id="dlgTitle"></h3>
       <div id="dlgFields" class="form"></div>
       <div class="row end">
-        <button value="cancel" class="btn" id="dlgCancel">Cancel</button>
-        <button value="ok" class="btn primary" id="dlgOk">Confirm</button>
+        <button value="cancel" class="btn" id="dlgCancel" type="button">Cancel</button>
+        <button value="ok" class="btn primary" id="dlgOk" type="submit">Confirm</button>
       </div>
     </form>
   </dialog>
 
-  <div id="toast" class="toast hidden"></div>
+  <div id="toast" class="toasts" role="status" aria-live="polite"></div>
 
   <script>
 /*! For license information please see ganache.min.js.LICENSE.txt */
@@ -1091,6 +1438,11 @@ window.SUPPLY_CHAIN_ABI = [
 
 </script>
 <script>
+// Generated by scripts/build-icons.js from @phosphor-icons/core (MIT). Do not edit by hand.
+window.ICONS = {"factory":"<path d=\"M116,176a8,8,0,0,1-8,8H80a8,8,0,0,1,0-16h28A8,8,0,0,1,116,176Zm60-8H148a8,8,0,0,0,0,16h28a8,8,0,0,0,0-16Zm64,48a8,8,0,0,1-8,8H24a8,8,0,0,1,0-16h8V88a8,8,0,0,1,12.8-6.4L96,120V88a8,8,0,0,1,12.8-6.4l38.74,29.05L159.1,29.74A16.08,16.08,0,0,1,174.94,16h18.12A16.08,16.08,0,0,1,208.9,29.74l15,105.13s.08.78.08,1.13v72h8A8,8,0,0,1,240,216Zm-77.86-94.4,8.53,6.4h36.11L193.06,32H174.94ZM48,208H208V144H168a8,8,0,0,1-4.8-1.6l-14.4-10.8,0,0L112,104v32a8,8,0,0,1-12.8,6.4L48,104Z\"/>","truck":"<path d=\"M255.42,117l-14-35A15.93,15.93,0,0,0,226.58,72H192V64a8,8,0,0,0-8-8H32A16,16,0,0,0,16,72V184a16,16,0,0,0,16,16H49a32,32,0,0,0,62,0h50a32,32,0,0,0,62,0h17a16,16,0,0,0,16-16V120A7.94,7.94,0,0,0,255.42,117ZM192,88h34.58l9.6,24H192ZM32,72H176v64H32ZM80,208a16,16,0,1,1,16-16A16,16,0,0,1,80,208Zm81-24H111a32,32,0,0,0-62,0H32V152H176v12.31A32.11,32.11,0,0,0,161,184Zm31,24a16,16,0,1,1,16-16A16,16,0,0,1,192,208Zm48-24H223a32.06,32.06,0,0,0-31-24V128h48Z\"/>","warehouse":"<path d=\"M240,184h-8V57.9l9.67-2.08a8,8,0,1,0-3.35-15.64l-224,48A8,8,0,0,0,16,104a8.16,8.16,0,0,0,1.69-.18L24,102.47V184H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM40,99,216,61.33V184H192V128a8,8,0,0,0-8-8H72a8,8,0,0,0-8,8v56H40Zm136,53H80V136h96ZM80,168h96v16H80Z\"/>","storefront":"<path d=\"M232,96a7.89,7.89,0,0,0-.3-2.2L217.35,43.6A16.07,16.07,0,0,0,202,32H54A16.07,16.07,0,0,0,38.65,43.6L24.31,93.8A7.89,7.89,0,0,0,24,96h0v16a40,40,0,0,0,16,32v72a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V144a40,40,0,0,0,16-32V96ZM54,48H202l11.42,40H42.61Zm50,56h48v8a24,24,0,0,1-48,0Zm-16,0v8a24,24,0,0,1-35.12,21.26,7.88,7.88,0,0,0-1.82-1.06A24,24,0,0,1,40,112v-8ZM200,208H56V151.2a40.57,40.57,0,0,0,8,.8,40,40,0,0,0,32-16,40,40,0,0,0,64,0,40,40,0,0,0,32,16,40.57,40.57,0,0,0,8-.8Zm4.93-75.8a8.08,8.08,0,0,0-1.8,1.05A24,24,0,0,1,168,112v-8h48v8A24,24,0,0,1,204.93,132.2Z\"/>","user-circle":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24ZM74.08,197.5a64,64,0,0,1,107.84,0,87.83,87.83,0,0,1-107.84,0ZM96,120a32,32,0,1,1,32,32A32,32,0,0,1,96,120Zm97.76,66.41a79.66,79.66,0,0,0-36.06-28.75,48,48,0,1,0-59.4,0,79.66,79.66,0,0,0-36.06,28.75,88,88,0,1,1,131.52,0Z\"/>","package":"<path d=\"M223.68,66.15,135.68,18a15.88,15.88,0,0,0-15.36,0l-88,48.17a16,16,0,0,0-8.32,14v95.64a16,16,0,0,0,8.32,14l88,48.17a15.88,15.88,0,0,0,15.36,0l88-48.17a16,16,0,0,0,8.32-14V80.18A16,16,0,0,0,223.68,66.15ZM128,32l80.34,44-29.77,16.3-80.35-44ZM128,120,47.66,76l33.9-18.56,80.34,44ZM40,90l80,43.78v85.79L40,175.82Zm176,85.78h0l-80,43.79V133.82l32-17.51V152a8,8,0,0,0,16,0V107.55L216,90v85.77Z\"/>","plus-circle":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm48-88a8,8,0,0,1-8,8H136v32a8,8,0,0,1-16,0V136H88a8,8,0,0,1,0-16h32V88a8,8,0,0,1,16,0v32h32A8,8,0,0,1,176,128Z\"/>","path":"<path d=\"M200,168a32.06,32.06,0,0,0-31,24H72a32,32,0,0,1,0-64h96a40,40,0,0,0,0-80H72a8,8,0,0,0,0,16h96a24,24,0,0,1,0,48H72a48,48,0,0,0,0,96h97a32,32,0,1,0,31-40Zm0,48a16,16,0,1,1,16-16A16,16,0,0,1,200,216Z\"/>","shield-check":"<path d=\"M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z\"/>","magnifying-glass":"<path d=\"M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z\"/>","arrow-clockwise":"<path d=\"M240,56v48a8,8,0,0,1-8,8H184a8,8,0,0,1,0-16H211.4L184.81,71.64l-.25-.24a80,80,0,1,0-1.67,114.78,8,8,0,0,1,11,11.63A95.44,95.44,0,0,1,128,224h-1.32A96,96,0,1,1,195.75,60L224,85.8V56a8,8,0,1,1,16,0Z\"/>","x":"<path d=\"M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z\"/>","copy":"<path d=\"M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z\"/>","check":"<path d=\"M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z\"/>","check-circle":"<path d=\"M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z\"/>","warning-octagon":"<path d=\"M120,136V80a8,8,0,0,1,16,0v56a8,8,0,0,1-16,0ZM232,91.55v72.9a15.86,15.86,0,0,1-4.69,11.31l-51.55,51.55A15.86,15.86,0,0,1,164.45,232H91.55a15.86,15.86,0,0,1-11.31-4.69L28.69,175.76A15.86,15.86,0,0,1,24,164.45V91.55a15.86,15.86,0,0,1,4.69-11.31L80.24,28.69A15.86,15.86,0,0,1,91.55,24h72.9a15.86,15.86,0,0,1,11.31,4.69l51.55,51.55A15.86,15.86,0,0,1,232,91.55Zm-16,0L164.45,40H91.55L40,91.55v72.9L91.55,216h72.9L216,164.45ZM128,160a12,12,0,1,0,12,12A12,12,0,0,0,128,160Z\"/>","arrow-u-up-left":"<path d=\"M232,144a64.07,64.07,0,0,1-64,64H80a8,8,0,0,1,0-16h88a48,48,0,0,0,0-96H51.31l34.35,34.34a8,8,0,0,1-11.32,11.32l-48-48a8,8,0,0,1,0-11.32l48-48A8,8,0,0,1,85.66,45.66L51.31,80H168A64.07,64.07,0,0,1,232,144Z\"/>","arrow-right":"<path d=\"M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z\"/>","arrow-left":"<path d=\"M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z\"/>","map-pin":"<path d=\"M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z\"/>","clock":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z\"/>","wallet":"<path d=\"M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z\"/>","seal-check":"<path d=\"M225.86,102.82c-3.77-3.94-7.67-8-9.14-11.57-1.36-3.27-1.44-8.69-1.52-13.94-.15-9.76-.31-20.82-8-28.51s-18.75-7.85-28.51-8c-5.25-.08-10.67-.16-13.94-1.52-3.56-1.47-7.63-5.37-11.57-9.14C146.28,23.51,138.44,16,128,16s-18.27,7.51-25.18,14.14c-3.94,3.77-8,7.67-11.57,9.14C88,40.64,82.56,40.72,77.31,40.8c-9.76.15-20.82.31-28.51,8S41,67.55,40.8,77.31c-.08,5.25-.16,10.67-1.52,13.94-1.47,3.56-5.37,7.63-9.14,11.57C23.51,109.72,16,117.56,16,128s7.51,18.27,14.14,25.18c3.77,3.94,7.67,8,9.14,11.57,1.36,3.27,1.44,8.69,1.52,13.94.15,9.76.31,20.82,8,28.51s18.75,7.85,28.51,8c5.25.08,10.67.16,13.94,1.52,3.56,1.47,7.63,5.37,11.57,9.14C109.72,232.49,117.56,240,128,240s18.27-7.51,25.18-14.14c3.94-3.77,8-7.67,11.57-9.14,3.27-1.36,8.69-1.44,13.94-1.52,9.76-.15,20.82-.31,28.51-8s7.85-18.75,8-28.51c.08-5.25.16-10.67,1.52-13.94,1.47-3.56,5.37-7.63,9.14-11.57C232.49,146.28,240,138.44,240,128S232.49,109.73,225.86,102.82Zm-11.55,39.29c-4.79,5-9.75,10.17-12.38,16.52-2.52,6.1-2.63,13.07-2.73,19.82-.1,7-.21,14.33-3.32,17.43s-10.39,3.22-17.43,3.32c-6.75.1-13.72.21-19.82,2.73-6.35,2.63-11.52,7.59-16.52,12.38S132,224,128,224s-9.15-4.92-14.11-9.69-10.17-9.75-16.52-12.38c-6.1-2.52-13.07-2.63-19.82-2.73-7-.1-14.33-.21-17.43-3.32s-3.22-10.39-3.32-17.43c-.1-6.75-.21-13.72-2.73-19.82-2.63-6.35-7.59-11.52-12.38-16.52S32,132,32,128s4.92-9.15,9.69-14.11,9.75-10.17,12.38-16.52c2.52-6.1,2.63-13.07,2.73-19.82.1-7,.21-14.33,3.32-17.43S70.51,56.9,77.55,56.8c6.75-.1,13.72-.21,19.82-2.73,6.35-2.63,11.52-7.59,16.52-12.38S124,32,128,32s9.15,4.92,14.11,9.69,10.17,9.75,16.52,12.38c6.1,2.52,13.07,2.63,19.82,2.73,7,.1,14.33.21,17.43,3.32s3.22,10.39,3.32,17.43c.1,6.75.21,13.72,2.73,19.82,2.63,6.35,7.59,11.52,12.38,16.52S224,124,224,128,219.08,137.15,214.31,142.11ZM173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34Z\"/>","compass":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM172.42,72.84l-64,32a8.05,8.05,0,0,0-3.58,3.58l-32,64A8,8,0,0,0,80,184a8.1,8.1,0,0,0,3.58-.84l64-32a8.05,8.05,0,0,0,3.58-3.58l32-64a8,8,0,0,0-10.74-10.74ZM138,138,97.89,158.11,118,118l40.15-20.07Z\"/>","play":"<path d=\"M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.83,88Z\"/>","bag":"<path d=\"M216,64H176a48,48,0,0,0-96,0H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64ZM128,32a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32Zm88,168H40V80H80V96a8,8,0,0,0,16,0V80h64V96a8,8,0,0,0,16,0V80h40Z\"/>","info":"<path d=\"M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z\"/>","crown":"<path d=\"M248,80a28,28,0,1,0-51.12,15.77l-26.79,33L146,73.4a28,28,0,1,0-36.06,0L85.91,128.74l-26.79-33a28,28,0,1,0-26.6,12L47,194.63A16,16,0,0,0,62.78,208H193.22A16,16,0,0,0,209,194.63l14.47-86.85A28,28,0,0,0,248,80ZM128,40a12,12,0,1,1-12,12A12,12,0,0,1,128,40ZM24,80A12,12,0,1,1,36,92,12,12,0,0,1,24,80ZM193.22,192H62.78L48.86,108.52,81.79,149A8,8,0,0,0,88,152a7.83,7.83,0,0,0,1.08-.07,8,8,0,0,0,6.26-4.74l29.3-67.4a27,27,0,0,0,6.72,0l29.3,67.4a8,8,0,0,0,6.26,4.74A7.83,7.83,0,0,0,168,152a8,8,0,0,0,6.21-3l32.93-40.52ZM220,92a12,12,0,1,1,12-12A12,12,0,0,1,220,92Z\"/>","eye":"<path d=\"M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z\"/>","link":"<path d=\"M240,88.23a54.43,54.43,0,0,1-16,37L189.25,160a54.27,54.27,0,0,1-38.63,16h-.05A54.63,54.63,0,0,1,96,119.84a8,8,0,0,1,16,.45A38.62,38.62,0,0,0,150.58,160h0a38.39,38.39,0,0,0,27.31-11.31l34.75-34.75a38.63,38.63,0,0,0-54.63-54.63l-11,11A8,8,0,0,1,135.7,59l11-11A54.65,54.65,0,0,1,224,48,54.86,54.86,0,0,1,240,88.23ZM109,185.66l-11,11A38.41,38.41,0,0,1,70.6,208h0a38.63,38.63,0,0,1-27.29-65.94L78,107.31A38.63,38.63,0,0,1,144,135.71a8,8,0,0,0,16,.45A54.86,54.86,0,0,0,144,96a54.65,54.65,0,0,0-77.27,0L32,130.75A54.62,54.62,0,0,0,70.56,224h0a54.28,54.28,0,0,0,38.64-16l11-11A8,8,0,0,0,109,185.66Z\"/>","warning":"<path d=\"M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.09ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.87A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z\"/>"};
+
+</script>
+<script>
 // Auto-generated. Used by the standalone demo mode to deploy the contract in the browser.
 window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b50600080546001600160a01b0319163390811782556040519091907ff8ccb027dfcd135e000e9d45e6cc2d662578a8825d4c45b5e32e0adf67e79ec6908290a36126068061005f6000396000f3fe608060405234801561001057600080fd5b50600436106101165760003560e01c806389c85c1a116100a2578063b38fe06b11610071578063b38fe06b1461024c578063b9db15b41461025f578063c8691b2a1461027f578063e0f6ef871461029f578063f851a440146102a857600080fd5b806389c85c1a146101d65780638c401448146101e957806399374642146102095780639ce0f9731461023957600080fd5b80636d5365b1116100e95780636d5365b11461017457806375829def14610187578063785dfabc1461019a5780638456cb59146101ad5780638799d6fc146101b557600080fd5b80632643ce331461011b5780633f4ba83a14610130578063571c3e60146101385780635c975abb1461014b575b600080fd5b61012e610129366004611e9e565b6102d3565b005b61012e6104e7565b61012e610146366004611f05565b610549565b60005461015f90600160a01b900460ff1681565b60405190151581526020015b60405180910390f35b61012e610182366004611e9e565b61061a565b61012e610195366004611f40565b61084c565b61012e6101a8366004611f62565b6108f9565b61012e610be9565b6101c86101c3366004611fbb565b610c51565b60405190815260200161016b565b61012e6101e4366004611e9e565b61100b565b6101fc6101f736600461207e565b611244565b60405161016b9190612205565b61022c610217366004611f40565b60026020526000908152604090205460ff1681565b60405161016b9190612269565b61012e610247366004611e9e565b6115ed565b6101c861025a366004612283565b61179b565b61027261026d366004612283565b6117e5565b60405161016b919061229c565b61029261028d366004612283565b611aa1565b60405161016b91906122af565b6101c860015481565b6000546102bb906001600160a01b031681565b6040516001600160a01b03909116815260200161016b565b828015806102e2575060015481115b15610308576040516392691cab60e01b8152600481018290526024015b60405180910390fd5b600054600160a01b900460ff16156103335760405163ab35696f60e01b815260040160405180910390fd5b600084815260036020526040902060058101546001600160a01b031633146103715760405163787742fd60e01b8152600481018690526024016102ff565b6006810154600160a01b900460ff1660006001826005811115610396576103966120e6565b036103a3575060006103e1565b60038260058111156103b7576103b76120e6565b036103c4575060026103e1565b868260405163ce477d8760e01b81526004016102ff929190612372565b6006830180546001600160a01b0319811682558291906001600160a81b031916600160a01b836005811115610418576104186120e6565b021790555060078301805467ffffffffffffffff1916426001600160401b0316179055604080516020601f88018190048102820181019092528681526104b191899184918a908a90819084018382808284376000920191909152505060408051808201909152601c81527f536869706d656e742063616e63656c6c65642062792073656e6465720000000060208201529150611cb89050565b604051339088907fd8aa95458d124cbb2f87090b45a5c889f149cbf1ad06d0ea5b75ce461b0e4e6790600090a350505050505050565b6000546001600160a01b0316331461051257604051637bfa4b9f60e01b815260040160405180910390fd5b6000805460ff60a01b1916815560405133917f5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa91a2565b6000546001600160a01b0316331461057457604051637bfa4b9f60e01b815260040160405180910390fd5b6001600160a01b03821661059b5760405163d92e233d60e01b815260040160405180910390fd5b6001600160a01b0382166000908152600260205260409020805482919060ff191660018360038111156105d0576105d06120e6565b0217905550816001600160a01b03167fc3f8f61911a1537261f77e2703626e158e299a98e341024ecaa26bbd1d884c648260405161060e9190612269565b60405180910390a25050565b82801580610629575060015481115b1561064a576040516392691cab60e01b8152600481018290526024016102ff565b600054600160a01b900460ff16156106755760405163ab35696f60e01b815260040160405180910390fd5b600084815260036020818152604080842033855260029092529092205460ff16818111156106a5576106a56120e6565b146106c6576003604051636c13e33b60e11b81526004016102ff9190612269565b6006810154600160a81b900460ff16156106f6576040516390df50db60e01b8152600481018690526024016102ff565b60058101546001600160a01b031633146107265760405163787742fd60e01b8152600481018690526024016102ff565b60046006820154600160a01b900460ff166005811115610748576107486120e6565b1461077b57848160060160149054906101000a900460ff1660405163ce477d8760e01b81526004016102ff929190612372565b60068101805460ff60a01b1916600560a01b17905560078101805467ffffffffffffffff1916426001600160401b0316179055604080516020601f860181900481028201810190925284815261081891879160059188908890819084018382808284376000920191909152505060408051808201909152601081526f29b7b632103a379031bab9ba37b6b2b960811b60208201529150611cb89050565b604051339086907fbdb79f0b777669cf4d01754a6d6b461bdd8d0f18b57c036e7d4bf3a567f3378490600090a35050505050565b6000546001600160a01b0316331461087757604051637bfa4b9f60e01b815260040160405180910390fd5b6001600160a01b03811661089e5760405163d92e233d60e01b815260040160405180910390fd5b600080546040516001600160a01b03808516939216917ff8ccb027dfcd135e000e9d45e6cc2d662578a8825d4c45b5e32e0adf67e79ec691a3600080546001600160a01b0319166001600160a01b0392909216919091179055565b83801580610908575060015481115b15610929576040516392691cab60e01b8152600481018290526024016102ff565b600054600160a01b900460ff16156109545760405163ab35696f60e01b815260040160405180910390fd5b60008581526003602052604090206006810154600160a81b900460ff1615610992576040516390df50db60e01b8152600481018790526024016102ff565b60058101546001600160a01b031633146109c25760405163787742fd60e01b8152600481018790526024016102ff565b6001600160a01b0385166109e95760405163d92e233d60e01b815260040160405180910390fd5b6006810154600160a01b900460ff1660008080836005811115610a0e57610a0e6120e6565b03610a1f5750600190506002610a60565b6002836005811115610a3357610a336120e6565b03610a4357506003905080610a60565b888360405163ce477d8760e01b81526004016102ff929190612372565b806003811115610a7257610a726120e6565b6001600160a01b03891660009081526002602052604090205460ff166003811115610a9f57610a9f6120e6565b14610abf578060405163f608b7f560e01b81526004016102ff9190612269565b6006840180546001600160a01b038a166001600160a01b03198216811783558492916001600160a81b03191617600160a01b836005811115610b0357610b036120e6565b021790555060078401805467ffffffffffffffff1916426001600160401b0316179055604080516020601f8901819004810282018101909252878152610b92918b9185918b908b90819084018382808284376000920191909152505060408051808201909152601381527214da1a5c1b595b9d08191a5cdc185d18da1959606a1b60208201529150611cb89050565b876001600160a01b0316336001600160a01b03168a7fc9ff2aab6b98a208d780930bf8dd5880869781ade88082919ff1fbc8980e2c5f85604051610bd69190612386565b60405180910390a4505050505050505050565b6000546001600160a01b03163314610c1457604051637bfa4b9f60e01b815260040160405180910390fd5b6000805460ff60a01b1916600160a01b17815560405133917f62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a25891a2565b60006001803360009081526002602052604090205460ff166003811115610c7a57610c7a6120e6565b14610c9a5780604051636c13e33b60e11b81526004016102ff9190612269565b600054600160a01b900460ff1615610cc55760405163ab35696f60e01b815260040160405180910390fd5b881580610cd0575086155b15610cee5760405163a447fc5360e01b815260040160405180910390fd5b600160008154610cfd906123aa565b91905081905591506040518061016001604052808381526020018b8b8080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250505090825250604080516020601f8c018190048102820181019092528a815291810191908b908b9081908401838280828437600092019190915250505090825250604080516020601f8a0181900481028201810190925288815291810191908990899081908401838280828437600092018290525093855250503360208401819052604084015250606082018190526080909101908152600060208083018290526001600160401b03421660408085018290526060909401528582526003815291902082518155908201516001820190610e24908261245e565b5060408201516002820190610e39908261245e565b5060608201516003820190610e4e908261245e565b5060808201516004820180546001600160a01b03199081166001600160a01b039384161790915560a08401516005808501805484169285169290921790915560c085015160068501805493841691909416908117845560e086015193926001600160a81b0319161790600160a01b908490811115610ece57610ece6120e6565b021790555061010082015160068201805461012085015168ffffffffffffffffff60a81b19909116600160a81b9315159390930267ffffffffffffffff60b01b191692909217600160b01b6001600160401b0393841602179055610140909201516007909101805467ffffffffffffffff191691909216179055604080516020601f8601819004810282018101909252848152610fb6918491600091889088908190840183828082843760009201919091525050604080518082019091526014815273141c9bd91d58dd081b585b9d599858dd1d5c995960621b60208201529150611cb89050565b336001600160a01b0316827fb5744bf87060f3c128bd7ec7c73734981e2525b5958bd63d50320e2e282fb7578c8c8c8c604051610ff69493929190612546565b60405180910390a35098975050505050505050565b8280158061101a575060015481115b1561103b576040516392691cab60e01b8152600481018290526024016102ff565b600054600160a01b900460ff16156110665760405163ab35696f60e01b815260040160405180910390fd5b60008481526003602052604090206006810154600160a81b900460ff16156110a4576040516390df50db60e01b8152600481018690526024016102ff565b60068101546001600160a01b031633146110d45760405163485c888560e01b8152600481018690526024016102ff565b6006810154600160a01b900460ff16600060018260058111156110f9576110f96120e6565b0361110657506002611123565b600382600581111561111a5761111a6120e6565b036103c4575060045b600580840180546001600160a01b031990811633179091556006850180549182168155839290916001600160a81b03191690600160a01b90849081111561116c5761116c6120e6565b021790555060078301805467ffffffffffffffff1916426001600160401b0316179055604080516020601f88018190048102820181019092528681526111f991899184918a908a90819084018382808284376000920191909152505060408051808201909152601181527014da1a5c1b595b9d081c9958d95a5d9959607a1b60208201529150611cb89050565b336001600160a01b0316877fccd35a11acf7fb8c9441d97f28cf444391d96837b6d523d9fe68b46a5e4720be836040516112339190612386565b60405180910390a350505050505050565b60608260000361125357600192505b60015483111561129657604080516000808252602082019092529061128e565b61127b611dd0565b8152602001906001900390816112735790505b5090506115e7565b600060016112a48486612578565b6112ae919061258b565b90506001548111156112bf57506001545b6112c9848261258b565b6112d4906001612578565b6001600160401b038111156112eb576112eb6123c3565b60405190808252806020026020018201604052801561132457816020015b611311611dd0565b8152602001906001900390816113095790505b509150835b8181116115e457600360008281526020019081526020016000206040518061016001604052908160008201548152602001600182018054611369906123d9565b80601f0160208091040260200160405190810160405280929190818152602001828054611395906123d9565b80156113e25780601f106113b7576101008083540402835291602001916113e2565b820191906000526020600020905b8154815290600101906020018083116113c557829003601f168201915b505050505081526020016002820180546113fb906123d9565b80601f0160208091040260200160405190810160405280929190818152602001828054611427906123d9565b80156114745780601f1061144957610100808354040283529160200191611474565b820191906000526020600020905b81548152906001019060200180831161145757829003601f168201915b5050505050815260200160038201805461148d906123d9565b80601f01602080910402602001604051908101604052809291908181526020018280546114b9906123d9565b80156115065780601f106114db57610100808354040283529160200191611506565b820191906000526020600020905b8154815290600101906020018083116114e957829003601f168201915b505050918352505060048201546001600160a01b0390811660208301526005808401548216604084015260068401549182166060840152608090920191600160a01b90910460ff169081111561155e5761155e6120e6565b600581111561156f5761156f6120e6565b8152600682015460ff600160a81b820416151560208301526001600160401b03600160b01b90910481166040830152600790920154909116606090910152836115b8878461258b565b815181106115c8576115c861259e565b6020026020010181905250806115dd906123aa565b9050611329565b50505b92915050565b828015806115fc575060015481115b1561161d576040516392691cab60e01b8152600481018290526024016102ff565b600084815260036020526040812090546001600160a01b03163314801590611652575060048101546001600160a01b03163314155b156116705760405163764c124d60e11b815260040160405180910390fd5b6006810154600160a81b900460ff16156116a05760405163287a537560e11b8152600481018690526024016102ff565b60008390036116c25760405163a447fc5360e01b815260040160405180910390fd5b60068101805460ff60a81b1916600160a81b17908190556007820180546001600160401b03421667ffffffffffffffff199091161790556040805160208082018352600082528251601f8801829004820281018201909352868352611750938993600160a01b90910460ff1692918990899081908401838280828437600092019190915250611cb892505050565b336001600160a01b0316857fc836b58f1d2b092e3af919aae9a0607bb0c4fe552aa37d0d7ed26885488b7399868660405161178c9291906125b4565b60405180910390a35050505050565b6000818015806117ac575060015481115b156117cd576040516392691cab60e01b8152600481018290526024016102ff565b60008381526004602052604090205491505b50919050565b6117ed611dd0565b818015806117fc575060015481115b1561181d576040516392691cab60e01b8152600481018290526024016102ff565b600360008481526020019081526020016000206040518061016001604052908160008201548152602001600182018054611856906123d9565b80601f0160208091040260200160405190810160405280929190818152602001828054611882906123d9565b80156118cf5780601f106118a4576101008083540402835291602001916118cf565b820191906000526020600020905b8154815290600101906020018083116118b257829003601f168201915b505050505081526020016002820180546118e8906123d9565b80601f0160208091040260200160405190810160405280929190818152602001828054611914906123d9565b80156119615780601f1061193657610100808354040283529160200191611961565b820191906000526020600020905b81548152906001019060200180831161194457829003601f168201915b5050505050815260200160038201805461197a906123d9565b80601f01602080910402602001604051908101604052809291908181526020018280546119a6906123d9565b80156119f35780601f106119c8576101008083540402835291602001916119f3565b820191906000526020600020905b8154815290600101906020018083116119d657829003601f168201915b505050918352505060048201546001600160a01b0390811660208301526005808401548216604084015260068401549182166060840152608090920191600160a01b90910460ff1690811115611a4b57611a4b6120e6565b6005811115611a5c57611a5c6120e6565b81526006820154600160a81b810460ff1615156020830152600160b01b90046001600160401b0390811660408301526007909201549091166060909101529392505050565b606081801580611ab2575060015481115b15611ad3576040516392691cab60e01b8152600481018290526024016102ff565b600083815260046020908152604080832080548251818502810185019093528083529193909284015b82821015611cac576000848152602090206040805160a08101909152600384029091018054829060ff166005811115611b3757611b376120e6565b6005811115611b4857611b486120e6565b8152815461010081046001600160a01b03166020830152600160a81b90046001600160401b03166040820152600182018054606090920191611b89906123d9565b80601f0160208091040260200160405190810160405280929190818152602001828054611bb5906123d9565b8015611c025780601f10611bd757610100808354040283529160200191611c02565b820191906000526020600020905b815481529060010190602001808311611be557829003601f168201915b50505050508152602001600282018054611c1b906123d9565b80601f0160208091040260200160405190810160405280929190818152602001828054611c47906123d9565b8015611c945780601f10611c6957610100808354040283529160200191611c94565b820191906000526020600020905b815481529060010190602001808311611c7757829003601f168201915b50505050508152505081526020019060010190611afc565b50505050915050919050565b600460008581526020019081526020016000206040518060a00160405280856005811115611ce857611ce86120e6565b8152336020808301919091526001600160401b034216604083015260608201869052608090910184905282546001818101855560009485529190932082516003909402018054929390929091839160ff191690836005811115611d4d57611d4d6120e6565b02179055506020820151815460408401516001600160401b0316600160a81b0267ffffffffffffffff60a81b196001600160a01b039093166101000292909216610100600160e81b03199091161717815560608201516001820190611db2908261245e565b5060808201516002820190611dc7908261245e565b50505050505050565b6040518061016001604052806000815260200160608152602001606081526020016060815260200160006001600160a01b0316815260200160006001600160a01b0316815260200160006001600160a01b0316815260200160006005811115611e3b57611e3b6120e6565b81526000602082018190526040820181905260609091015290565b60008083601f840112611e6857600080fd5b5081356001600160401b03811115611e7f57600080fd5b602083019150836020828501011115611e9757600080fd5b9250929050565b600080600060408486031215611eb357600080fd5b8335925060208401356001600160401b03811115611ed057600080fd5b611edc86828701611e56565b9497909650939450505050565b80356001600160a01b0381168114611f0057600080fd5b919050565b60008060408385031215611f1857600080fd5b611f2183611ee9565b9150602083013560048110611f3557600080fd5b809150509250929050565b600060208284031215611f5257600080fd5b611f5b82611ee9565b9392505050565b60008060008060608587031215611f7857600080fd5b84359350611f8860208601611ee9565b925060408501356001600160401b03811115611fa357600080fd5b611faf87828801611e56565b95989497509550505050565b6000806000806000806000806080898b031215611fd757600080fd5b88356001600160401b0380821115611fee57600080fd5b611ffa8c838d01611e56565b909a50985060208b013591508082111561201357600080fd5b61201f8c838d01611e56565b909850965060408b013591508082111561203857600080fd5b6120448c838d01611e56565b909650945060608b013591508082111561205d57600080fd5b5061206a8b828c01611e56565b999c989b5096995094979396929594505050565b6000806040838503121561209157600080fd5b50508035926020909101359150565b6000815180845260005b818110156120c6576020818501810151868301820152016120aa565b506000602082860101526020601f19601f83011685010191505092915050565b634e487b7160e01b600052602160045260246000fd5b6006811061210c5761210c6120e6565b9052565b6000610160825184526020830151816020860152612130828601826120a0565b9150506040830151848203604086015261214a82826120a0565b9150506060830151848203606086015261216482826120a0565b915050608083015161218160808601826001600160a01b03169052565b5060a083015161219c60a08601826001600160a01b03169052565b5060c08301516121b760c08601826001600160a01b03169052565b5060e08301516121ca60e08601826120fc565b5061010083810151151590850152610120808401516001600160401b0390811691860191909152610140938401511692909301919091525090565b600060208083016020845280855180835260408601915060408160051b87010192506020870160005b8281101561225c57603f1988860301845261224a858351612110565b9450928501929085019060010161222e565b5092979650505050505050565b602081016004831061227d5761227d6120e6565b91905290565b60006020828403121561229557600080fd5b5035919050565b602081526000611f5b6020830184612110565b600060208083018184528085518083526040925060408601915060408160051b87010184880160005b8381101561236457603f19898403018552815160a06122f88583516120fc565b818901516001600160a01b0316858a0152878201516001600160401b031688860152606080830151818701839052612332838801826120a0565b925050506080808301519250858203818701525061235081836120a0565b9689019694505050908601906001016122d8565b509098975050505050505050565b82815260408101611f5b60208301846120fc565b602081016115e782846120fc565b634e487b7160e01b600052601160045260246000fd5b6000600182016123bc576123bc612394565b5060010190565b634e487b7160e01b600052604160045260246000fd5b600181811c908216806123ed57607f821691505b6020821081036117df57634e487b7160e01b600052602260045260246000fd5b601f821115612459576000816000526020600020601f850160051c810160208610156124365750805b601f850160051c820191505b8181101561245557828155600101612442565b5050505b505050565b81516001600160401b03811115612477576124776123c3565b61248b8161248584546123d9565b8461240d565b602080601f8311600181146124c057600084156124a85750858301515b600019600386901b1c1916600185901b178555612455565b600085815260208120601f198616915b828110156124ef578886015182559484019460019091019084016124d0565b508582101561250d5787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b81835281816020850137506000828201602090810191909152601f909101601f19169091010190565b60408152600061255a60408301868861251d565b828103602084015261256d81858761251d565b979650505050505050565b808201808211156115e7576115e7612394565b818103818111156115e7576115e7612394565b634e487b7160e01b600052603260045260246000fd5b6020815260006125c860208301848661251d565b94935050505056fea26469706673582212200b3195274caf0372bfb427165c94aa88727beb3e55bff85c7dcda121bb0053c964736f6c63430008180033";
 
@@ -1140,22 +1492,88 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
   const ROLES = ["None", "Manufacturer", "Distributor", "Retailer"];
   const NETWORKS = { 1: "Ethereum", 11155111: "Sepolia", 17000: "Holesky", 31337: "Local (Hardhat)", 1337: "Local", 5777: "Ganache" };
 
+  // ---------- presentation data ----------
+  const STEPS = [
+    { l: "Made", i: "factory" },
+    { l: "Shipped", i: "truck" },
+    { l: "Distributor", i: "warehouse" },
+    { l: "Shipped", i: "truck" },
+    { l: "Retailer", i: "storefront" },
+    { l: "Sold", i: "bag" },
+  ];
+  const TL_TITLES = ["Manufactured", "Shipped to distributor", "Received by distributor", "Shipped to retailer", "Received by retailer", "Sold to customer"];
+  const KEYS = ["", "manufacturer", "distributor", "retailer"];
+  const ROLE_META = {
+    admin: { label: "Admin", icon: "crown", can: "Assign roles, pause or unpause the contract, and recall any product." },
+    manufacturer: { label: "Manufacturer", icon: "factory", can: "Register products, ship them to a distributor, and recall your own products." },
+    distributor: { label: "Distributor", icon: "warehouse", can: "Receive shipments from a manufacturer and ship them on to a retailer." },
+    retailer: { label: "Retailer", icon: "storefront", can: "Receive shipments from a distributor and mark products as sold." },
+    visitor: { label: "Visitor", icon: "eye", can: "View and track any product. You cannot change anything." },
+  };
+  const FILTERS = [
+    { id: "all", label: "All", test: () => true },
+    { id: "made", label: "Manufactured", test: (p) => !p.recalled && p.stage === 0 },
+    { id: "transit", label: "In transit", test: (p) => !p.recalled && (p.stage === 1 || p.stage === 3) },
+    { id: "dist", label: "At distributor", test: (p) => !p.recalled && p.stage === 2 },
+    { id: "ret", label: "At retailer", test: (p) => !p.recalled && p.stage === 4 },
+    { id: "sold", label: "Sold", test: (p) => !p.recalled && p.stage === 5 },
+    { id: "recalled", label: "Recalled", test: (p) => p.recalled },
+  ];
+
   const $ = (id) => document.getElementById(id);
   const short = (a) => (a && a !== ethers.ZeroAddress ? a.slice(0, 6) + "..." + a.slice(-4) : "-");
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const fmtTime = (t) => new Date(Number(t) * 1000).toLocaleString();
+  const fmtTime = (t) => new Date(Number(t) * 1000).toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+  const lc = (a) => String(a || "").toLowerCase();
+  const reduceMotion = () => window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  let provider, signer, account, contract, readContract;
+  const ICONS = window.ICONS || {};
+  const icon = (n) => `<svg class="ic" viewBox="0 0 256 256" aria-hidden="true" focusable="false">${ICONS[n] || ""}</svg>`;
+  const ico = (n) => `<span class="ico" aria-hidden="true">${icon(n)}</span>`;
+  function hydrateIcons(root = document) {
+    root.querySelectorAll("[data-icon]").forEach((el) => { el.innerHTML = icon(el.dataset.icon); });
+  }
+
+  let provider, signer, account, contract;
   let me = { role: 0, isAdmin: false };
+  let adminAddr = "";
   let products = [];
+  let loaded = false;
+  let filter = "all";
+  let query = "";
+  let curTab = "products";
+  let personaIdx = 0;
+  const roleOf = new Map(); // lowercase address -> role key, refreshed on every data load
+  const seenIds = new Set();
 
   // ---------- UI helpers ----------
   function toast(msg, kind = "ok", ms = 4500) {
-    const t = $("toast");
-    t.textContent = msg;
-    t.className = "toast " + kind;
-    clearTimeout(toast._t);
-    toast._t = setTimeout(() => t.classList.add("hidden"), ms);
+    const host = $("toast");
+    const el = document.createElement("div");
+    el.className = "toast " + kind;
+    el.innerHTML = ico(kind === "err" ? "warning-octagon" : kind === "info" ? "info" : "check-circle") + `<span></span>`;
+    el.lastChild.textContent = msg;
+    host.appendChild(el);
+    while (host.children.length > 3) host.firstChild.remove();
+    el._t = setTimeout(() => dismiss(el), ms);
+    return el;
+  }
+  function dismiss(el) {
+    if (!el || !el.parentNode) return;
+    clearTimeout(el._t);
+    el.classList.add("out");
+    setTimeout(() => el.remove(), 320);
+  }
+
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); }
+    catch (_) {
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (__) {}
+      ta.remove();
+    }
   }
 
   // Interface used to decode revert data (available even before a contract is loaded).
@@ -1187,40 +1605,66 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     return err?.shortMessage || err?.reason || err?.message || String(err);
   }
 
+  // Input dialog. A field may carry `chips` (quick-fill values) and a prefilled `value`.
   function askFields(title, fields) {
     return new Promise((resolve) => {
       const dlg = $("dlg");
       $("dlgTitle").textContent = title;
       $("dlgFields").innerHTML = fields
-        .map((f, i) => `<label>${esc(f.label)}<input data-i="${i}" class="${f.mono ? "mono" : ""}" placeholder="${esc(f.placeholder || "")}" value="${esc(f.value || "")}"></label>`)
+        .map((f, i) => `<label><span class="lbl">${esc(f.label)}</span><input data-i="${i}" class="${f.mono ? "mono" : ""}" placeholder="${esc(f.placeholder || "")}" value="${esc(f.value || "")}" autocomplete="off" spellcheck="false">${
+          f.chips ? `<span class="quick">${f.chips.map((c) => `<button type="button" class="fchip${c.nudge ? " nudge" : ""}" data-fill="${i}" data-value="${esc(c.value)}">${esc(c.label)}</button>`).join("")}</span>` : ""
+        }</label>`)
         .join("");
+      let settled = false;
       const done = (ok) => {
+        if (settled) return;
+        settled = true;
         const vals = ok ? [...$("dlgFields").querySelectorAll("input")].map((i) => i.value.trim()) : null;
-        dlg.close();
-        $("dlgForm").onsubmit = null;
+        if (dlg.hasAttribute("open")) dlg.close();
+        dlg.onclose = null;
+        setTimeout(updateTour, 0);
         resolve(vals);
+      };
+      $("dlgFields").onclick = (e) => {
+        const c = e.target.closest("[data-fill]");
+        if (!c) return;
+        $("dlgFields").querySelector(`input[data-i="${c.dataset.fill}"]`).value = c.dataset.value;
+        c.classList.remove("nudge");
       };
       $("dlgOk").onclick = (e) => { e.preventDefault(); done(true); };
       $("dlgCancel").onclick = (e) => { e.preventDefault(); done(false); };
-      dlg.oncancel = () => resolve(null);
+      dlg.onclose = () => done(false);
+      dlg.oncancel = () => done(false);
       dlg.showModal();
     });
   }
 
   async function sendTx(label, fn) {
+    let pending = null;
     try {
-      toast(`${label}: confirm in MetaMask...`, "ok", 60000);
+      pending = toast(demo ? `${label}: sending...` : `${label}: confirm in MetaMask...`, "info", 60000);
       const tx = await fn();
-      toast(`${label}: waiting for confirmation...`, "ok", 60000);
+      dismiss(pending);
+      pending = toast(`${label}: waiting for confirmation...`, "info", 60000);
       await tx.wait();
-      toast(`${label}: done`, "ok");
+      dismiss(pending);
+      toast(`${label} confirmed.`, "ok");
       await refreshAll();
       return true;
     } catch (e) {
       console.error(e);
+      dismiss(pending);
       toast(`${label} failed: ${explain(e)}`, "err", 8000);
       return false;
     }
+  }
+
+  // ---------- views ----------
+  function setView(v) {
+    document.body.dataset.view = v;
+    $("landing").classList.toggle("hidden", v !== "landing");
+    $("setup").classList.toggle("hidden", v !== "connect");
+    $("app").classList.toggle("hidden", v !== "app");
   }
 
   // ---------- Wallet / contract ----------
@@ -1228,7 +1672,7 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
 
   async function connect() {
     if (!window.ethereum) {
-      toast("MetaMask not found. Use 'Try demo (no wallet)' or install MetaMask.", "err", 9000);
+      toast("MetaMask not found. Start the demo instead, or install MetaMask.", "err", 9000);
       return;
     }
     try {
@@ -1236,28 +1680,50 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
       await provider.send("eth_requestAccounts", []);
       signer = await provider.getSigner();
       account = await signer.getAddress();
-      $("acct").textContent = short(account);
-      $("connectBtn").textContent = "Connected";
+      showAccount();
+      $("connectBtn").innerHTML = ico("check") + "Connected";
       await showNetwork();
       window.ethereum.on?.("accountsChanged", () => location.reload());
       window.ethereum.on?.("chainChanged", () => location.reload());
       const saved = lsGet("chaintrace.address");
       if (saved && !$("addrInput").value) $("addrInput").value = saved;
+      if (!loaded) setView("connect");
       if ($("addrInput").value) await loadContract();
     } catch (e) {
       toast(explain(e), "err");
     }
   }
 
+  function showAccount() {
+    $("acct").textContent = short(account);
+    $("acctBtn").classList.remove("hidden");
+  }
+
   // ---------- Demo mode: a private blockchain running inside this page ----------
-  const DEMO_PEOPLE = ["Admin", "Manufacturer", "Distributor", "Retailer", "Visitor (no role)"];
+  const PERSONAS = [
+    { key: "admin", label: "Admin" },
+    { key: "manufacturer", label: "Manufacturer" },
+    { key: "distributor", label: "Distributor" },
+    { key: "retailer", label: "Retailer" },
+    { key: "visitor", label: "Visitor" },
+  ];
+
+  function setDemoButton(busy) {
+    const b = $("demoBtn");
+    b.disabled = busy;
+    b.innerHTML = busy ? `<span class="spin"></span>Starting...` : ico("play") + "Start demo";
+  }
 
   async function startDemo() {
     if (!window.Ganache || !window.SUPPLY_CHAIN_BYTECODE) {
       return toast("Demo mode is only in the standalone file (ChainTrace-Standalone.html).", "err", 8000);
     }
-    $("demoBtn").disabled = true;
-    $("demoBtn").textContent = "Starting...";
+    setDemoButton(true);
+    // show the app shell with skeletons straight away; booting the chain takes a few seconds
+    $("app").classList.add("booting");
+    setView("app");
+    renderProducts();
+    await new Promise((r) => requestAnimationFrame(() => setTimeout(r, 40)));
     try {
       const chain = window.Ganache.provider({
         wallet: { totalAccounts: 5, deterministic: true },
@@ -1306,32 +1772,72 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
       demo = { accts, setIdx: (i) => (idx = i) };
       signer = await provider.getSigner();
       account = await signer.getAddress();
-      $("acct").textContent = short(account);
-      $("connectBtn").classList.add("hidden");
-      $("demoBtn").classList.add("hidden");
+      showAccount();
       $("addrInput").value = addr;
-      $("setup").classList.add("hidden");
+      $("tourBtn").classList.remove("hidden");
+      $("tourBtn").innerHTML = ico("compass") + "Take the tour";
 
-      const sel = $("demoSel");
-      sel.innerHTML = DEMO_PEOPLE.map((n, i) => `<option value="${i}">${n} - ${short(accts[i])}</option>`).join("");
-      sel.onchange = async () => {
-        demo.setIdx(Number(sel.value));
-        signer = await provider.getSigner();
-        account = await signer.getAddress();
-        contract = contract.connect(signer);
-        $("acct").textContent = short(account);
-        await refreshAll();
-        toast(`Now acting as: ${DEMO_PEOPLE[Number(sel.value)]}`, "ok", 2500);
-      };
+      buildRoleSwitch();
+      $("roleSwitchWrap").classList.remove("hidden");
+      $("demoBar").innerHTML = `<span class="demo-note"><b>Demo mode.</b> A private test blockchain runs inside this page and resets when you refresh.</span>`;
       $("demoBar").classList.remove("hidden");
       await showNetwork();
       await loadContract();
-      toast("Demo blockchain started. Use the 'Acting as' menu to switch roles.", "ok", 6000);
+      $("app").classList.remove("booting");
+      toast("Demo blockchain is ready. Try the tour, or switch roles yourself.", "ok", 6000);
     } catch (e) {
       console.error(e);
-      $("demoBtn").disabled = false;
-      $("demoBtn").textContent = "Try demo (no wallet)";
+      $("app").classList.remove("booting");
+      setView("landing");
+      setDemoButton(false);
       toast("Could not start demo: " + explain(e), "err", 9000);
+    }
+  }
+
+  function buildRoleSwitch() {
+    const sw = $("roleSwitch");
+    sw.innerHTML = PERSONAS.map((p, i) => {
+      const m = ROLE_META[p.key];
+      return `<button type="button" class="seg-btn role-${p.key}" role="radio" aria-checked="${i === personaIdx}" tabindex="${i === personaIdx ? 0 : -1}" data-i="${i}" data-key="${p.key}">${ico(m.icon)}${m.label}</button>`;
+    }).join("");
+    sw.onclick = (e) => {
+      const b = e.target.closest(".seg-btn");
+      if (b) switchPersona(Number(b.dataset.i));
+    };
+    sw.onkeydown = (e) => {
+      const dir = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (!dir) return;
+      e.preventDefault();
+      const n = (personaIdx + dir + PERSONAS.length) % PERSONAS.length;
+      switchPersona(n).then(() => sw.querySelector(`[data-i="${n}"]`)?.focus());
+    };
+  }
+  function markPersona() {
+    document.querySelectorAll("#roleSwitch .seg-btn").forEach((b) => {
+      const on = Number(b.dataset.i) === personaIdx;
+      b.setAttribute("aria-checked", on);
+      b.tabIndex = on ? 0 : -1;
+    });
+  }
+
+  let switching = false;
+  async function switchPersona(i) {
+    if (!demo || switching || i === personaIdx) return;
+    switching = true;
+    try {
+      personaIdx = i;
+      demo.setIdx(i);
+      markPersona();
+      signer = await provider.getSigner();
+      account = await signer.getAddress();
+      contract = contract.connect(signer);
+      showAccount();
+      await refreshAll();
+      toast(`Now acting as ${PERSONAS[i].label}.`, "info", 2200);
+    } catch (e) {
+      toast(explain(e), "err");
+    } finally {
+      switching = false;
     }
   }
 
@@ -1341,7 +1847,7 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
   async function showNetwork() {
     const net = await provider.getNetwork();
     const b = $("netBadge");
-    b.textContent = NETWORKS[Number(net.chainId)] || `Chain ${net.chainId}`;
+    b.textContent = demo || window.ethereum?.isDemo ? "Demo chain" : NETWORKS[Number(net.chainId)] || `Chain ${net.chainId}`;
     b.className = "pill net";
   }
 
@@ -1358,12 +1864,17 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
       if (!demo) lsSet("chaintrace.address", addr);
       msg.textContent = "Contract loaded.";
       msg.className = "small ok-text";
-      $("app").classList.remove("hidden");
+      if (!demo) {
+        $("demoBar").innerHTML = `<span class="demo-note">Contract <span class="mono">${esc(short(addr))}</span></span><button id="changeContract" class="btn sm ghost" type="button">Change</button>`;
+        $("demoBar").classList.remove("hidden");
+      }
+      setView("app");
       await refreshAll();
       subscribe();
     } catch (e) {
       msg.textContent = explain(e);
       msg.className = "small err-text";
+      if (document.body.dataset.view === "app" && !loaded) setView("connect");
     }
   }
 
@@ -1378,19 +1889,19 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
   }
 
   // ---------- Data ----------
+  const ensureRoles = (addrs) => Promise.all([...new Set(addrs.filter((a) => a && a !== ethers.ZeroAddress).map(lc))].filter((a) => !roleOf.has(a)).map(async (a) => {
+    let r = 0;
+    try { r = Number(await contract.roles(a)); } catch (_) {}
+    roleOf.set(a, r ? KEYS[r] : lc(adminAddr) === a ? "admin" : "");
+  }));
+
   async function refreshAll() {
     if (!contract) return;
     const [admin, role, paused, count] = await Promise.all([
       contract.admin(), contract.roles(account), contract.paused(), contract.productCount(),
     ]);
-    me = { role: Number(role), isAdmin: admin.toLowerCase() === account.toLowerCase() };
-
-    const rb = $("roleBadge");
-    const labels = [];
-    if (me.isAdmin) labels.push("Admin");
-    if (me.role) labels.push(ROLES[me.role]);
-    rb.textContent = labels.length ? labels.join(" + ") : "No role";
-    rb.className = "pill " + (me.isAdmin ? "admin" : me.role ? "role" : "");
+    adminAddr = admin;
+    me = { role: Number(role), isAdmin: lc(admin) === lc(account) };
 
     $("pauseState").textContent = paused ? "PAUSED" : "Running";
     $("pauseState").className = paused ? "err-text" : "ok-text";
@@ -1403,74 +1914,192 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
       manufacturer: p.manufacturer, owner: p.currentOwner, pending: p.pendingOwner,
       stage: Number(p.stage), recalled: p.recalled, createdAt: p.createdAt, updatedAt: p.updatedAt,
     })) : [];
+
+    roleOf.clear();
+    await ensureRoles([account, ...products.flatMap((p) => [p.owner, p.pending, p.manufacturer])]);
+    loaded = true;
+
+    if (tour.on && !tour.id && products.length > tour.baseCount) tour.id = products[products.length - 1].id;
+
+    renderRoleBar();
     renderProducts();
+    renderTrackQuick();
+    renderRegNote();
+    updateTour();
   }
 
+  const activeKeys = () => {
+    const k = [];
+    if (me.isAdmin) k.push("admin");
+    if (me.role) k.push(KEYS[me.role]);
+    return k.length ? k : ["visitor"];
+  };
+  const rchip = (key) => `<span class="rchip role-${key}">${ico(ROLE_META[key].icon)}${ROLE_META[key].label}</span>`;
+
+  function renderRoleBar() {
+    const keys = activeKeys();
+    const rb = $("roleBadge");
+    rb.innerHTML = keys.map(rchip).join(" ").replace(/<span class="rchip/g, '<span class="rchip');
+    rb.className = "pill " + (me.isAdmin ? "admin" : me.role ? "role" : "");
+    $("rolePerms").innerHTML = keys.map((k) => `<span>${rchip(k)} ${esc(ROLE_META[k].can)}</span>`).join(" ");
+  }
+
+  function renderRegNote() {
+    const n = $("regNote");
+    if (me.role === 1) { n.classList.add("hidden"); return; }
+    n.classList.remove("hidden");
+    n.innerHTML = ico("info") + `<span>Only the Manufacturer role can register products.${demo ? " Switch to Manufacturer in the Acting as control above." : ""}</span>`;
+  }
+
+  // who: a role chip (when known) plus the short address
+  function whoHtml(addr, withCopy) {
+    if (!addr || addr === ethers.ZeroAddress) return '<span class="muted">-</span>';
+    const key = roleOf.get(lc(addr));
+    const you = lc(addr) === lc(account);
+    return `${key ? rchip(key) : ""}<span class="addr">${esc(short(addr))}</span>${you ? '<span class="muted small">(you)</span>' : ""}${withCopy ? copyBtn(addr) : ""}`;
+  }
+  const copyBtn = (v) => `<button type="button" class="copy" data-copy="${esc(v)}" title="Copy address" aria-label="Copy address">${ico("copy")}</button>`;
+
   function needsMyAction(p) {
-    const lc = (a) => a.toLowerCase();
     return lc(p.owner) === lc(account) || lc(p.pending) === lc(account);
   }
 
+  // ---------- tracker ----------
+  function trackerHtml(stage, recalled, big) {
+    const moving = !recalled && (stage === 1 || stage === 3);
+    const steps = STEPS.map((s, i) => {
+      let c = i < stage ? "done" : i === stage ? "current" : "";
+      if (i === stage && stage === 5 && !recalled) c = "current final";
+      if (moving && i === stage + 1) c += " ahead";
+      return `<li class="tk ${c}"><span class="tk-dot">${icon(s.i)}</span><span class="tk-lbl">${s.l}</span></li>`;
+    }).join("");
+    const cap = recalled
+      ? `Recalled at step ${stage + 1} of 6: <b>${STAGES[stage]}</b>`
+      : stage === 5 ? `Complete: <b>${STAGES[stage]}</b>` : `Step ${stage + 1} of 6: <b>${STAGES[stage]}</b>`;
+    const label = (recalled ? "Recalled. " : "") + `Progress: step ${stage + 1} of 6, ${STAGES[stage]}`;
+    return `<div><ol class="tracker${recalled ? " bad" : ""}${big ? " big" : ""}" role="img" aria-label="${esc(label)}">${steps}</ol><p class="tk-now">${cap}</p></div>`;
+  }
+
+  function badgeHtml(p) {
+    if (p.recalled) return `<span class="badge recalled">${ico("warning-octagon")}Recalled</span>`;
+    const cls = p.stage === 1 || p.stage === 3 ? "transit" : p.stage === 5 ? "done" : "";
+    return `<span class="badge ${cls}">${STAGES[p.stage]}</span>`;
+  }
+
+  // ---------- products ----------
+  function renderFilters() {
+    const base = products.filter((p) => !query || matches(p, query));
+    $("stageFilters").innerHTML = FILTERS.map((f) => {
+      const n = base.filter(f.test).length;
+      return `<button type="button" class="fchip" data-filter="${f.id}" aria-pressed="${filter === f.id}">${f.label} <i>${n}</i></button>`;
+    }).join("");
+  }
+  const matches = (p, q) => `${p.name} ${p.batch} #${p.id} ${p.id}`.toLowerCase().includes(q.toLowerCase());
+
+  function empty(iconName, title, text, btn) {
+    return `<div class="empty"><span class="em-ic">${icon(iconName)}</span><h3>${esc(title)}</h3><p>${esc(text)}</p>${btn || ""}</div>`;
+  }
+
   function renderProducts() {
-    const lc = (a) => a.toLowerCase();
+    if (!loaded) {
+      $("productRows").innerHTML = Array.from({ length: 4 }, () =>
+        `<div class="sk-card" aria-hidden="true"><div class="sk sk-line w60"></div><div class="sk sk-line w35"></div><div class="sk sk-bar"></div><div class="sk sk-line w35"></div></div>`).join("");
+      return;
+    }
     $("statTotal").textContent = products.length;
     $("statTransit").textContent = products.filter((p) => p.stage === 1 || p.stage === 3).length;
     $("statSold").textContent = products.filter((p) => p.stage === 5).length;
     $("statRecalled").textContent = products.filter((p) => p.recalled).length;
+    renderFilters();
 
-    let list = products;
+    const f = FILTERS.find((x) => x.id === filter) || FILTERS[0];
+    let list = products.filter((p) => f.test(p) && (!query || matches(p, query)));
     if ($("mineOnly").checked) list = list.filter(needsMyAction);
+
     if (!list.length) {
-      $("productRows").innerHTML = `<tr><td colspan="6" class="muted">${products.length ? "Nothing needs your action." : "No products yet. A Manufacturer can register one in the Register tab."}</td></tr>`;
+      const filtered = products.length && (filter !== "all" || query || $("mineOnly").checked);
+      $("productRows").innerHTML = filtered
+        ? empty("magnifying-glass", $("mineOnly").checked && filter === "all" && !query ? "Nothing needs your action" : "No matching products", "Try a different search or stage, or clear the filters.", `<button class="btn sm" type="button" data-clear="1">Clear filters</button>`)
+        : empty("package", "No products yet", me.role === 1 ? "Register the first product to start its journey." : "A Manufacturer registers the first product.", me.role === 1 ? `<button class="btn primary sm" type="button" data-goto="register">Register a product</button>` : "");
       return;
     }
 
-    $("productRows").innerHTML = list.slice().reverse().map((p) => {
-      const mineOwner = lc(p.owner) === lc(account);
-      const mineIncoming = lc(p.pending) === lc(account);
-      const acts = [`<button class="btn small" data-act="track" data-id="${p.id}">Track</button>`];
-      if (!p.recalled) {
-        if (mineOwner && (p.stage === 0 || p.stage === 2)) acts.push(`<button class="btn small primary" data-act="ship" data-id="${p.id}">Ship</button>`);
-        if (mineOwner && (p.stage === 1 || p.stage === 3)) acts.push(`<button class="btn small" data-act="cancel" data-id="${p.id}">Cancel shipment</button>`);
-        if (mineIncoming) acts.push(`<button class="btn small primary" data-act="receive" data-id="${p.id}">Receive</button>`);
-        if (mineOwner && p.stage === 4 && me.role === 3) acts.push(`<button class="btn small primary" data-act="sold" data-id="${p.id}">Mark sold</button>`);
-      }
-      if (!p.recalled && (me.isAdmin || lc(p.manufacturer) === lc(account))) acts.push(`<button class="btn small danger" data-act="recall" data-id="${p.id}">Recall</button>`);
-
-      const stageHtml = p.recalled
-        ? `<span class="stage recalled">RECALLED</span>`
-        : `<span class="stage s${p.stage}">${STAGES[p.stage]}</span>`;
-      const holder = p.stage === 1 || p.stage === 3
-        ? `${short(p.owner)} <span class="muted">to</span> ${short(p.pending)}`
-        : short(p.owner) + (mineOwner ? ' <span class="muted">(you)</span>' : "");
-
-      return `<tr>
-        <td class="mono">#${p.id}</td>
-        <td>${esc(p.name)}</td>
-        <td class="mono">${esc(p.batch)}</td>
-        <td>${stageHtml}</td>
-        <td class="mono">${holder}</td>
-        <td><div class="acts">${acts.join("")}</div></td></tr>`;
+    $("productRows").innerHTML = list.slice().reverse().map((p, i) => {
+      const isNew = !seenIds.has(p.id);
+      seenIds.add(p.id);
+      return pcardHtml(p, i, isNew);
     }).join("");
   }
 
+  function pcardHtml(p, i, isNew) {
+    const mineOwner = lc(p.owner) === lc(account);
+    const mineIncoming = lc(p.pending) === lc(account);
+    const acts = [`<button class="btn sm" data-act="track" data-id="${p.id}">${ico("path")}Track</button>`];
+    if (!p.recalled) {
+      if (mineOwner && (p.stage === 0 || p.stage === 2)) acts.push(`<button class="btn sm primary" data-act="ship" data-id="${p.id}">${ico("truck")}Ship</button>`);
+      if (mineOwner && (p.stage === 1 || p.stage === 3)) acts.push(`<button class="btn sm" data-act="cancel" data-id="${p.id}">${ico("arrow-u-up-left")}Cancel shipment</button>`);
+      if (mineIncoming) acts.push(`<button class="btn sm primary" data-act="receive" data-id="${p.id}">${ico("check")}Receive</button>`);
+      if (mineOwner && p.stage === 4 && me.role === 3) acts.push(`<button class="btn sm primary" data-act="sold" data-id="${p.id}">${ico("bag")}Mark sold</button>`);
+    }
+    if (!p.recalled && (me.isAdmin || lc(p.manufacturer) === lc(account))) acts.push(`<button class="btn sm danger" data-act="recall" data-id="${p.id}">${ico("warning-octagon")}Recall</button>`);
+
+    const transit = p.stage === 1 || p.stage === 3;
+    const holder = transit
+      ? `${whoHtml(p.owner)}<span class="muted" aria-label="to">${ico("arrow-right")}</span>${whoHtml(p.pending)}`
+      : `<span>Held by</span>${whoHtml(p.owner)}`;
+    const cls = ["pcard", p.recalled ? "is-recalled" : "", tour.on && tour.id === p.id ? "is-tour" : "", isNew && loaded ? "enter" : ""].join(" ");
+    return `<article class="${cls}" data-id="${p.id}" style="--i:${Math.min(i, 8)}">
+      <div class="pc-head">
+        <div><div class="pc-name">${esc(p.name)}</div><div class="pc-meta"><span class="mono">#${p.id}</span><span class="mono">${esc(p.batch)}</span></div></div>
+        ${badgeHtml(p)}
+      </div>
+      ${trackerHtml(p.stage, p.recalled)}
+      <div class="pc-holder">${holder}</div>
+      <div class="acts">${acts.join("")}</div>
+    </article>`;
+  }
+
+  function heroSample() {
+    const el = $("heroSample");
+    if (!el) return;
+    el.innerHTML = `<article class="pcard enter">
+      <div class="pc-head">
+        <div><div class="pc-name">Single-Origin Coffee 250g</div><div class="pc-meta"><span class="mono">#7</span><span class="mono">BATCH-2026-014</span></div></div>
+        <span class="badge transit">Shipped to retailer</span>
+      </div>
+      ${trackerHtml(3, false)}
+      <div class="pc-holder">${rchip("distributor")}<span class="muted">${ico("arrow-right")}</span>${rchip("retailer")}</div>
+    </article>`;
+  }
+
   // ---------- Actions ----------
+  const suggest = {
+    ship0: { to: 2, loc: "Wayanad Apiary" },
+    ship2: { to: 3, loc: "Mysuru Hub" },
+    receive1: { loc: "Mysuru Hub" },
+    receive3: { loc: "Store #12, Bengaluru" },
+    sold: { loc: "Store #12, Bengaluru" },
+  };
+
   async function onAction(act, id) {
     const p = products.find((x) => x.id === id);
     if (act === "track") { switchTab("track"); $("trackId").value = id; return trackProduct(); }
+    const touring = tour.on && tour.id === id;
 
     if (act === "ship") {
       const target = p.stage === 0 ? "distributor" : "retailer";
+      const s = suggest["ship" + p.stage];
+      const chips = demo ? [{ label: `Use the demo ${target}`, value: demo.accts[s.to], nudge: touring }] : null;
       const v = await askFields(`Ship product #${id} to a ${target}`, [
-        { label: `${target[0].toUpperCase() + target.slice(1)} wallet address`, placeholder: "0x...", mono: true },
-        { label: "Dispatch location", placeholder: "Bengaluru warehouse" },
+        { label: `${target[0].toUpperCase() + target.slice(1)} wallet address`, placeholder: "0x...", mono: true, chips, value: touring && demo ? demo.accts[s.to] : "" },
+        { label: "Dispatch location", placeholder: "Bengaluru warehouse", value: touring ? s.loc : "" },
       ]);
       if (!v) return;
       if (!ethers.isAddress(v[0])) return toast("Invalid recipient address.", "err");
       return sendTx("Ship", () => contract.shipProduct(id, v[0], v[1]));
     }
     if (act === "receive") {
-      const v = await askFields(`Receive product #${id}`, [{ label: "Where was it received?", placeholder: "Mysuru hub" }]);
+      const v = await askFields(`Receive product #${id}`, [{ label: "Where was it received?", placeholder: "Mysuru hub", value: touring ? suggest["receive" + p.stage].loc : "" }]);
       if (!v) return;
       return sendTx("Receive", () => contract.receiveProduct(id, v[0]));
     }
@@ -1480,7 +2109,7 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
       return sendTx("Cancel shipment", () => contract.cancelShipment(id, v[0]));
     }
     if (act === "sold") {
-      const v = await askFields(`Mark #${id} as sold`, [{ label: "Store / location", placeholder: "Store #12" }]);
+      const v = await askFields(`Mark #${id} as sold`, [{ label: "Store / location", placeholder: "Store #12", value: touring ? suggest.sold.loc : "" }]);
       if (!v) return;
       return sendTx("Mark sold", () => contract.markSold(id, v[0]));
     }
@@ -1498,38 +2127,73 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     if (ok) { ["regName", "regBatch", "regCid", "regLoc"].forEach((i) => ($(i).value = "")); switchTab("products"); }
   }
 
+  // ---------- Track ----------
+  function renderTrackQuick() {
+    const el = $("trackQuick");
+    el.innerHTML = products.length
+      ? products.slice().reverse().slice(0, 6).map((p) => `<button type="button" class="fchip" data-track="${p.id}">#${p.id} ${esc(p.name)}</button>`).join("")
+      : "";
+    if (!$("trackResult").innerHTML.trim()) {
+      $("trackResult").innerHTML = empty("compass", "Pick a product to follow", "Enter a product ID above, or choose one of the recent products.");
+    }
+  }
+
   async function trackProduct() {
     const id = Number($("trackId").value);
     const out = $("trackResult");
     if (!id) return toast("Enter a product ID.", "err");
+    out.innerHTML = `<div class="sk-card" aria-hidden="true"><div class="sk sk-line w60"></div><div class="sk sk-bar"></div><div class="sk sk-line w35"></div><div class="sk sk-line w60"></div></div>`;
     try {
       const [p, hist] = await Promise.all([contract.getProduct(id), contract.getHistory(id)]);
+      await ensureRoles([p.manufacturer, p.currentOwner, p.pendingOwner, ...hist.map((r) => r.actor)]);
       const stage = Number(p.stage);
+      const prod = { id: Number(p.id), stage, recalled: p.recalled };
       const cid = p.metadataCID
-        ? `<a class="mono" style="color:var(--blue)" target="_blank" rel="noopener" href="https://ipfs.io/ipfs/${encodeURIComponent(p.metadataCID)}">${esc(p.metadataCID)}</a>`
-        : "-";
-      out.innerHTML = `
-        <dl class="kv">
-          <dt>Product</dt><dd><b>${esc(p.name)}</b> (#${Number(p.id)})</dd>
-          <dt>Batch</dt><dd class="mono">${esc(p.batchNumber)}</dd>
-          <dt>Status</dt><dd>${p.recalled ? '<span class="stage recalled">RECALLED</span>' : `<span class="stage s${stage}">${STAGES[stage]}</span>`}</dd>
-          <dt>Manufacturer</dt><dd class="mono">${p.manufacturer}</dd>
-          <dt>Current holder</dt><dd class="mono">${p.currentOwner}</dd>
-          ${p.pendingOwner !== ethers.ZeroAddress ? `<dt>Shipping to</dt><dd class="mono">${p.pendingOwner}</dd>` : ""}
-          <dt>IPFS metadata</dt><dd>${cid}</dd>
-          <dt>Created</dt><dd>${fmtTime(p.createdAt)}</dd>
-        </dl>
-        <ul class="timeline">
-          ${hist.map((r) => {
-            const isRecall = r.note && !["Product manufactured", "Shipment dispatched", "Shipment received", "Sold to customer", "Shipment cancelled by sender"].includes(r.note);
-            return `<li class="${isRecall ? "recall" : ""}">
-              <div class="t">${isRecall ? "RECALL: " + esc(r.note) : STAGES[Number(r.stage)]}</div>
-              <div class="meta">${esc(r.note)}${r.location ? " - " + esc(r.location) : ""}</div>
-              <div class="meta mono">${short(r.actor)} - ${fmtTime(r.timestamp)}</div></li>`;
-          }).join("")}
-        </ul>`;
+        ? `<a class="mono" target="_blank" rel="noopener" href="https://ipfs.io/ipfs/${encodeURIComponent(p.metadataCID)}">${esc(p.metadataCID)}</a>${copyBtn(p.metadataCID).replace("Copy address", "Copy CID")}`
+        : '<span class="muted">None</span>';
+      const std = ["Product manufactured", "Shipment dispatched", "Shipment received", "Sold to customer", "Shipment cancelled by sender"];
+      const steps = hist.map((r, i) => {
+        const note = r.note || "";
+        const isRecall = note && !std.includes(note);
+        const cancelled = note === "Shipment cancelled by sender";
+        const title = isRecall ? "Recalled" : cancelled ? "Shipment cancelled" : TL_TITLES[Number(r.stage)];
+        const ic = isRecall ? "warning-octagon" : cancelled ? "arrow-u-up-left" : STEPS[Number(r.stage)].i;
+        return `<li class="${isRecall ? "recall" : cancelled ? "cancel" : ""}" style="--i:${Math.min(i, 10)}">
+          <span class="tl-ic">${icon(ic)}</span>
+          <div class="tl-body">
+            <div class="tl-title">${esc(title)}</div>
+            <div class="tl-note">${isRecall ? "Reason: " : ""}${esc(note)}</div>
+            <div class="tl-meta">
+              <span class="who">${whoHtml(r.actor, true)}</span>
+              ${r.location ? `<span class="who">${ico("map-pin")}${esc(r.location)}</span>` : ""}
+              <time datetime="${new Date(Number(r.timestamp) * 1000).toISOString()}">${ico("clock")}${fmtTime(r.timestamp)}</time>
+            </div>
+          </div></li>`;
+      }).join("");
+      out.innerHTML = `<div class="trk">
+        <div class="trk-top${p.recalled ? " is-recalled" : ""}">
+          <div class="trk-head">
+            <div><h3>${esc(p.name)}</h3><div class="pc-meta"><span class="mono">#${Number(p.id)}</span><span class="mono">${esc(p.batchNumber)}</span></div></div>
+            ${badgeHtml({ stage, recalled: p.recalled })}
+          </div>
+          ${trackerHtml(stage, p.recalled, true)}
+        </div>
+        <div class="trk-cols">
+          <div class="trk-sec"><h3>Journey</h3><ul class="timeline">${steps}</ul></div>
+          <div class="trk-sec"><h3>Details</h3>
+            <dl class="facts card">
+              <div><dt>Manufacturer</dt><dd>${whoHtml(p.manufacturer, true)}</dd></div>
+              <div><dt>Current holder</dt><dd>${whoHtml(p.currentOwner, true)}</dd></div>
+              ${p.pendingOwner !== ethers.ZeroAddress ? `<div><dt>Shipping to</dt><dd>${whoHtml(p.pendingOwner, true)}</dd></div>` : ""}
+              <div><dt>IPFS metadata</dt><dd>${cid}</dd></div>
+              <div><dt>Created</dt><dd>${fmtTime(p.createdAt)}</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>`;
+      if (tour.on && tour.id === prod.id && stage === 5) { tour.tracked = true; updateTour(); }
     } catch (e) {
-      out.innerHTML = `<p class="err-text">${esc(explain(e))}</p>`;
+      out.innerHTML = empty("warning-octagon", "Could not find that product", explain(e));
     }
   }
 
@@ -1548,16 +2212,131 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
 
   // ---------- Tabs & wiring ----------
   function switchTab(name) {
-    document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === name));
+    curTab = name;
+    document.querySelectorAll(".tab").forEach((t) => {
+      const on = t.dataset.tab === name;
+      t.classList.toggle("active", on);
+      t.setAttribute("aria-selected", on);
+      t.tabIndex = on ? 0 : -1;
+    });
     document.querySelectorAll(".panel").forEach((p) => p.classList.toggle("hidden", p.id !== "tab-" + name));
+    updateTour();
   }
 
+  // ---------- Guided tour (demo only) ----------
+  const tour = { on: false, id: null, baseCount: 0, tracked: false, lastTarget: null };
+  const TOUR_TOTAL = 7;
+
+  function tourPlan() {
+    const p = tour.id ? products.find((x) => x.id === tour.id) : null;
+    if (!p) return { n: 1, role: "manufacturer", tab: "register", title: "Register a product", act: "register" };
+    if (p.recalled) return { n: 8, done: true, title: "This product was recalled", text: "A recall freezes the product on the blockchain, so the tour ends here." };
+    switch (p.stage) {
+      case 0: return { n: 2, role: "manufacturer", tab: "products", title: "Ship it to the distributor", act: "ship" };
+      case 1: return { n: 3, role: "distributor", tab: "products", title: "Receive the shipment", act: "receive" };
+      case 2: return { n: 4, role: "distributor", tab: "products", title: "Ship it to the retailer", act: "ship" };
+      case 3: return { n: 5, role: "retailer", tab: "products", title: "Receive it at the store", act: "receive" };
+      case 4: return { n: 6, role: "retailer", tab: "products", title: "Mark it sold", act: "sold" };
+      default:
+        return tour.tracked
+          ? { n: 8, done: true, title: "That is the full journey", text: "Every hand-over is now a permanent record on the blockchain. Anyone can verify it, with no account." }
+          : { n: 7, role: null, tab: "track", title: "Track the journey", act: "track" };
+    }
+  }
+
+  const ACT_TEXT = {
+    ship: "Press the highlighted <b>Ship</b> button on your product. The recipient is filled in for you, so just confirm.",
+    receive: "Press the highlighted <b>Receive</b> button, then confirm the dialog.",
+    sold: "Press the highlighted <b>Mark sold</b> button, then confirm the dialog.",
+    track: "Press the highlighted <b>Track</b> button to see every hand-over of your product.",
+  };
+
+  function updateTour() {
+    document.querySelectorAll(".nudge").forEach((x) => x.classList.remove("nudge"));
+    document.querySelectorAll(".pcard.is-tour").forEach((x) => x.classList.remove("is-tour"));
+    const panel = $("tour");
+    if (!tour.on || !demo) {
+      panel.classList.add("hidden");
+      document.body.classList.remove("tour-on");
+      return;
+    }
+    panel.classList.remove("hidden");
+    document.body.classList.add("tour-on");
+    if (tour.id) document.querySelector(`.pcard[data-id="${tour.id}"]`)?.classList.add("is-tour");
+
+    const plan = tourPlan();
+    const curKey = PERSONAS[personaIdx].key;
+    const acts = [];
+    let target = null, text;
+    $("tourTitle").textContent = plan.title;
+    $("tourStep").textContent = plan.done ? "Tour complete" : `Step ${plan.n} of ${TOUR_TOTAL}`;
+    $("tourProg").style.width = (plan.done ? 100 : ((plan.n - 1) / TOUR_TOTAL) * 100) + "%";
+
+    if (plan.done) {
+      text = plan.text;
+      acts.push(`<button class="btn sm primary" type="button" data-tour="finish">Finish</button>`);
+    } else if (plan.role && curKey !== plan.role) {
+      const lbl = ROLE_META[plan.role].label;
+      target = $("roleSwitch").querySelector(`[data-key="${plan.role}"]`);
+      text = `Switch to <b>${lbl}</b> with the highlighted "Acting as" control. Only this role can do the next step.`;
+      acts.push(`<button class="btn sm" type="button" data-tour="switch" data-i="${PERSONAS.findIndex((x) => x.key === plan.role)}">Switch for me</button>`);
+    } else if (curTab !== plan.tab) {
+      const names = { products: "Products", register: "Register", track: "Track" };
+      target = document.querySelector(`.tab[data-tab="${plan.tab}"]`);
+      text = `Open the highlighted <b>${names[plan.tab]}</b> tab.`;
+    } else if (plan.act === "register") {
+      if (!$("regName").value.trim()) {
+        target = $("regFill");
+        text = "Press <b>Fill an example</b>, then <b>Register product</b>. The product is written to the blockchain.";
+      } else {
+        target = $("regBtn");
+        text = "Now press the highlighted <b>Register product</b> button.";
+      }
+    } else if (plan.act === "track") {
+      $("trackId").value = tour.id;
+      target = $("trackBtn");
+      text = ACT_TEXT.track;
+    } else {
+      target = document.querySelector(`.pcard[data-id="${tour.id}"] [data-act="${plan.act}"]`);
+      text = ACT_TEXT[plan.act];
+    }
+    $("tourBody").innerHTML = text;
+    $("tourActions").innerHTML = acts.join("");
+    if (target) {
+      target.classList.add("nudge");
+      if (target !== tour.lastTarget) target.scrollIntoView({ block: "center", behavior: reduceMotion() ? "auto" : "smooth" });
+    }
+    tour.lastTarget = target;
+  }
+
+  function startTour() {
+    if (!demo) return toast("The tour runs in the demo. Press Start demo first.", "info");
+    Object.assign(tour, { on: true, id: null, baseCount: products.length, tracked: false, lastTarget: null });
+    $("trackResult").innerHTML = "";
+    renderTrackQuick();
+    switchTab(curTab === "register" ? "register" : "products");
+  }
+  function stopTour() {
+    tour.on = false;
+    updateTour();
+  }
+
+  // ---------- events ----------
   $("connectBtn").onclick = connect;
   $("loadBtn").onclick = loadContract;
-  $("refreshBtn").onclick = refreshAll;
+  $("refreshBtn").onclick = async () => { if (contract) { await refreshAll(); toast("Products updated.", "info", 1800); } };
   $("mineOnly").onchange = renderProducts;
+  $("searchInput").oninput = (e) => { query = e.target.value.trim(); renderProducts(); };
   $("regBtn").onclick = registerProduct;
+  $("regFill").onclick = () => {
+    $("regName").value = "Single-Origin Honey 500g";
+    $("regBatch").value = "BATCH-2026-003";
+    $("regLoc").value = "Wayanad Apiary, Kerala";
+    updateTour();
+  };
+  $("regName").addEventListener("input", updateTour);
   $("trackBtn").onclick = trackProduct;
+  $("trackId").onkeydown = (e) => { if (e.key === "Enter") trackProduct(); };
   $("roleBtn").onclick = setRole;
   $("lookupBtn").onclick = lookupRole;
   $("pauseBtn").onclick = () => sendTx("Pause", () => contract.pause());
@@ -1567,14 +2346,63 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
     if (!ethers.isAddress(a)) return toast("Invalid address.", "err");
     if (confirm("Transfer admin rights? You will lose admin access.")) sendTx("Transfer admin", () => contract.transferAdmin(a));
   };
-  document.querySelectorAll(".tab").forEach((t) => (t.onclick = () => switchTab(t.dataset.tab)));
+  document.querySelectorAll(".tab").forEach((t) => {
+    t.onclick = () => switchTab(t.dataset.tab);
+    t.onkeydown = (e) => {
+      const tabs = [...document.querySelectorAll(".tab")];
+      const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (!d) return;
+      e.preventDefault();
+      const n = tabs[(tabs.indexOf(t) + d + tabs.length) % tabs.length];
+      n.focus(); switchTab(n.dataset.tab);
+    };
+  });
   $("productRows").onclick = (e) => {
-    const b = e.target.closest("button[data-act]");
-    if (b) onAction(b.dataset.act, Number(b.dataset.id));
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.act) return onAction(b.dataset.act, Number(b.dataset.id));
+    if (b.dataset.goto) return switchTab(b.dataset.goto);
+    if (b.dataset.clear) {
+      filter = "all"; query = ""; $("searchInput").value = ""; $("mineOnly").checked = false; renderProducts();
+    }
   };
+  $("stageFilters").onclick = (e) => {
+    const b = e.target.closest("[data-filter]");
+    if (b) { filter = b.dataset.filter; renderProducts(); }
+  };
+  $("trackQuick").onclick = (e) => {
+    const b = e.target.closest("[data-track]");
+    if (b) { $("trackId").value = b.dataset.track; trackProduct(); }
+  };
+  document.addEventListener("click", async (e) => {
+    const c = e.target.closest("[data-copy]");
+    if (c) {
+      await copyText(c.dataset.copy);
+      c.classList.add("copied");
+      toast("Copied to clipboard.", "info", 1600);
+      setTimeout(() => c.classList.remove("copied"), 1200);
+      return;
+    }
+    if (e.target.closest("#changeContract")) { setView("connect"); return; }
+    const t = e.target.closest("[data-tour]");
+    if (t) {
+      if (t.dataset.tour === "finish") stopTour();
+      if (t.dataset.tour === "switch") switchPersona(Number(t.dataset.i));
+    }
+  });
+  $("acctBtn").onclick = async () => { await copyText(account); toast("Your address was copied.", "info", 1600); };
+  $("brandLink").onclick = (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: reduceMotion() ? "auto" : "smooth" }); };
+  $("tourBtn").onclick = startTour;
+  $("tourClose").onclick = stopTour;
 
   $("demoBtn").onclick = startDemo;
+  hydrateIcons();
+  heroSample();
+  setDemoButton(false);
+  $("connectBtn").innerHTML = ico("wallet") + "Connect MetaMask";
   if (!window.Ganache) $("demoBtn").classList.add("hidden");
+  renderProducts();
+  renderTrackQuick();
   const saved = lsGet("chaintrace.address");
   if (saved) $("addrInput").value = saved;
 })();

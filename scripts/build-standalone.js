@@ -15,6 +15,7 @@ const order = [
   "node_modules/ganache/dist/web/ganache.min.js",
   "frontend/ethers.umd.min.js",
   "frontend/abi.js",
+  "frontend/icons.js",
   "frontend/bytecode.js",
   "frontend/errors.js",
   "frontend/app.js",

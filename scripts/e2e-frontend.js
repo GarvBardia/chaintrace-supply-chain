@@ -46,7 +46,7 @@ async function openPage(accountIndex) {
     },
     on() {},
   };
-  for (const f of ["ethers.umd.min.js", "abi.js", "errors.js", "app.js"]) window.eval(fs.readFileSync(path.join(dir, f), "utf8"));
+  for (const f of ["ethers.umd.min.js", "abi.js", "icons.js", "errors.js", "app.js"]) window.eval(fs.readFileSync(path.join(dir, f), "utf8"));
   return { window, doc: window.document, errors };
 }
 
@@ -62,7 +62,7 @@ async function main() {
   let { doc, errors } = await openPage(0);
   doc.getElementById("addrInput").value = ADDR;
   doc.getElementById("connectBtn").click();
-  await waitFor(() => !doc.getElementById("app").classList.contains("hidden") && doc.querySelectorAll("#productRows tr").length >= 2, "products loaded");
+  await waitFor(() => !doc.getElementById("app").classList.contains("hidden") && doc.querySelectorAll("#productRows .pcard").length >= 2, "products loaded");
   ok(doc.getElementById("roleBadge").textContent.includes("Admin"), "admin badge shown");
   ok(doc.getElementById("statTotal").textContent === "2", "2 products listed");
   ok(doc.getElementById("statSold").textContent === "1", "1 sold product counted");

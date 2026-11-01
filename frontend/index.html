@@ -3,109 +3,165 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f4f6f5" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0c1210" media="(prefers-color-scheme: dark)" />
+  <meta name="description" content="ChainTrace records every hand-over of a product on Ethereum so anyone can verify its journey." />
   <title>ChainTrace - Supply Chain Tracker</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230a7f5a'/%3E%3Cpath d='M16 42 L32 22 L48 42' fill='none' stroke='%23fff' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='42' r='6' fill='%23fff'/%3E%3Ccircle cx='32' cy='22' r='6' fill='%23fff'/%3E%3Ccircle cx='48' cy='42' r='6' fill='%23fff'/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-view="landing">
+  <a class="skip" href="#main">Skip to content</a>
+
   <header class="top">
-    <div class="brand">
-      <div class="logo">CT</div>
-      <div>
-        <h1>ChainTrace</h1>
-        <p>On-chain supply chain tracker</p>
+    <div class="top-in">
+      <a class="brand" href="#" id="brandLink" aria-label="ChainTrace home">
+        <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+          <rect width="64" height="64" rx="16" fill="currentColor"></rect>
+          <path d="M16 42 L32 22 L48 42" fill="none" stroke="var(--logo-ink)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <circle cx="16" cy="42" r="6" fill="var(--logo-ink)"></circle>
+          <circle cx="32" cy="22" r="6" fill="var(--logo-ink)"></circle>
+          <circle cx="48" cy="42" r="6" fill="var(--logo-ink)"></circle>
+        </svg>
+        <span class="brand-name">ChainTrace</span>
+      </a>
+      <div class="wallet">
+        <span id="netBadge" class="pill hidden"></span>
+        <span id="roleBadge" class="pill hidden"></span>
+        <button id="acctBtn" class="chip-btn mono hidden" type="button" title="Copy your address"><span id="acct"></span></button>
+        <button id="tourBtn" class="btn hidden" type="button"></button>
       </div>
-    </div>
-    <div class="wallet">
-      <span id="netBadge" class="pill hidden"></span>
-      <span id="roleBadge" class="pill hidden"></span>
-      <span id="acct" class="mono muted"></span>
-      <button id="demoBtn" class="btn primary">Try demo (no wallet)</button>
-      <button id="connectBtn" class="btn">Connect MetaMask</button>
     </div>
   </header>
 
-  <div id="demoBar" class="demobar hidden">
-    <span><b>Demo mode</b> - a private test blockchain running inside this page (resets when you refresh).</span>
-    <label>Acting as <select id="demoSel"></select></label>
-  </div>
+  <main id="main">
+    <!-- ================= LANDING ================= -->
+    <div id="landing">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1>Follow every product from factory to shelf.</h1>
+          <p class="lede">ChainTrace records each hand-over on Ethereum, so anyone can verify where a product has been.</p>
+          <div class="hero-cta">
+            <button id="demoBtn" class="btn primary lg" type="button"></button>
+            <button id="connectBtn" class="btn lg" type="button"></button>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div id="heroSample"></div>
+        </div>
+      </section>
 
-  <main>
-    <!-- Contract address -->
-    <section class="card" id="setup">
-      <h2>Contract</h2>
-      <p class="muted small">Deploy <span class="mono">SupplyChainTracker.sol</span> in Remix, then paste the deployed address here.</p>
+      <section class="how" aria-labelledby="howTitle">
+        <h2 id="howTitle">How it works</h2>
+        <ol class="flow">
+          <li><span class="flow-ic role-manufacturer" data-icon="factory"></span><b>Manufacturer</b><span>Registers the product and ships it on.</span></li>
+          <li><span class="flow-ic role-distributor" data-icon="warehouse"></span><b>Distributor</b><span>Confirms arrival, then ships to a retailer.</span></li>
+          <li><span class="flow-ic role-retailer" data-icon="storefront"></span><b>Retailer</b><span>Receives the goods and marks them sold.</span></li>
+          <li><span class="flow-ic role-visitor" data-icon="user-circle"></span><b>Customer</b><span>Looks up the full journey, no account needed.</span></li>
+        </ol>
+      </section>
+    </div>
+
+    <!-- MetaMask: contract address (hidden until MetaMask is connected) -->
+    <section class="card setup hidden" id="setup">
+      <h2>Load your contract</h2>
+      <p class="muted small">Deploy <span class="mono">SupplyChainTracker.sol</span> in Remix, then paste the deployed address.</p>
       <div class="row">
-        <input id="addrInput" class="mono" placeholder="0x... deployed contract address" />
-        <button id="loadBtn" class="btn">Load contract</button>
+        <label class="grow"><span class="lbl">Contract address</span>
+          <input id="addrInput" class="mono" placeholder="0x..." autocomplete="off" spellcheck="false" />
+        </label>
+        <button id="loadBtn" class="btn primary" type="button">Load contract</button>
       </div>
-      <p id="setupMsg" class="small"></p>
+      <p id="setupMsg" class="small" role="status"></p>
     </section>
 
+    <!-- ================= APP ================= -->
     <div id="app" class="hidden">
-      <nav class="tabs">
-        <button class="tab active" data-tab="products">Products</button>
-        <button class="tab" data-tab="register">Register</button>
-        <button class="tab" data-tab="track">Track</button>
-        <button class="tab" data-tab="admin">Admin</button>
+      <div id="demoBar" class="demobar hidden">
+        <span class="demo-note"><b>Demo mode.</b> A private test blockchain runs inside this page and resets when you refresh.</span>
+      </div>
+
+      <div class="rolebar">
+        <div id="roleSwitchWrap" class="hidden">
+          <span class="lbl" id="actingLbl">Acting as</span>
+          <div id="roleSwitch" class="seg" role="radiogroup" aria-labelledby="actingLbl"></div>
+        </div>
+        <p id="rolePerms" class="perms" aria-live="polite"></p>
+      </div>
+
+      <nav class="tabs" role="tablist" aria-label="Sections">
+        <button class="tab active" data-tab="products" role="tab" aria-selected="true" type="button"><span data-icon="package"></span>Products</button>
+        <button class="tab" data-tab="register" role="tab" aria-selected="false" type="button"><span data-icon="plus-circle"></span>Register</button>
+        <button class="tab" data-tab="track" role="tab" aria-selected="false" type="button"><span data-icon="path"></span>Track</button>
+        <button class="tab" data-tab="admin" role="tab" aria-selected="false" type="button"><span data-icon="shield-check"></span>Admin</button>
       </nav>
 
       <!-- PRODUCTS -->
-      <section id="tab-products" class="panel">
+      <section id="tab-products" class="panel" role="tabpanel">
         <div class="statrow">
           <div class="stat"><span id="statTotal">0</span><label>Products</label></div>
           <div class="stat"><span id="statTransit">0</span><label>In transit</label></div>
           <div class="stat"><span id="statSold">0</span><label>Sold</label></div>
           <div class="stat"><span id="statRecalled">0</span><label>Recalled</label></div>
         </div>
-        <div class="row between">
-          <h2>All products</h2>
-          <div class="row">
-            <label class="check"><input type="checkbox" id="mineOnly" /> Only mine / needing my action</label>
-            <button id="refreshBtn" class="btn small">Refresh</button>
-          </div>
+
+        <div class="toolbar">
+          <label class="search">
+            <span class="sr-only">Search products</span>
+            <span class="search-ic" data-icon="magnifying-glass"></span>
+            <input id="searchInput" type="search" placeholder="Search name, batch or ID" autocomplete="off" />
+          </label>
+          <label class="check"><input type="checkbox" id="mineOnly" /> <span>Needs my action</span></label>
+          <button id="refreshBtn" class="btn sm" type="button"><span data-icon="arrow-clockwise"></span>Refresh</button>
         </div>
-        <div class="tablewrap">
-          <table>
-            <thead><tr><th>ID</th><th>Product</th><th>Batch</th><th>Stage</th><th>Holder</th><th>Actions</th></tr></thead>
-            <tbody id="productRows"><tr><td colspan="6" class="muted">Load a contract to see products.</td></tr></tbody>
-          </table>
-        </div>
+        <div id="stageFilters" class="filters" role="group" aria-label="Filter by stage"></div>
+
+        <div id="productRows" class="pgrid" aria-live="polite"></div>
       </section>
 
       <!-- REGISTER -->
-      <section id="tab-register" class="panel hidden">
-        <h2>Register a new product</h2>
-        <p class="muted small">Only accounts with the <b>Manufacturer</b> role can do this.</p>
-        <div class="form">
-          <label>Product name<input id="regName" placeholder="Organic Coffee 250g" /></label>
-          <label>Batch number<input id="regBatch" placeholder="BATCH-2026-001" /></label>
-          <label>IPFS CID (optional)<input id="regCid" class="mono" placeholder="Qm... (certificate / image)" /></label>
-          <label>Location<input id="regLoc" placeholder="Coorg Estate, Karnataka" /></label>
-          <button id="regBtn" class="btn primary">Register product</button>
+      <section id="tab-register" class="panel hidden" role="tabpanel">
+        <div class="narrow">
+          <h2>Register a new product</h2>
+          <p id="regNote" class="notice hidden"></p>
+          <div class="form">
+            <label><span class="lbl">Product name</span><input id="regName" placeholder="Organic Coffee 250g" /></label>
+            <label><span class="lbl">Batch number</span><input id="regBatch" placeholder="BATCH-2026-001" /></label>
+            <label><span class="lbl">Location</span><input id="regLoc" placeholder="Coorg Estate, Karnataka" /></label>
+            <label><span class="lbl">IPFS CID <em>(optional)</em></span><input id="regCid" class="mono" placeholder="Qm... for a certificate or image" /></label>
+            <div class="row">
+              <button id="regBtn" class="btn primary" type="button">Register product</button>
+              <button id="regFill" class="btn ghost" type="button">Fill an example</button>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- TRACK -->
-      <section id="tab-track" class="panel hidden">
+      <section id="tab-track" class="panel hidden" role="tabpanel">
         <h2>Track a product</h2>
         <p class="muted small">Anyone can verify a product's full journey. No role needed.</p>
-        <div class="row">
-          <input id="trackId" type="number" min="1" placeholder="Product ID" />
-          <button id="trackBtn" class="btn primary">Track</button>
+        <div class="row trackbar">
+          <label class="grow"><span class="lbl">Product ID</span>
+            <input id="trackId" type="number" min="1" placeholder="1" inputmode="numeric" />
+          </label>
+          <button id="trackBtn" class="btn primary" type="button">Track</button>
         </div>
-        <div id="trackResult"></div>
+        <div id="trackQuick" class="filters"></div>
+        <div id="trackResult" aria-live="polite"></div>
       </section>
 
       <!-- ADMIN -->
-      <section id="tab-admin" class="panel hidden">
+      <section id="tab-admin" class="panel hidden" role="tabpanel">
         <h2>Admin</h2>
         <p id="adminNote" class="muted small"></p>
         <div class="grid2">
-          <div class="card inner">
+          <div class="card">
             <h3>Assign role</h3>
             <div class="form">
-              <label>Wallet address<input id="roleAddr" class="mono" placeholder="0x..." /></label>
-              <label>Role
+              <label><span class="lbl">Wallet address</span><input id="roleAddr" class="mono" placeholder="0x..." spellcheck="false" /></label>
+              <label><span class="lbl">Role</span>
                 <select id="roleSel">
                   <option value="1">Manufacturer</option>
                   <option value="2">Distributor</option>
@@ -113,48 +169,63 @@
                   <option value="0">None (revoke)</option>
                 </select>
               </label>
-              <button id="roleBtn" class="btn primary">Set role</button>
+              <button id="roleBtn" class="btn primary" type="button">Set role</button>
             </div>
-            <div class="row" style="margin-top:14px">
-              <input id="lookupAddr" class="mono" placeholder="Check an address's role 0x..." />
-              <button id="lookupBtn" class="btn small">Check</button>
-            </div>
-            <p id="lookupOut" class="small"></p>
+            <div class="divider"></div>
+            <label><span class="lbl">Check an address</span>
+              <span class="row"><input id="lookupAddr" class="mono grow" placeholder="0x..." spellcheck="false" /><button id="lookupBtn" class="btn" type="button">Check</button></span>
+            </label>
+            <p id="lookupOut" class="small" role="status"></p>
           </div>
-          <div class="card inner">
+          <div class="card">
             <h3>Emergency controls</h3>
             <p class="small muted">Contract status: <b id="pauseState">-</b></p>
             <div class="row">
-              <button id="pauseBtn" class="btn danger">Pause</button>
-              <button id="unpauseBtn" class="btn">Unpause</button>
+              <button id="pauseBtn" class="btn danger" type="button">Pause</button>
+              <button id="unpauseBtn" class="btn" type="button">Unpause</button>
             </div>
-            <h3 style="margin-top:22px">Transfer admin</h3>
-            <div class="row">
-              <input id="newAdmin" class="mono" placeholder="New admin 0x..." />
-              <button id="adminBtn" class="btn small danger">Transfer</button>
-            </div>
+            <div class="divider"></div>
+            <h3>Transfer admin</h3>
+            <label><span class="lbl">New admin address</span>
+              <span class="row"><input id="newAdmin" class="mono grow" placeholder="0x..." spellcheck="false" /><button id="adminBtn" class="btn danger" type="button">Transfer</button></span>
+            </label>
           </div>
         </div>
       </section>
     </div>
   </main>
 
+  <footer class="foot">ChainTrace is a course project for Ethereum Smart Contract Using Solidity (IT_4421).</footer>
+
+  <!-- guided tour panel -->
+  <aside id="tour" class="tour hidden" aria-live="polite" aria-label="Guided tour">
+    <div class="tour-head">
+      <span id="tourStep" class="tour-step"></span>
+      <button id="tourClose" class="icon-btn" type="button" aria-label="Close the tour"><span data-icon="x"></span></button>
+    </div>
+    <h3 id="tourTitle"></h3>
+    <p id="tourBody"></p>
+    <div class="tour-actions" id="tourActions"></div>
+    <div class="tour-bar" aria-hidden="true"><i id="tourProg"></i></div>
+  </aside>
+
   <!-- generic input dialog -->
-  <dialog id="dlg">
+  <dialog id="dlg" aria-labelledby="dlgTitle">
     <form method="dialog" id="dlgForm">
       <h3 id="dlgTitle"></h3>
       <div id="dlgFields" class="form"></div>
       <div class="row end">
-        <button value="cancel" class="btn" id="dlgCancel">Cancel</button>
-        <button value="ok" class="btn primary" id="dlgOk">Confirm</button>
+        <button value="cancel" class="btn" id="dlgCancel" type="button">Cancel</button>
+        <button value="ok" class="btn primary" id="dlgOk" type="submit">Confirm</button>
       </div>
     </form>
   </dialog>
 
-  <div id="toast" class="toast hidden"></div>
+  <div id="toast" class="toasts" role="status" aria-live="polite"></div>
 
   <script src="ethers.umd.min.js"></script>
   <script src="abi.js"></script>
+  <script src="icons.js"></script>
   <script src="errors.js"></script>
   <script src="app.js"></script>
 </body>
