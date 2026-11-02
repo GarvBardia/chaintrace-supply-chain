@@ -1844,12 +1844,24 @@ window.SUPPLY_CHAIN_BYTECODE = "0x608060405234801561001057600080fd5b506000805460
         isDemo: true,
         request: async ({ method, params }) => {
           if (method === "eth_requestAccounts" || method === "eth_accounts") return [accts[idx]];
-          if (method === "eth_estimateGas") {
-            // the in-browser chain can slightly under-estimate gas, so add a 30% safety margin
-            const est = BigInt(await chain.request({ method, params }));
-            return "0x" + ((est * 13n) / 10n).toString(16);
+          try {
+            if (method === "eth_estimateGas") {
+              // the in-browser chain can slightly under-estimate gas, so add a 30% safety margin
+              const est = BigInt(await chain.request({ method, params }));
+              return "0x" + ((est * 13n) / 10n).toString(16);
+            }
+            return await chain.request({ method, params });
+          } catch (e) {
+            // Ganache nests the revert bytes in data.result; expose them where ethers and our error decoder look
+            const raw = e?.data?.result;
+            if (typeof raw === "string" && raw.startsWith("0x")) {
+              const err = new Error(e.message);
+              err.code = 3;
+              err.data = raw;
+              throw err;
+            }
+            throw e;
           }
-          return chain.request({ method, params });
         },
         on() {},
       };
